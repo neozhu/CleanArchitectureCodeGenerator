@@ -76,7 +76,30 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				try
 				{
-					AddItemAsync(name, target).Forget();
+					var list = new List<string>()
+					{
+						"Products/Commands/AddEdit/AddEditProductCommand.cs",
+						"Products/Commands/AddEdit/AddEditProductCommandValidator.cs",
+						"Products/Commands/Create/CreateProductCommand.cs",
+						"Products/Commands/Create/CreateProductCommandValidator.cs",
+						"Products/Commands/Delete/DeleteProductCommand.cs",
+						"Products/Commands/Delete/DeleteProductCommandValidator.cs",
+						"Products/Commands/Update/UpdateProductCommand.cs",
+						"Products/Commands/Update/UpdateProductCommandValidator.cs",
+						"Products/Commands/Import/ImportProductCommand.cs",
+						"Products/Commands/Import/ImportProductCommandValidator.cs",
+						"Products/TODs/ProductDtos.cs",
+						"Products/EventHandlers/ProductCreatedEventHandler.cs",
+						"Products/EventHandlers/ProductUpdatedEventHandler.cs",
+						"Products/EventHandlers/ProductDeletedEventHandler.cs",
+						"Products/Queries/Export/ExportProductsQuery.cs",
+						"Products/Queries/GetAll/GetAllProductsQuery.cs",
+						"Products/Queries/Pagination/ProductsPaginationQuery.cs",
+					};
+					foreach (var item in list)
+					{
+						AddItemAsync(item, target).Forget();
+					}
 				}
 				catch (Exception ex) when (!ErrorHandler.IsCriticalException(ex))
 				{

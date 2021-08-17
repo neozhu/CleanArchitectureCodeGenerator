@@ -11,121 +11,127 @@ using Microsoft.VisualStudio.Shell;
 
 namespace CleanArchitecture.CodeGenerator
 {
-    internal static class TemplateMap
-    {
-        private static readonly string _folder;
-        private static readonly List<string> _templateFiles = new List<string>();
-        private const string _defaultExt = ".txt";
-        private const string _templateDir = ".templates";
+	internal static class TemplateMap
+	{
+		private static readonly string _folder;
+		private static readonly List<string> _templateFiles = new List<string>();
+		private const string _defaultExt = ".txt";
+		private const string _templateDir = ".templates";
 
-        static TemplateMap()
-        {
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var userProfile = Path.Combine(folder, ".vs", _templateDir);
+		static TemplateMap()
+		{
+			var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+			var userProfile = Path.Combine(folder, ".vs", _templateDir);
 
-            if (Directory.Exists(userProfile))
-            {
-                _templateFiles.AddRange(Directory.GetFiles(userProfile, "*" + _defaultExt, SearchOption.AllDirectories));
-            }
+			if (Directory.Exists(userProfile))
+			{
+				_templateFiles.AddRange(Directory.GetFiles(userProfile, "*" + _defaultExt, SearchOption.AllDirectories));
+			}
 
-            var assembly = Assembly.GetExecutingAssembly().Location;
-            _folder = Path.Combine(Path.GetDirectoryName(assembly), "Templates");
-            _templateFiles.AddRange(Directory.GetFiles(_folder, "*" + _defaultExt, SearchOption.AllDirectories));
-        }
+			var assembly = Assembly.GetExecutingAssembly().Location;
+			_folder = Path.Combine(Path.GetDirectoryName(assembly), "Templates");
+			_templateFiles.AddRange(Directory.GetFiles(_folder, "*" + _defaultExt, SearchOption.AllDirectories));
+		}
+		
 
-        public static async Task<string> GetTemplateFilePathAsync(Project project, string file)
-        {
-            var extension = Path.GetExtension(file).ToLowerInvariant();
-            var name = Path.GetFileName(file);
-            var safeName = name.StartsWith(".") ? name : Path.GetFileNameWithoutExtension(file);
-            var relative = PackageUtilities.MakeRelative(project.GetRootFolder(), Path.GetDirectoryName(file) ?? "");
+		public static async Task<string> GetTemplateFilePathAsync(Project project, string file)
+		{
+			var extension = Path.GetExtension(file).ToLowerInvariant();
+			var name = Path.GetFileName(file);
+			var safeName = name.StartsWith(".") ? name : Path.GetFileNameWithoutExtension(file);
+			var relative = PackageUtilities.MakeRelative(project.GetRootFolder(), Path.GetDirectoryName(file) ?? "");
 
-            string templateFile = null;
-            var list = _templateFiles.ToList();
+			string templateFile = null;
+			var list = _templateFiles.ToList();
 
-            AddTemplatesFromCurrentFolder(list, Path.GetDirectoryName(file));
+			AddTemplatesFromCurrentFolder(list, Path.GetDirectoryName(file));
 
-            // Look for direct file name matches
-            if (list.Any(f => Path.GetFileName(f).Equals(name + _defaultExt, StringComparison.OrdinalIgnoreCase)))
-            {
-                var tmplFile = list.FirstOrDefault(f => Path.GetFileName(f).Equals(name + _defaultExt, StringComparison.OrdinalIgnoreCase));
-                templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), name + _defaultExt);//GetTemplate(name);
-            }
+			// Look for direct file name matches
+			if (list.Any(f => {
+				var temppath = f.Substring(f.IndexOf("Templates") + 9, f.LastIndexOf("\\") - f.IndexOf("Templates") -9);
+				var filepath = relative.Substring(relative.IndexOf("\\"));
 
-            // Look for file extension matches
-            else if (list.Any(f => Path.GetFileName(f).Equals(extension + _defaultExt, StringComparison.OrdinalIgnoreCase)))
-            {
-                var tmplFile = list.FirstOrDefault(f => Path.GetFileName(f).Equals(extension + _defaultExt, StringComparison.OrdinalIgnoreCase) && File.Exists(f));
-                var tmpl = AdjustForSpecific(safeName, extension);
-                templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
-            }
+				return (temppath == filepath);
+				}) )
+			{
+				var tmplFile = list.FirstOrDefault(f => Path.GetFileName(f).Equals(name + _defaultExt, StringComparison.OrdinalIgnoreCase));
+				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), name + _defaultExt);//GetTemplate(name);
+			}
 
-            var template = await ReplaceTokensAsync(project, safeName, relative, templateFile);
-            return NormalizeLineEndings(template);
-        }
+			// Look for file extension matches
+			else if (list.Any(f => Path.GetFileName(f).Equals(extension + _defaultExt, StringComparison.OrdinalIgnoreCase)))
+			{
+				var tmplFile = list.FirstOrDefault(f => Path.GetFileName(f).Equals(extension + _defaultExt, StringComparison.OrdinalIgnoreCase) && File.Exists(f));
+				var tmpl = AdjustForSpecific(safeName, extension);
+				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
+			}
 
-        private static void AddTemplatesFromCurrentFolder(List<string> list, string dir)
-        {
-            var current = new DirectoryInfo(dir);
-            var dynaList = new List<string>();
+			var template = await ReplaceTokensAsync(project, safeName, relative, templateFile);
+			return NormalizeLineEndings(template);
+		}
 
-            while (current != null)
-            {
-                var tmplDir = Path.Combine(current.FullName, _templateDir);
+		private static void AddTemplatesFromCurrentFolder(List<string> list, string dir)
+		{
+			var current = new DirectoryInfo(dir);
+			var dynaList = new List<string>();
 
-                if (Directory.Exists(tmplDir))
-                {
-                    dynaList.AddRange(Directory.GetFiles(tmplDir, "*" + _defaultExt, SearchOption.AllDirectories));
-                }
+			while (current != null)
+			{
+				var tmplDir = Path.Combine(current.FullName, _templateDir);
 
-                current = current.Parent;
-            }
+				if (Directory.Exists(tmplDir))
+				{
+					dynaList.AddRange(Directory.GetFiles(tmplDir, "*" + _defaultExt, SearchOption.AllDirectories));
+				}
 
-            list.InsertRange(0, dynaList);
-        }
+				current = current.Parent;
+			}
 
-        private static async Task<string> ReplaceTokensAsync(Project project, string name, string relative, string templateFile)
-        {
-            if (string.IsNullOrEmpty(templateFile))
-            {
-                return templateFile;
-            }
+			list.InsertRange(0, dynaList);
+		}
 
-            var rootNs = project.GetRootNamespace();
-            var ns = string.IsNullOrEmpty(rootNs) ? "MyNamespace" : rootNs;
+		private static async Task<string> ReplaceTokensAsync(Project project, string name, string relative, string templateFile)
+		{
+			if (string.IsNullOrEmpty(templateFile))
+			{
+				return templateFile;
+			}
 
-            if (!string.IsNullOrEmpty(relative))
-            {
-                ns += "." + ProjectHelpers.CleanNameSpace(relative);
-            }
+			var rootNs = project.GetRootNamespace();
+			var ns = string.IsNullOrEmpty(rootNs) ? "MyNamespace" : rootNs;
 
-            using (var reader = new StreamReader(templateFile))
-            {
-                var content = await reader.ReadToEndAsync();
+			if (!string.IsNullOrEmpty(relative))
+			{
+				ns += "." + ProjectHelpers.CleanNameSpace(relative);
+			}
 
-                return content.Replace("{namespace}", ns)
-                              .Replace("{itemname}", name);
-            }
-        }
+			using (var reader = new StreamReader(templateFile))
+			{
+				var content = await reader.ReadToEndAsync();
 
-        private static string NormalizeLineEndings(string content)
-        {
-            if (string.IsNullOrEmpty(content))
-            {
-                return content;
-            }
+				return content.Replace("{namespace}", ns)
+											.Replace("{itemname}", name);
+			}
+		}
 
-            return Regex.Replace(content, @"\r\n|\n\r|\n|\r", "\r\n");
-        }
+		private static string NormalizeLineEndings(string content)
+		{
+			if (string.IsNullOrEmpty(content))
+			{
+				return content;
+			}
 
-        private static string AdjustForSpecific(string safeName, string extension)
-        {
-            if (Regex.IsMatch(safeName, "^I[A-Z].*"))
-            {
-                return extension += "-interface";
-            }
+			return Regex.Replace(content, @"\r\n|\n\r|\n|\r", "\r\n");
+		}
 
-            return extension;
-        }
-    }
+		private static string AdjustForSpecific(string safeName, string extension)
+		{
+			if (Regex.IsMatch(safeName, "^I[A-Z].*"))
+			{
+				return extension += "-interface";
+			}
+
+			return extension;
+		}
+	}
 }

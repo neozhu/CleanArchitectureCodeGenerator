@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -326,6 +328,11 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 			}
 
 			return selectedObject;
+		}
+
+		public static string Pluralize(string name)
+		{
+			return PluralizationService.CreateService(new CultureInfo("en-US")).Pluralize(name);
 		}
 	}
 

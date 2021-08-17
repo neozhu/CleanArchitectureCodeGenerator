@@ -73,6 +73,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Design" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
@@ -111,23 +112,57 @@
     <Content Include="Templates\.md.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Templates\Queries\Export\.cs.txt" />
-    <Resource Include="Templates\Queries\Pagination\.cs.txt" />
-    <Resource Include="Templates\Queries\GetAll\.cs.txt" />
-    <Resource Include="Templates\DTOs\.dtos.cs.txt" />
-    <Resource Include="Templates\Commands\AddEdit\.cs.txt" />
-    <Resource Include="Templates\Commands\AddEdit\.validator.cs.txt" />
-    <Resource Include="Templates\Commands\Create\.cs.txt" />
-    <Resource Include="Templates\Commands\Create\.validator.cs.txt" />
-    <Resource Include="Templates\Commands\Delete\.cs.txt" />
-    <Resource Include="Templates\Commands\Delete\.validator.cs.txt" />
-    <Resource Include="Templates\Commands\Update\.cs.txt" />
-    <Resource Include="Templates\Commands\Update\.validator.cs.txt" />
-    <Resource Include="Templates\Commands\Import\.cs.txt" />
-    <Resource Include="Templates\Commands\Import\.validator.cs.txt" />
-    <Resource Include="Templates\EventHandlers\.created.cs.txt" />
-    <Resource Include="Templates\EventHandlers\.updated.cs.txt" />
-    <Resource Include="Templates\EventHandlers\.deleted.cs.txt" />
+    <Content Include="Templates\Queries\Export\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Queries\Pagination\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Queries\GetAll\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\DTOs\.dtos.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\AddEdit\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\AddEdit\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Create\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Create\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Delete\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Delete\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Update\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Update\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Import\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\Import\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\EventHandlers\.created.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\EventHandlers\.updated.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\EventHandlers\.deleted.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\gruntfile.js.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

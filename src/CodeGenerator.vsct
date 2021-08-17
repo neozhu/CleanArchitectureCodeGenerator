@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <Extern href="stdidcmd.h"/>
+    <Extern href="vsshlids.h"/>
+
+    <Commands package="guidCodeGeneratorPkg">
+        <Buttons>
+            <Button guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" priority="0x0200" type="Button">
+                <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_ADD_ITEMS"/>
+                <CommandFlag>DynamicVisibility</CommandFlag>
+                <Strings>
+                    <CommandName>AddEmptyFile</CommandName>
+                    <ButtonText>New Empty File...</ButtonText>
+                </Strings>
+            </Button>
+        </Buttons>
+    </Commands>
+
+    <CommandPlacements>
+        <CommandPlacement guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" priority="0x0200">
+            <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SOLUTION_ADD_ITEM"/>
+        </CommandPlacement>
+
+        <CommandPlacement guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" priority="0x0200">
+            <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SLNFLDR_ADD_ITEM"/>
+        </CommandPlacement>
+    </CommandPlacements>
+
+    <KeyBindings>
+        <KeyBinding guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" mod1="Shift" key1="VK_F2" editor="guidVSStd97"/>
+    </KeyBindings>
+
+    <Symbols>
+        <!-- This is the package guid. -->
+        <GuidSymbol name="guidCodeGeneratorPkg" value="{da3d4428-7855-4b22-a0e6-a7b9a6c7aa5e}" />
+
+        <!-- This is the guid used to group the menu commands together -->
+        <GuidSymbol name="guidCodeGeneratorCmdSet" value="{4c7a4f97-2988-45ec-af7c-8984fc72c5e1}">
+            <IDSymbol name="cmdidMyCommand" value="0x0100" />
+        </GuidSymbol>
+    </Symbols>
+
+</CommandTable>

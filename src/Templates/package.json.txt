@@ -1,0 +1,8 @@
+﻿{
+	"version": "1.0.0",
+	"name": "mypackage",
+	"private": true,
+	"devDependencies": {
+        $
+	}
+}

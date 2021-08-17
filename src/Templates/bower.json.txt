@@ -1,0 +1,7 @@
+{
+  "name": "mypackage",
+  "private": true,
+  "dependencies": {
+    $
+  }
+}

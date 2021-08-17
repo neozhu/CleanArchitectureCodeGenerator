@@ -1,2 +1,54 @@
-# CleanCleanArchitectureCodeGenerator
-Generate the application features code class  from definition entity model to Application project
+# Add Any File
+
+[![Build status](https://ci.appveyor.com/api/projects/status/252jpryc38qah37x?svg=true)](https://ci.appveyor.com/project/madskristensen/addanyfile)
+
+Download the extension at the
+[VS Gallery](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.AddNewFile)
+or get the
+[nightly build](http://vsixgallery.com/extension/6A168388-B6A2-42F9-BA5A-B577D3CD4DB5/)
+
+-------------------------------------------------
+
+A Visual Studio extension for easily adding new files to any project. Simply hit Shift+F2 to create an empty file in the
+selected folder or in the same folder as the selected file.
+
+See the [changelog](CHANGELOG.md) for updates and roadmap.
+
+### Features
+
+- Easily create any file with any file extension
+- Create files starting with a dot like `.gitignore`
+- Create deeper folder structures easily if required
+- Create folders when the entered name ends with a /
+
+![Add new file dialog](art/dialog.png)
+
+### Show the dialog
+
+A new button is added to the context menu in Solution Explorer.
+
+![Add new file dialog](art/menu.png)
+
+You can either click that button or use the keybord shortcut **Shift+F2**.
+
+### Create folders
+
+Create additional folders for your file by using forward-slash to
+specify the structure.
+
+For example, by typing **scripts/test.js** in the dialog, the
+folder **scripts** is created if it doesn't exist and the file
+**test.js** is then placed into it.
+
+## Contribute
+Check out the [contribution guidelines](.github/CONTRIBUTING.md)
+if you want to contribute to this project.
+
+For cloning and building this project yourself, make sure
+to install the
+[Extensibility Tools 2015](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.ExtensibilityTools)
+extension for Visual Studio which enables some features
+used by this project.
+
+## License
+[Apache 2.0](LICENSE)

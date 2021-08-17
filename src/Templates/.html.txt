@@ -1,0 +1,9 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>{itemname}</title>
+</head>
+<body>
+    $
+</body>
+</html>

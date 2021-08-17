@@ -1,0 +1,25 @@
+﻿<Window x:Class="CleanArchitecture.CodeGenerator.FileNameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CleanArchitecture.CodeGenerator"
+        Title="Add new file" Height="125" Width="431" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" SizeToContent="Width"
+        
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Name="lblFolder" Content="Folder name:" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" Height="26" FontWeight="SemiBold" />
+        <TextBox Grid.Row="0" Grid.Column="1" Name="txtName" VerticalContentAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="210" />
+        <Button Grid.Row="0" Grid.Column="2" Content="Add file" HorizontalAlignment="Center" Margin="10,0" VerticalAlignment="Center" Width="75" Height="23" IsDefault="True" Name="btnCreate" Click="Button_Click" />
+
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="lblTips" Content="Tips" HorizontalAlignment="Left" Margin="5,0" VerticalAlignment="Bottom" Height="26" />
+    </Grid>
+</Window>

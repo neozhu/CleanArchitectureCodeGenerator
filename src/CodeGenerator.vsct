@@ -10,17 +10,19 @@
                 <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_ADD_ITEMS"/>
                 <CommandFlag>DynamicVisibility</CommandFlag>
                 <Strings>
-                    <CommandName>AddEmptyFile</CommandName>
-                    <ButtonText>New Empty File...</ButtonText>
+                    <CommandName>AddFeaturesClassFile</CommandName>
+                    <ButtonText>New Application Features...</ButtonText>
                 </Strings>
             </Button>
         </Buttons>
     </Commands>
 
     <CommandPlacements>
+        <!--
         <CommandPlacement guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" priority="0x0200">
             <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SOLUTION_ADD_ITEM"/>
         </CommandPlacement>
+        -->
 
         <CommandPlacement guid="guidCodeGeneratorCmdSet" id="cmdidMyCommand" priority="0x0200">
             <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_SLNFLDR_ADD_ITEM"/>

@@ -1,0 +1,13 @@
+﻿using FluentValidation;
+
+namespace {namespace}
+{
+    public class Create{itemname}CommandValidator : AbstractValidator<Create{itemname}Command>
+    {
+        public Create{itemname}CommandValidator()
+        {
+           //TODO:Implementing Create{itemname}CommandValidator method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

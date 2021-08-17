@@ -1,0 +1,29 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using {rootnamespace}.Application.Common.Models;
+using {rootnamespace}.Domain.Events;
+using MediatR;
+using Microsoft.Extensions.Logging;
+
+namespace {namespace}
+{
+    public class {itemname}CreatedEventHandler : INotificationHandler<DomainEventNotification<{itemname}CreatedEvent>>
+    {
+        private readonly ILogger<{itemname}CreatedEventHandler> _logger;
+
+        public {itemname}CreatedEventHandler(
+            ILogger<{itemname}CreatedEventHandler> logger
+            )
+        {
+            _logger = logger;
+        }
+        public Task Handle(DomainEventNotification<{itemname}CreatedEvent> notification, CancellationToken cancellationToken)
+        {
+            var domainEvent = notification.DomainEvent;
+
+            _logger.LogInformation("CleanArchitecture Domain Event: {DomainEvent}", domainEvent.GetType().Name);
+
+            return Task.CompletedTask;
+        }
+    }
+}

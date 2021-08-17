@@ -1,0 +1,11 @@
+﻿using AutoMapper;
+using {rootnamespace}.Application.Common.Mappings;
+using {rootnamespace}.Domain.Entities;
+
+namespace {namespace}
+{
+    public class {itemname}Dto
+    {
+        //TODO:Define field properties
+    }
+}

@@ -1,0 +1,40 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using {rootnamespace}.Application.Common.Interfaces;
+using {rootnamespace}.Application.Common.Mappings;
+using {rootnamespace}.Application.Common.Models;
+using {rootnamespace}.Application.{itemname}s.DTOs;
+using {rootnamespace}.Domain.Entities;
+using {rootnamespace}.Domain.Events;
+using MediatR;
+
+namespace {namespace}
+{
+    public class Create{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
+    {
+      
+    }
+
+    public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result>
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IStringLocalizer<Create{itemname}Command> _localizer;
+        public Create{itemname}CommandHandler(
+            IApplicationDbContext context,
+            IStringLocalizer<Create{itemname}Command> localizer,
+            IMapper mapper
+            )
+        {
+            _context = context;
+            _localizer = localizer；
+            _mapper = mapper;
+        }
+        public async Task<Result> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
+        {
+           //TODO:Implementing Create{itemname}CommandHandler method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

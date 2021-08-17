@@ -1,0 +1,13 @@
+﻿using FluentValidation;
+
+namespace {namespace}
+{
+    public class AddEdit{itemname}CommandValidator : AbstractValidator<AddEdit{itemname}Command>
+    {
+        public AddEdit{itemname}CommandValidator()
+        {
+           //TODO:Implementing AddEdit{itemname}CommandValidator method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

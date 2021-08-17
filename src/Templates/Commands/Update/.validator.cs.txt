@@ -1,0 +1,13 @@
+﻿using FluentValidation;
+
+namespace {namespace}
+{
+    public class Update{itemname}CommandValidator : AbstractValidator<Update{itemname}Command>
+    {
+        public Update{itemname}CommandValidator()
+        {
+           //TODO:Implementing Update{itemname}CommandValidator method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

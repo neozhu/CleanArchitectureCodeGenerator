@@ -111,6 +111,21 @@
     <Content Include="Templates\.md.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Templates\Queries\GetAll\.cs.txt" />
+    <Resource Include="Templates\DTOs\.dtos.cs.txt" />
+    <Resource Include="Templates\Commands\AddEdit\.cs.txt" />
+    <Resource Include="Templates\Commands\AddEdit\.validator.cs.txt" />
+    <Resource Include="Templates\Commands\Create\.cs.txt" />
+    <Resource Include="Templates\Commands\Create\.validator.cs.txt" />
+    <Resource Include="Templates\Commands\Delete\.cs.txt" />
+    <Resource Include="Templates\Commands\Delete\.validator.cs.txt" />
+    <Resource Include="Templates\Commands\Update\.cs.txt" />
+    <Resource Include="Templates\Commands\Update\.validator.cs.txt" />
+    <Resource Include="Templates\Commands\Import\.cs.txt" />
+    <Resource Include="Templates\Commands\Import\.validator.cs.txt" />
+    <Resource Include="Templates\EventHandlers\.created.cs.txt" />
+    <Resource Include="Templates\EventHandlers\.updated.cs.txt" />
+    <Resource Include="Templates\EventHandlers\.deleted.cs.txt" />
     <Content Include="Templates\gruntfile.js.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -194,6 +209,10 @@
     <PackageReference Include="System.ComponentModel.Composition">
       <Version>5.0.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\Queries\Export\" />
+    <Folder Include="Templates\Queries\Pagination\" />
   </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>

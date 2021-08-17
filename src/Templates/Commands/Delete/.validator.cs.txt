@@ -1,0 +1,13 @@
+﻿using FluentValidation;
+
+namespace {namespace}
+{
+    public class Delete{itemname}CommandValidator : AbstractValidator<Delete{itemname}Command>
+    {
+        public Delete{itemname}CommandValidator()
+        {
+           //TODO:Implementing Delete{itemname}CommandValidator method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

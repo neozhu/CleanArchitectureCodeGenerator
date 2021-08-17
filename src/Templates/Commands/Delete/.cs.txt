@@ -1,0 +1,40 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using {rootnamespace}.Application.Common.Interfaces;
+using {rootnamespace}.Application.Common.Mappings;
+using {rootnamespace}.Application.Common.Models;
+using {rootnamespace}.Application.{itemname}s.DTOs;
+using {rootnamespace}.Domain.Entities;
+using {rootnamespace}.Domain.Events;
+using MediatR;
+
+namespace {namespace}
+{
+    public class Delete{itemname}Command: IRequest<Result>
+    {
+      
+    }
+
+    public class Delete{itemname}CommandHandler : IRequestHandler<Delete{itemname}Command, Result>
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IStringLocalizer<Delete{itemname}CommandHandler> _localizer;
+        public Delete{itemname}CommandHandler(
+            IApplicationDbContext context,
+            IStringLocalizer<Delete{itemname}CommandHandler> _localizer,
+             IMapper mapper
+            )
+        {
+            _context = context;
+            _localizer = localizer；
+            _mapper = mapper;
+        }
+        public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
+        {
+           //TODO:Implementing Delete{itemname}CommandHandler method 
+           throw new System.NotImplementedException();
+        }
+    }
+}

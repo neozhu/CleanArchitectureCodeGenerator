@@ -38,6 +38,11 @@ See the [changelog](CHANGELOG.md) for updates and roadmap.
 
 ![Add new file dialog](art/dialog1.png)
 
+### CleanArchitecture for Razor Page project template
+
+Github Sourcecode:https://github.com/neozhu/RazorPageCleanArchitecture
+[![Clean Architecture Solution For Razor Page Development](https://github.com/neozhu/RazorPageCleanArchitecture/blob/main/doc/screenshot/2021-08-11_19-28-59.png?raw=true)](https://www.youtube.com/watch?v=NcMd5W3C63A)
+
 ### Show the dialog
 
 A new button is added to the context menu in Solution Explorer.

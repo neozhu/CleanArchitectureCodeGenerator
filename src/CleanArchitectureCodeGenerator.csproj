@@ -121,7 +121,7 @@
     <Content Include="Templates\Queries\GetAll\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\DTOs\.dtos.cs.txt">
+    <Content Include="Templates\DTOs\.dto.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Templates\Commands\AddEdit\.cs.txt">

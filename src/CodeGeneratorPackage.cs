@@ -72,29 +72,31 @@ namespace CleanArchitecture.CodeGenerator
 
 			string[] parsedInputs = GetParsedInput(input);
 
-			foreach (string name in parsedInputs)
+			foreach (string inputname in parsedInputs)
 			{
 				try
 				{
+					var name = Path.GetFileNameWithoutExtension(inputname);
+					var nameofPlural = ProjectHelpers.Pluralize(name);
 					var list = new List<string>()
 					{
-						"Products/Commands/AddEdit/AddEditProductCommand.cs",
-						"Products/Commands/AddEdit/AddEditProductCommandValidator.cs",
-						"Products/Commands/Create/CreateProductCommand.cs",
-						"Products/Commands/Create/CreateProductCommandValidator.cs",
-						"Products/Commands/Delete/DeleteProductCommand.cs",
-						"Products/Commands/Delete/DeleteProductCommandValidator.cs",
-						"Products/Commands/Update/UpdateProductCommand.cs",
-						"Products/Commands/Update/UpdateProductCommandValidator.cs",
-						"Products/Commands/Import/ImportProductCommand.cs",
-						"Products/Commands/Import/ImportProductCommandValidator.cs",
-						"Products/TODs/ProductDtos.cs",
-						"Products/EventHandlers/ProductCreatedEventHandler.cs",
-						"Products/EventHandlers/ProductUpdatedEventHandler.cs",
-						"Products/EventHandlers/ProductDeletedEventHandler.cs",
-						"Products/Queries/Export/ExportProductsQuery.cs",
-						"Products/Queries/GetAll/GetAllProductsQuery.cs",
-						"Products/Queries/Pagination/ProductsPaginationQuery.cs",
+						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs",
+						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs",
+						$"{nameofPlural}/Commands/Create/Create{name}Command.cs",
+						$"{nameofPlural}/Commands/Create/Create{name}CommandValidator.cs",
+						$"{nameofPlural}/Commands/Delete/Delete{name}Command.cs",
+						$"{nameofPlural}/Commands/Delete/Delete{name}CommandValidator.cs",
+						$"{nameofPlural}/Commands/Update/Update{name}Command.cs",
+						$"{nameofPlural}/Commands/Update/Update{name}CommandValidator.cs",
+						$"{nameofPlural}/Commands/Import/Import{name}Command.cs",
+						$"{nameofPlural}/Commands/Import/Import{name}CommandValidator.cs",
+						$"{nameofPlural}/DTOs/{name}Dto.cs",
+						$"{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs",
+						$"{nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs",
+						$"{nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs",
+						$"{nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs",
+						$"{nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs",
+						$"{nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs",
 					};
 					foreach (var item in list)
 					{
@@ -105,7 +107,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					Logger.Log(ex);
 					MessageBox.Show(
-							$"Error creating file '{name}':{Environment.NewLine}{ex.Message}",
+							$"Error creating file '{inputname}':{Environment.NewLine}{ex.Message}",
 							Vsix.Name,
 							MessageBoxButton.OK,
 							MessageBoxImage.Error);

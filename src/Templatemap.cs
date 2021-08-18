@@ -48,14 +48,22 @@ namespace CleanArchitecture.CodeGenerator
 
 			// Look for direct file name matches
 			if (list.Any(f => {
-				var temppath = f.Substring(f.IndexOf("Templates") + 9, f.LastIndexOf("\\") - f.IndexOf("Templates") -9);
-				var filepath = relative.Substring(relative.IndexOf("\\"));
-
-				return (temppath == filepath);
+				 var pattern = $"{relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")}";
+				 var result = Regex.IsMatch(f, pattern);
+				 return result;
+			 
 				}) )
 			{
-				var tmplFile = list.FirstOrDefault(f => Path.GetFileName(f).Equals(name + _defaultExt, StringComparison.OrdinalIgnoreCase));
-				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), name + _defaultExt);//GetTemplate(name);
+				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
+					var pattern = $"{relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")}";
+					var result = Regex.IsMatch(f, pattern);
+					if (result)
+					{
+						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x=>name.IndexOf(x, StringComparison.OrdinalIgnoreCase)>0);
+					}
+					return false;
+				});
+				templateFile = tmplFile;  //Path.Combine(Path.GetDirectoryName(tmplFile), name + _defaultExt);//GetTemplate(name);
 			}
 
 			// Look for file extension matches
@@ -108,9 +116,9 @@ namespace CleanArchitecture.CodeGenerator
 			using (var reader = new StreamReader(templateFile))
 			{
 				var content = await reader.ReadToEndAsync();
-
-				return content.Replace("{namespace}", ns)
-											.Replace("{itemname}", name);
+				var nameofPlural = ProjectHelpers.Pluralize(name);
+				return content.Replace("{rootnamespace}", rootNs).Replace("{namespace}", ns)
+											.Replace("{itemname}", name).Replace("{nameofPlural}", nameofPlural);
 			}
 		}
 

@@ -12,26 +12,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
-using {rootnamespace}.Application.{itemname}s.DTOs;
+using {rootnamespace}.Application.{nameofPlural}.DTOs;
 
 namespace {namespace}
 {
-    public class Export{itemname}sQuery : IRequest<byte[]>
+    public class Export{nameofPlural}Query : IRequest<byte[]>
     {
        
     }
     
-    public class Export{itemname}sQueryHandler :
-         IRequestHandler<Export{itemname}sQuery, byte[]>
+    public class Export{nameofPlural}QueryHandler :
+         IRequestHandler<Export{nameofPlural}Query, byte[]>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IStringLocalizer<Export{itemname}sQueryHandler> _localizer;
+        private readonly IStringLocalizer<Export{nameofPlural}QueryHandler> _localizer;
 
-        public Export{itemname}sQueryHandler(
+        public Export{nameofPlural}QueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
-            IStringLocalizer<Export{itemname}sQueryHandler> localizer
+            IStringLocalizer<Export{nameofPlural}QueryHandler> localizer
             )
         {
             _context = context;
@@ -39,9 +39,9 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<byte[]> Handle(Export{itemname}sQuery request, CancellationToken cancellationToken)
+        public Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing Export{itemname}sQueryHandler method 
+            //TODO:Implementing Export{nameofPlural}QueryHandler method 
             throw new NotImplementedException();
         }
     }

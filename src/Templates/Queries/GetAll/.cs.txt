@@ -12,26 +12,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
-using {rootnamespace}.Application.{itemname}s.DTOs;
+using {rootnamespace}.Application.{nameofPlural}.DTOs;
 
 namespace {namespace}
 {
-    public class GetAll{itemname}sQuery : IRequest<IEnumerable<{itemname}Dto>>
+    public class GetAll{nameofPlural}Query : IRequest<IEnumerable<{itemname}Dto>>
     {
        
     }
     
-    public class GetAll{itemname}sQueryHandler :
-         IRequestHandler<GetAll{itemname}sQuery, IEnumerable<{itemname}Dto>>
+    public class GetAll{nameofPlural}QueryHandler :
+         IRequestHandler<GetAll{nameofPlural}Query, IEnumerable<{itemname}Dto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IStringLocalizer<GetAll{itemname}sQueryHandler> _localizer;
+        private readonly IStringLocalizer<GetAll{nameofPlural}QueryHandler> _localizer;
 
-        public GetAll{itemname}sQueryHandler(
+        public GetAll{nameofPlural}QueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
-            IStringLocalizer<GetAll{itemname}sQueryHandler> localizer
+            IStringLocalizer<GetAll{nameofPlural}QueryHandler> localizer
             )
         {
             _context = context;
@@ -39,9 +39,9 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<IEnumerable<{itemname}Dto>> Handle(GetAll{itemname}sQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing GetAll{itemname}sQueryHandler method 
+            //TODO:Implementing GetAll{nameofPlural}QueryHandler method 
             throw new NotImplementedException();
         }
     }

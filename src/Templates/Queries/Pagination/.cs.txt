@@ -12,26 +12,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
-using {rootnamespace}.Application.{itemname}s.DTOs;
+using {rootnamespace}.Application.nameofPlural.DTOs;
 
 namespace {namespace}
 {
-    public class {itemname}sWithPaginationQuery : IRequest<PaginatedData<{itemname}Dto>>
+    public class nameofPluralWithPaginationQuery : IRequest<PaginatedData<{itemname}Dto>>
     {
        
     }
     
-    public class {itemname}sWithPaginationQueryHandler :
-         IRequestHandler<GetAll{itemname}sQuery, PaginatedData<{itemname}Dto>>
+    public class nameofPluralWithPaginationQueryHandler :
+         IRequestHandler<GetAllnameofPluralQuery, PaginatedData<{itemname}Dto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IStringLocalizer<{itemname}sWithPaginationQueryHandler> _localizer;
+        private readonly IStringLocalizer<nameofPluralWithPaginationQueryHandler> _localizer;
 
-        public {itemname}sWithPaginationQueryHandler(
+        public nameofPluralWithPaginationQueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
-            IStringLocalizer<{itemname}sWithPaginationQueryHandler> localizer
+            IStringLocalizer<nameofPluralWithPaginationQueryHandler> localizer
             )
         {
             _context = context;
@@ -39,9 +39,9 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<PaginatedData<{itemname}Dto>> Handle({itemname}sWithPaginationQuery request, CancellationToken cancellationToken)
+        public Task<PaginatedData<{itemname}Dto>> Handle(nameofPluralWithPaginationQuery request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing {itemname}sWithPaginationQueryHandler method 
+            //TODO:Implementing nameofPluralWithPaginationQueryHandler method 
             throw new NotImplementedException();
         }
     }

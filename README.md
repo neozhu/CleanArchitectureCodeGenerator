@@ -3,9 +3,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/252jpryc38qah37x?svg=true)](https://ci.appveyor.com/project/madskristensen/addanyfile)
 
 Download the extension at the
-[VS Gallery](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.AddNewFile)
-or get the
-[nightly build](http://vsixgallery.com/extension/6A168388-B6A2-42F9-BA5A-B577D3CD4DB5/)
+[VS Gallery](https://marketplace.visualstudio.com/items?itemName=SmartCodeMVC5Enginever3898.247365)
+
 
 -------------------------------------------------
 

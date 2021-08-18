@@ -12,26 +12,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
-using {rootnamespace}.Application.nameofPlural.DTOs;
-
+using {rootnamespace}.Application.{nameofPlural}.DTOs;
+using {rootnamespace}.Application.Models;
 namespace {namespace}
 {
-    public class nameofPluralWithPaginationQuery : IRequest<PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQuery : IRequest<PaginatedData<{itemname}Dto>>
     {
        
     }
     
-    public class nameofPluralWithPaginationQueryHandler :
-         IRequestHandler<GetAllnameofPluralQuery, PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQueryHandler :
+         IRequestHandler<{nameofPlural}WithPaginationQuery, PaginatedData<{itemname}Dto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IStringLocalizer<nameofPluralWithPaginationQueryHandler> _localizer;
+        private readonly IStringLocalizer<{nameofPlural}WithPaginationQueryHandler> _localizer;
 
-        public nameofPluralWithPaginationQueryHandler(
+        public {nameofPlural}WithPaginationQueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
-            IStringLocalizer<nameofPluralWithPaginationQueryHandler> localizer
+            IStringLocalizer<{nameofPlural}WithPaginationQueryHandler> localizer
             )
         {
             _context = context;
@@ -39,9 +39,9 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<PaginatedData<{itemname}Dto>> Handle(nameofPluralWithPaginationQuery request, CancellationToken cancellationToken)
+        public Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing nameofPluralWithPaginationQueryHandler method 
+            //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
             throw new NotImplementedException();
         }
     }

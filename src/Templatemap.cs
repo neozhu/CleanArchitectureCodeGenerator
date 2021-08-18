@@ -34,7 +34,7 @@ namespace CleanArchitecture.CodeGenerator
 		}
 		
 
-		public static async Task<string> GetTemplateFilePathAsync(Project project, string file)
+		public static async Task<string> GetTemplateFilePathAsync(Project project, string file,string itemname)
 		{
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);
@@ -74,7 +74,7 @@ namespace CleanArchitecture.CodeGenerator
 				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
 			}
 
-			var template = await ReplaceTokensAsync(project, safeName, relative, templateFile);
+			var template = await ReplaceTokensAsync(project, itemname, relative, templateFile);
 			return NormalizeLineEndings(template);
 		}
 
@@ -117,7 +117,7 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
-				return content.Replace("{rootnamespace}", rootNs).Replace("{namespace}", ns)
+				return content.Replace("{rootnamespace}", "CleanArchitecture.Razor").Replace("{namespace}", ns)
 											.Replace("{itemname}", name).Replace("{nameofPlural}", nameofPlural);
 			}
 		}

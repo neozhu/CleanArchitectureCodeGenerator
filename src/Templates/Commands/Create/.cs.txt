@@ -8,6 +8,7 @@ using {rootnamespace}.Application.{itemname}s.DTOs;
 using {rootnamespace}.Domain.Entities;
 using {rootnamespace}.Domain.Events;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace {namespace}
 {
@@ -28,7 +29,7 @@ namespace {namespace}
             )
         {
             _context = context;
-            _localizer = localizer；
+            _localizer = localizer;
             _mapper = mapper;
         }
         public async Task<Result> Handle(Create{itemname}Command request, CancellationToken cancellationToken)

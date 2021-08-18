@@ -8,7 +8,7 @@ namespace CleanArchitecture.CodeGenerator
     internal sealed partial class Vsix
     {
         public const string Id = "6A168388-B6A2-42F9-BA5A-B577D3CD4DB5";
-        public const string Name = "Add New File";
+        public const string Name = "Generate application features code";
         public const string Description = @"The fastest and easiest way to add new files to any project - including files that start with a dot";
         public const string Language = "en-US";
         public const string Version = "3.5";

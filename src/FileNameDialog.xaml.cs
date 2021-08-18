@@ -8,7 +8,7 @@ namespace CleanArchitecture.CodeGenerator
 {
 	public partial class FileNameDialog : Window
 	{
-		private const string DEFAULT_TEXT = "Enter a file name";
+		private const string DEFAULT_TEXT = "Enter a entity name";
 		private static readonly List<string> _tips = new List<string> {
 			"Tip: 'folder/file.ext' also creates a new folder for the file",
 			"Tip: You can create files starting with a dot, like '.gitignore'",

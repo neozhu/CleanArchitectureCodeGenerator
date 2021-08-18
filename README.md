@@ -51,7 +51,7 @@ A new button is added to the context menu in Solution Explorer.
 
 You can either click that button or use the keybord shortcut **Shift+F2**.
 
-### Create folders
+### Create folders and namespace
 
 Create additional folders for your file by using forward-slash to
 specify the structure.
@@ -60,10 +60,10 @@ For example, by typing **scripts/test.js** in the dialog, the
 folder **scripts** is created if it doesn't exist and the file
 **test.js** is then placed into it.
 
-### Generate code
+### Generate sourcecode
 ![Source code for application features](art/code.png)
 
-### Generator Task-List
+### Generate to-do list
 ![to-do list](art/task-list.png)
 
 ## Contribute

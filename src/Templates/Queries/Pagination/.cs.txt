@@ -16,7 +16,7 @@ using {rootnamespace}.Application.{nameofPlural}.DTOs;
 using {rootnamespace}.Application.Models;
 namespace {namespace}
 {
-    public class {nameofPlural}WithPaginationQuery : IRequest<PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>
     {
        
     }

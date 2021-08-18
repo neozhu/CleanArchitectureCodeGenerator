@@ -1,4 +1,4 @@
-# Add Any File
+# Code Generator for Clean Architecture 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/252jpryc38qah37x?svg=true)](https://ci.appveyor.com/project/madskristensen/addanyfile)
 
@@ -9,25 +9,39 @@ or get the
 
 -------------------------------------------------
 
-A Visual Studio extension for easily adding new files to any project. Simply hit Shift+F2 to create an empty file in the
+A Visual Studio extension for easily create application features code  to clean architecture project. Simply hit Shift+F2 to create an empty file in the
 selected folder or in the same folder as the selected file.
 
 See the [changelog](CHANGELOG.md) for updates and roadmap.
 
 ### Features
 
-- Easily create any file with any file extension
-- Create files starting with a dot like `.gitignore`
-- Create deeper folder structures easily if required
-- Create folders when the entered name ends with a /
+- Easily create following application features code
+- {nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs
+- {nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs
+- {nameofPlural}/Commands/Create/Create{name}Command.cs
+- {nameofPlural}/Commands/Create/Create{name}CommandValidator.cs
+- {nameofPlural}/Commands/Delete/Delete{name}Command.cs
+- {nameofPlural}/Commands/Delete/Delete{name}CommandValidator.cs
+- {nameofPlural}/Commands/Update/Update{name}Command.cs
+- {nameofPlural}/Commands/Update/Update{name}CommandValidator.cs
+- {nameofPlural}/Commands/Import/Import{name}Command.cs
+- {nameofPlural}/Commands/Import/Import{name}CommandValidator.cs
+- {nameofPlural}/DTOs/{name}Dto.cs
+- {nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs
+- {nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs
+- {nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs
+- {nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs
+- {nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs
+- {nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs
 
-![Add new file dialog](art/dialog.png)
+![Add new file dialog](art/dialog1.png)
 
 ### Show the dialog
 
 A new button is added to the context menu in Solution Explorer.
 
-![Add new file dialog](art/menu.png)
+![Add new file dialog](art/menu1.png)
 
 You can either click that button or use the keybord shortcut **Shift+F2**.
 
@@ -39,6 +53,12 @@ specify the structure.
 For example, by typing **scripts/test.js** in the dialog, the
 folder **scripts** is created if it doesn't exist and the file
 **test.js** is then placed into it.
+
+### Generate code
+![Source code for application features](art/code.png)
+
+### Generator Task-List
+![to-do list](art/task-list.png)
 
 ## Contribute
 Check out the [contribution guidelines](.github/CONTRIBUTING.md)

@@ -1,0 +1,16 @@
+﻿
+using {rootnamespace}.Common;
+using {rootnamespace}.Entities;
+
+namespace {namespace}
+{
+    public class {itemname}DeletedEvent : DomainEvent
+    {
+        public {itemname}DeleteEvent({itemname} item)
+        {
+            Item = item;
+        }
+
+        public {itemname} Item { get; }
+    }
+}

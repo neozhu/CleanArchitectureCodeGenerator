@@ -103,6 +103,9 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="TemplateMap.cs" />
+    <Resource Include="Templates\Events\.deletedevent.cs.txt" />
+    <Resource Include="Templates\Events\.updatedevent.cs.txt" />
+    <Content Include="Templates\Events\.createdevent.cs.txt" />
     <Content Include="Templates\.bowerrc.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

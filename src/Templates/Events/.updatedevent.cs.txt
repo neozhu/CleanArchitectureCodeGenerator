@@ -1,0 +1,16 @@
+﻿
+using {rootnamespace}.Common;
+using {rootnamespace}.Entities;
+
+namespace {namespace}
+{
+    public class {itemname}UpdatedEvent : DomainEvent
+    {
+        public {itemname}UpdatedEvent({itemname} item)
+        {
+            Item = item;
+        }
+
+        public {itemname} Item { get; }
+    }
+}

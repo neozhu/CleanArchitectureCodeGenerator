@@ -48,15 +48,15 @@ namespace CleanArchitecture.CodeGenerator
 
 			// Look for direct file name matches
 			if (list.Any(f => {
-				 var pattern = $"{relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")}";
-				 var result = Regex.IsMatch(f, pattern);
+				 var pattern = (relative.IndexOf("\\") >0 ) ? (relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")) : relative;
+				 var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 				 return result;
 			 
 				}) )
 			{
 				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
-					var pattern = $"{relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")}";
-					var result = Regex.IsMatch(f, pattern);
+					var pattern = (relative.IndexOf("\\") > 0) ? (relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")) : relative;
+					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)
 					{
 						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x=>name.IndexOf(x, StringComparison.OrdinalIgnoreCase)>0);

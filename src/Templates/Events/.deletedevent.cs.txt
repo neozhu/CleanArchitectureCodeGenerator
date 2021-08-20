@@ -1,6 +1,5 @@
-﻿
-using {rootnamespace}.Common;
-using {rootnamespace}.Entities;
+﻿using {rootnamespace}.Domain.Common;
+using {rootnamespace}.Domain.Entities;
 
 namespace {namespace}
 {

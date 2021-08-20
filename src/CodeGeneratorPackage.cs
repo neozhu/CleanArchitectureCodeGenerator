@@ -52,7 +52,7 @@ namespace CleanArchitecture.CodeGenerator
 		private void ExecuteAsync(object sender, EventArgs e)
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
-
+			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
 			if (target == null)
 			{
 				MessageBox.Show(
@@ -78,6 +78,16 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					var name = Path.GetFileNameWithoutExtension(inputname);
 					var nameofPlural = ProjectHelpers.Pluralize(name);
+					var events = new List<string>() {
+						$"Events/{name}CreatedEvent.cs",
+						$"Events/{name}DeletedEvent.cs",
+						$"Events/{name}UpdatedEvent.cs",
+						};
+					foreach (var item in events)
+					{
+						AddItemAsync(item, name, domain).Forget();
+					}
+
 					var list = new List<string>()
 					{
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs",
@@ -102,6 +112,8 @@ namespace CleanArchitecture.CodeGenerator
 					{
 						AddItemAsync(item, name, target).Forget();
 					}
+					
+
 				}
 				catch (Exception ex) when (!ErrorHandler.IsCriticalException(ex))
 				{

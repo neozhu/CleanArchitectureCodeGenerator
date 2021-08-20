@@ -180,6 +180,53 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 					.Where(p => p.Name == name)
 					.FirstOrDefault();
 		}
+		public static Project FindProject(this Solution solution, string name)
+		{
+			var list= solution.Projects.OfType<Project>()
+					.Where(p => p.IsKind(EnvDTE.Constants.vsProjectItemKindSolutionItems))
+					.Where(p => p.Name == name)
+					.FirstOrDefault();
+
+			var project = GetProject(solution.Projects.OfType<Project>(), name);
+
+			if (project == null)
+			{
+				throw new Exception($"Project {name} not found in solution");
+			}
+
+			return project;
+
+			
+		}
+
+		private static Project GetProject(IEnumerable<Project> projects, string name)
+		{
+			foreach (Project project in projects)
+			{
+				var projectName = project.Name;
+				if (projectName == name)
+				{
+					return project;
+				}
+				else if (project.Kind is ProjectKinds.vsProjectKindSolutionFolder)
+				{
+					var subProjects = project
+							.ProjectItems
+							.OfType<ProjectItem>()
+							.Where(item => item.SubProject != null)
+							.Select(item => item.SubProject);
+
+					var projectInFolder = GetProject(subProjects, name);
+
+					if (projectInFolder != null)
+					{
+						return projectInFolder;
+					}
+				}
+			}
+
+			return null;
+		}
 
 		public static Project FindSolutionFolder(this Project project, string name)
 		{

@@ -30,6 +30,23 @@ namespace CleanArchitecture.CodeGenerator
 
 			return item;
 		}
+		public static NewItemTarget Create(DTE2 dte,string projectName)
+		{
+			NewItemTarget item = null;
+
+			item = CreateFromProject(dte, projectName);
+
+			return item;
+		}
+		private static NewItemTarget CreateFromProject(DTE2 dte, string projectName)
+		{
+			Project project = dte.Solution.FindProject(projectName);
+			if (project != null)
+			{
+				return new NewItemTarget(project.GetRootFolder(), project, null, isSolutionOrSolutionFolder: false);
+			}
+			return null;
+		}
 
 		private static NewItemTarget CreateFromActiveDocument(DTE2 dte)
 		{

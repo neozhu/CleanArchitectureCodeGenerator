@@ -36,6 +36,19 @@ namespace CleanArchitecture.CodeGenerator
 
 		public static async Task<string> GetTemplateFilePathAsync(Project project, string file,string itemname)
 		{
+			var templatefolders =new string[]{
+				"Commands\\Create",
+				"Commands\\Delete",
+				"Commands\\Update",
+				"Commands\\AddEdit",
+				"Commands\\Import",
+				"DTOs",
+				"EventHandlers",
+				"Events",
+				"Queries\\Export",
+				"Queries\\GetAll",
+				"Queries\\Pagination",
+				};
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);
 			var safeName = name.StartsWith(".") ? name : Path.GetFileNameWithoutExtension(file);
@@ -48,14 +61,14 @@ namespace CleanArchitecture.CodeGenerator
 
 			// Look for direct file name matches
 			if (list.Any(f => {
-				 var pattern = (relative.IndexOf("\\") >0 ) ? (relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")) : relative;
+				var pattern = templatefolders.Where(x => relative.IndexOf(x) >= 0).FirstOrDefault().Replace("\\","\\\\");
 				 var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 				 return result;
 			 
 				}) )
 			{
 				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
-					var pattern = (relative.IndexOf("\\") > 0) ? (relative.Substring(relative.IndexOf("\\")).Replace("\\", "\\\\")) : relative;
+					var pattern = templatefolders.Where(x => relative.IndexOf(x) >= 0).FirstOrDefault().Replace("\\", "\\\\"); ;
 					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)
 					{

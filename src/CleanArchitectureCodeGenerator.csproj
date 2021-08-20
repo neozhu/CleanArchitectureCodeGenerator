@@ -92,11 +92,19 @@
       <DependentUpon>FileNameDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeGeneratorPackage.cs" />
+    <Compile Include="Services\GenerationService.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\ProjectHelpers.cs" />
+    <Compile Include="Helpers\Utility.cs" />
+    <Compile Include="Helpers\VSHelpers.cs" />
     <Compile Include="Helpers\VsTheme.cs" />
+    <Compile Include="Models\IntellisenseObject.cs" />
+    <Compile Include="Models\IntellisenseParser.cs" />
+    <Compile Include="Models\IntellisenseProperty.cs" />
+    <Compile Include="Models\IntellisenseType.cs" />
     <Compile Include="NewItemTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IntellisenseWriter.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

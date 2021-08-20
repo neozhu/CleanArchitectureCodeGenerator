@@ -8,7 +8,7 @@ namespace CleanArchitecture.CodeGenerator
 {
 	public partial class FileNameDialog : Window
 	{
-		private const string DEFAULT_TEXT = "Enter a entity name";
+		private const string DEFAULT_TEXT = "Select a entity name";
 		private static readonly List<string> _tips = new List<string> {
 			"Tip: 'folder/file.ext' also creates a new folder for the file",
 			"Tip: You can create files starting with a dot, like '.gitignore'",
@@ -17,48 +17,55 @@ namespace CleanArchitecture.CodeGenerator
 			"Tip: Use glob style syntax to add related files, like 'widget.(html,js)'",
 			"Tip: Separate names with commas to add multiple files and folders"
 		};
-
-		public FileNameDialog(string folder)
+		public List<string> Entities =new List<string>();
+		public FileNameDialog(string folder,string[] entities)
 		{
 			InitializeComponent();
-
+			Entities.AddRange(entities);
 			lblFolder.Content = string.Format("{0}/", folder);
-
-			Loaded += (s, e) =>
+			foreach(var item in entities)
+			{
+				selectName.Items.Add(item);
+			}
+			selectName.Text = DEFAULT_TEXT;
+			selectName.SelectionChanged += (s,e) => {
+				btnCreate.IsEnabled = true;
+			};
+				Loaded += (s, e) =>
 			{
 				Icon = BitmapFrame.Create(new Uri("pack://application:,,,/CleanArchitectureCodeGenerator;component/Resources/icon.png", UriKind.RelativeOrAbsolute));
 				Title = Vsix.Name;
 				SetRandomTip();
 
-				txtName.Focus();
-				txtName.CaretIndex = 0;
-				txtName.Text = DEFAULT_TEXT;
-				txtName.Select(0, txtName.Text.Length);
+				//txtName.Focus();
+				//txtName.CaretIndex = 0;
+				//txtName.Text = DEFAULT_TEXT;
+				//txtName.Select(0, txtName.Text.Length);
 
-				txtName.PreviewKeyDown += (a, b) =>
-				{
-					if (b.Key == Key.Escape)
-					{
-						if (string.IsNullOrWhiteSpace(txtName.Text) || txtName.Text == DEFAULT_TEXT)
-						{
-							Close();
-						}
-						else
-						{
-							txtName.Text = string.Empty;
-						}
-					}
-					else if (txtName.Text == DEFAULT_TEXT)
-					{
-						txtName.Text = string.Empty;
-						btnCreate.IsEnabled = true;
-					}
-				};
+				//txtName.PreviewKeyDown += (a, b) =>
+				//{
+				//	if (b.Key == Key.Escape)
+				//	{
+				//		if (string.IsNullOrWhiteSpace(txtName.Text) || txtName.Text == DEFAULT_TEXT)
+				//		{
+				//			Close();
+				//		}
+				//		else
+				//		{
+				//			txtName.Text = string.Empty;
+				//		}
+				//	}
+				//	else if (txtName.Text == DEFAULT_TEXT)
+				//	{
+				//		txtName.Text = string.Empty;
+				//		btnCreate.IsEnabled = true;
+				//	}
+				//};
 
 			};
 		}
 
-		public string Input => txtName.Text.Trim();
+		public string Input => selectName.SelectedItem?.ToString();
 
 		private void SetRandomTip()
 		{

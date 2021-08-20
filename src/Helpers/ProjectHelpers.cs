@@ -1,4 +1,5 @@
-﻿using EnvDTE;
+﻿using CleanArchitecture.CodeGenerator.Models;
+using EnvDTE;
 
 using EnvDTE80;
 
@@ -375,6 +376,36 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 			}
 
 			return selectedObject;
+		}
+
+		public static IEnumerable<IntellisenseObject> GetEntities(this Project project)
+		{
+			var list=new List<IntellisenseObject>();
+			foreach(ProjectItem projectitem in project.ProjectItems)
+			{
+				 GetProjectItem(projectitem, list);
+			}
+			return list;
+		}
+		private static void GetProjectItem(ProjectItem item ,List<IntellisenseObject> list)
+		{
+			if (item.ProjectItems != null)
+			{
+				foreach(ProjectItem projectItem in item.ProjectItems)
+				{
+					 GetProjectItem(projectItem,list);
+				}
+			}
+			if (item.FileCodeModel !=null)
+			{
+				var objects= IntellisenseParser.ProcessFile(item);
+				if (objects != null)
+				{
+					list.AddRange(objects);
+				}
+			}
+	
+
 		}
 
 		public static string Pluralize(string name)

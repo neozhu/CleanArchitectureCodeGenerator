@@ -53,6 +53,11 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
+			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
+			var entities = ProjectHelpers.GetEntities(domain.Project)
+				.Where(x=>includes.Contains(x.BaseName) && !includes.Contains(x.Name))
+				.Select(x=>x.Name)
+				.Distinct().ToArray();
 			if (target == null)
 			{
 				MessageBox.Show(
@@ -63,7 +68,7 @@ namespace CleanArchitecture.CodeGenerator
 				return;
 			}
 
-			string input = PromptForFileName(target.Directory).TrimStart('/', '\\').Replace("/", "\\");
+			string input = PromptForFileName(target.Directory,entities).TrimStart('/', '\\').Replace("/", "\\");
 
 			if (string.IsNullOrEmpty(input))
 			{
@@ -388,10 +393,10 @@ namespace CleanArchitecture.CodeGenerator
 			return results.ToArray();
 		}
 
-		private string PromptForFileName(string folder)
+		private string PromptForFileName(string folder,string[] entities)
 		{
 			DirectoryInfo dir = new DirectoryInfo(folder);
-			FileNameDialog dialog = new FileNameDialog(dir.Name);
+			FileNameDialog dialog = new FileNameDialog(dir.Name, entities);
 
 			//IntPtr hwnd = new IntPtr(_dte.MainWindow.HWnd);
 			//System.Windows.Window window = (System.Windows.Window)HwndSource.FromHwnd(hwnd).RootVisual;

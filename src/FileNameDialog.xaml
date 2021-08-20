@@ -17,9 +17,10 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Name="lblFolder" Content="Folder name:" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" Height="26" FontWeight="SemiBold" />
-        <TextBox Grid.Row="0" Grid.Column="1" Name="txtName" VerticalContentAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="210" />
-        <Button Grid.Row="0" Grid.Column="2" Content="Create code" HorizontalAlignment="Center" Margin="10,0" VerticalAlignment="Center" Width="85" Height="23" IsDefault="True" Name="btnCreate" Click="Button_Click" />
+        <ComboBox Grid.Row="0" IsEditable="True" Text="Select a entity name" Grid.Column="1" Name="selectName" VerticalContentAlignment="Center"  Height="23"  VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="210" />
+        <Button Grid.Row="0" IsEnabled="False" Grid.Column="2" Content="Create code" HorizontalAlignment="Center" Margin="10,0" VerticalAlignment="Center" Width="85" Height="23" IsDefault="True" Name="btnCreate" Click="Button_Click" />
 
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="lblTips" Content="Tips" HorizontalAlignment="Left" Margin="5,0" VerticalAlignment="Bottom" Height="26" />
+        
     </Grid>
 </Window>

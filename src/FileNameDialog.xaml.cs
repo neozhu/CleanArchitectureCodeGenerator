@@ -10,12 +10,12 @@ namespace CleanArchitecture.CodeGenerator
 	{
 		private const string DEFAULT_TEXT = "Select a entity name";
 		private static readonly List<string> _tips = new List<string> {
-			"Tip: An effective testing strategy that follows the testing pyramid",
-			"Tip: CQRS stands for Command/Query Responsibility Segregation, and it's a wonderful thing",
+	  	"Tip: CQRS stands for Command/Query Responsibility Segregation, and it's a wonderful thing",
 			"Tip: All business logic is in a use case",
 			"Tip: Good monolith with clear use cases that you can split in microservices later on, once you’ve learned more about them ",
 			"Tip: CI/CD processes and solutions help to generate more value for the end-users of software",
-			"Tip: the architecture is decoupled from the underlying data store"
+			"Tip: the architecture is decoupled from the underlying data store",
+		  "Tip: An effective testing strategy that follows the testing pyramid",
 		};
 
 		public FileNameDialog(string folder,string[] entities)

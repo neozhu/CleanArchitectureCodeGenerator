@@ -10,18 +10,17 @@ namespace CleanArchitecture.CodeGenerator
 	{
 		private const string DEFAULT_TEXT = "Select a entity name";
 		private static readonly List<string> _tips = new List<string> {
-			"Tip: 'folder/file.ext' also creates a new folder for the file",
-			"Tip: You can create files starting with a dot, like '.gitignore'",
-			"Tip: You can create files without file extensions, like 'LICENSE'",
-			"Tip: Create folder by ending the name with a forward slash",
-			"Tip: Use glob style syntax to add related files, like 'widget.(html,js)'",
-			"Tip: Separate names with commas to add multiple files and folders"
+			"Tip: An effective testing strategy that follows the testing pyramid",
+			"Tip: CQRS stands for Command/Query Responsibility Segregation, and it's a wonderful thing",
+			"Tip: All business logic is in a use case",
+			"Tip: Good monolith with clear use cases that you can split in microservices later on, once you’ve learned more about them ",
+			"Tip: CI/CD processes and solutions help to generate more value for the end-users of software",
+			"Tip: the architecture is decoupled from the underlying data store"
 		};
-		public List<string> Entities =new List<string>();
+
 		public FileNameDialog(string folder,string[] entities)
 		{
 			InitializeComponent();
-			Entities.AddRange(entities);
 			lblFolder.Content = string.Format("{0}/", folder);
 			foreach(var item in entities)
 			{

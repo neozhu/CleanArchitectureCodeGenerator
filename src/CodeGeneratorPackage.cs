@@ -209,7 +209,7 @@ namespace CleanArchitecture.CodeGenerator
 					project = target.Project;
 				}
 
-				int position = await WriteFileAsync(project, file.FullName, itemname);
+				int position = await WriteFileAsync(project, file.FullName, itemname, target.Directory);
 				if (target.ProjectItem != null && target.ProjectItem.IsKind(Constants.vsProjectItemKindVirtualFolder))
 				{
 					target.ProjectItem.ProjectItems.AddFromFile(file.FullName);
@@ -241,9 +241,9 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private static async Task<int> WriteFileAsync(Project project, string file,string itemname)
+		private static async Task<int> WriteFileAsync(Project project, string file,string itemname,string selectFolder)
 		{
-			string template = await TemplateMap.GetTemplateFilePathAsync(project, file, itemname);
+			string template = await TemplateMap.GetTemplateFilePathAsync(project, file, itemname, selectFolder);
 
 			if (!string.IsNullOrEmpty(template))
 			{

@@ -4,7 +4,7 @@ using AutoMapper;
 using {rootnamespace}.Application.Common.Interfaces;
 using {rootnamespace}.Application.Common.Mappings;
 using {rootnamespace}.Application.Common.Models;
-using {rootnamespace}.Application.{itemname}s.DTOs;
+using {selectns}.{nameofPlural}.DTOs;
 using {rootnamespace}.Domain.Entities;
 using {rootnamespace}.Domain.Events;
 using MediatR;
@@ -16,8 +16,14 @@ namespace {namespace}
     {
       
     }
+    public class DeleteChecked{nameofPlural}Command : IRequest<Result>
+    {
+     
+    }
 
-    public class Delete{itemname}CommandHandler : IRequestHandler<Delete{itemname}Command, Result>
+    public class Delete{itemname}CommandHandler : 
+                 IRequestHandler<Delete{itemname}Command, Result>,
+                 IRequestHandler<DeleteChecked{nameofPlural}Command, Result>,
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -35,6 +41,12 @@ namespace {namespace}
         public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Delete{itemname}CommandHandler method 
+           throw new System.NotImplementedException();
+        }
+
+        public async Task<Result> Handle(DeleteChecked{nameofPlural}Command request, CancellationToken cancellationToken)
+        {
+           //TODO:Implementing DeleteChecked{nameofPlural}CommandHandler method 
            throw new System.NotImplementedException();
         }
     }

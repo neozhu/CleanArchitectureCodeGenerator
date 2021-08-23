@@ -4,7 +4,7 @@ using AutoMapper;
 using {rootnamespace}.Application.Common.Interfaces;
 using {rootnamespace}.Application.Common.Mappings;
 using {rootnamespace}.Application.Common.Models;
-using {rootnamespace}.Application.{itemname}s.DTOs;
+using {selectns}.{nameofPlural}.DTOs;
 using {rootnamespace}.Domain.Entities;
 using {rootnamespace}.Domain.Events;
 using MediatR;

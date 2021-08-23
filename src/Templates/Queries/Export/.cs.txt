@@ -12,7 +12,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
-using {rootnamespace}.Application.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace}
 {

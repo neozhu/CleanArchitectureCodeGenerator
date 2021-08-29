@@ -23,14 +23,14 @@ namespace {namespace}
 
     public class Delete{itemname}CommandHandler : 
                  IRequestHandler<Delete{itemname}Command, Result>,
-                 IRequestHandler<DeleteChecked{nameofPlural}Command, Result>,
+                 IRequestHandler<DeleteChecked{nameofPlural}Command, Result>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<Delete{itemname}CommandHandler> _localizer;
         public Delete{itemname}CommandHandler(
             IApplicationDbContext context,
-            IStringLocalizer<Delete{itemname}CommandHandler> _localizer,
+            IStringLocalizer<Delete{itemname}CommandHandler> localizer,
              IMapper mapper
             )
         {

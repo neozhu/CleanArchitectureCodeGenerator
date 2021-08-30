@@ -18,7 +18,9 @@ namespace {namespace}
 {
     public class Export{nameofPlural}Query : IRequest<byte[]>
     {
-       
+        public string FilterRules { get; set; }
+        public string Sort { get; set; } = "Id";
+        public string Order { get; set; } = "desc";
     }
     
     public class Export{nameofPlural}QueryHandler :
@@ -26,16 +28,19 @@ namespace {namespace}
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IExcelService _excelService;
         private readonly IStringLocalizer<Export{nameofPlural}QueryHandler> _localizer;
 
         public Export{nameofPlural}QueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
+            IExcelService excelService,
             IStringLocalizer<Export{nameofPlural}QueryHandler> localizer
             )
         {
             _context = context;
             _mapper = mapper;
+            _excelService = excelService;
             _localizer = localizer;
         }
 

@@ -2,9 +2,9 @@
 
 namespace {namespace}
 {
-    public class Import{itemname}CommandValidator : AbstractValidator<Import{itemname}Command>
+    public class Import{nameofPlural}CommandValidator : AbstractValidator<Import{nameofPlural}Command>
     {
-        public Import{itemname}CommandValidator()
+        public Import{nameofPlural}CommandValidator()
         {
            //TODO:Implementing Import{itemname}CommandValidator method 
            throw new System.NotImplementedException();

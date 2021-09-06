@@ -5,7 +5,7 @@ namespace {namespace}
 {
     public class {itemname}DeletedEvent : DomainEvent
     {
-        public {itemname}DeleteEvent({itemname} item)
+        public {itemname}DeletedEvent({itemname} item)
         {
             Item = item;
         }

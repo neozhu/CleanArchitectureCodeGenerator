@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using {rootnamespace}.Application.Common.Interfaces;
@@ -8,17 +9,18 @@ using {selectns}.{nameofPlural}.DTOs;
 using {rootnamespace}.Domain.Entities;
 using {rootnamespace}.Domain.Events;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace {namespace}
 {
     public class Delete{itemname}Command: IRequest<Result>
     {
-      
+      public int Id {  get; set; }
     }
     public class DeleteChecked{nameofPlural}Command : IRequest<Result>
     {
-     
+      public int[] Id {  get; set; }
     }
 
     public class Delete{itemname}CommandHandler : 
@@ -41,13 +43,22 @@ namespace {namespace}
         public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Delete{itemname}CommandHandler method 
-           throw new System.NotImplementedException();
+           var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
+            _context.{nameofPlural}.Remove(item);
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
         }
 
         public async Task<Result> Handle(DeleteChecked{nameofPlural}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing DeleteChecked{nameofPlural}CommandHandler method 
-           throw new System.NotImplementedException();
+           var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
+            foreach (var item in items)
+            {
+                _context.{nameofPlural}.Remove(item);
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
         }
     }
 }

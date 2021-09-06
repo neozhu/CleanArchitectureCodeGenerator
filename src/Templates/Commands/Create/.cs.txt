@@ -36,7 +36,10 @@ namespace {namespace}
         public async Task<Result> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Create{itemname}CommandHandler method 
-           throw new System.NotImplementedException();
+           var item = _mapper.Map<{itemname}>(request);
+            _context.{nameofPlural}.Add(item);
+            await _context.SaveChangesAsync(cancellationToken);
+            return  Result.Success();
         }
     }
 }

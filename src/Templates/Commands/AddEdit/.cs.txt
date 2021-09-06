@@ -34,8 +34,19 @@ namespace {namespace}
         }
         public async Task<Result> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
         {
-           //TODO:Implementing AddEdit{itemname}CommandHandler method 
-           throw new System.NotImplementedException();
+            //TODO:Implementing AddEdit{itemname}CommandHandler method 
+            if (request.Id > 0)
+            {
+                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
+                item = _mapper.Map(request, item);
+            }
+            else
+            {
+                var item = _mapper.Map<{itemname}>(request);
+                _context.{nameofPlural}.Add(item);
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
         }
     }
 }

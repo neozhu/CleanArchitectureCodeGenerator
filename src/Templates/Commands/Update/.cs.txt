@@ -14,7 +14,10 @@ namespace {namespace}
 {
     public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
     {
-      
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<{itemname}, Update{itemname}Command>().ReverseMap();
+        }
     }
 
     public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result>
@@ -35,7 +38,13 @@ namespace {namespace}
         public async Task<Result> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Update{itemname}CommandHandler method 
-           throw new System.NotImplementedException();
+           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken);
+           if (item != null)
+           {
+                item = _mapper.Map(request, item);
+                await _context.SaveChangesAsync(cancellationToken);
+           }
+           return Result.Success();
         }
     }
 }

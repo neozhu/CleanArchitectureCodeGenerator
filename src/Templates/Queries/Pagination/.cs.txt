@@ -14,6 +14,8 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.Extensions.Localization;
 using {selectns}.{nameofPlural}.DTOs;
 using {rootnamespace}.Application.Models;
+using {rootnamespace}.Application.Common.Mappings;
+
 namespace {namespace}
 {
     public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>
@@ -39,10 +41,15 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
             //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
-            throw new NotImplementedException();
+           var filters = PredicateBuilder.FromFilter<{itemname}>(request.FilterRules);
+           var data = await _context.{nameofPlural}.Where(filters)
+                .OrderBy($"{request.Sort} {request.Order}")
+                .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                .PaginatedDataAsync(request.Page, request.Rows);
+            return data;
         }
     }
 }

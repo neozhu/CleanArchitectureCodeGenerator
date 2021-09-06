@@ -44,10 +44,21 @@ namespace {namespace}
             _localizer = localizer;
         }
 
-        public Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
+        public async Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             //TODO:Implementing Export{nameofPlural}QueryHandler method 
-            throw new NotImplementedException();
+            var filters = PredicateBuilder.FromFilter<{itemname}>(request.FilterRules);
+            var data = await _context.{nameofPlural}.Where(filters)
+                       .OrderBy($"{request.Sort} {request.Order}")
+                       .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                       .ToListAsync(cancellationToken);
+            var result = await _excelService.ExportAsync(data,
+                new Dictionary<string, Func<{itemname}Dto, object>>()
+                {
+                    //{ _localizer["Id"], item => item.Id },
+                }
+                , _localizer["{nameofPlural}"]);
+            return result;
         }
     }
 }

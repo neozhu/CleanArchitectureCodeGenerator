@@ -14,10 +14,7 @@ namespace {namespace}
 {
     public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
     {
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<{itemname}, Update{itemname}Command>().ReverseMap();
-        }
+        
     }
 
     public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result>

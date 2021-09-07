@@ -14,7 +14,10 @@ namespace {namespace}
 {
     public class Create{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
     {
-      
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<{itemname}, Create{itemname}Command>().ReverseMap();
+        }
     }
     
 

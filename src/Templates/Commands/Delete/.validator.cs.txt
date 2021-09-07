@@ -7,7 +7,17 @@ namespace {namespace}
         public Delete{itemname}CommandValidator()
         {
            //TODO:Implementing Delete{itemname}CommandValidator method 
+           //ex. RuleFor(v => v.Id).NotNull().GreaterThan(0);
            throw new System.NotImplementedException();
+        }
+    }
+    public class DeleteChecked{nameofPlural}CommandValidator : AbstractValidator<DeleteChecked{nameofPlural}Command>
+    {
+        public DeleteChecked{nameofPlural}CommandValidator()
+        {
+            //TODO:Implementing DeleteProductCommandValidator method 
+            //ex. RuleFor(v => v.Id).NotNull().NotEmpty();
+            throw new System.NotImplementedException();
         }
     }
 }

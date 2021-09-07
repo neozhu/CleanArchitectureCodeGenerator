@@ -52,14 +52,20 @@ namespace {namespace}
         }
         public async Task<Result> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
-           //TODO:Implementing Import{nameofPlural}CommandHandler method 
+           //TODO:Implementing Import{nameofPlural}CommandHandler method
+           var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}, object>>
+            {
+                //ex. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
+
+            }, _localizer["{nameofPlural}"]);
            throw new System.NotImplementedException();
         }
         public async Task<byte[]> Handle(Create{nameofPlural}TemplateCommand request, CancellationToken cancellationToken)
         {
             //TODO:Implementing Import{nameofPlural}CommandHandler method 
             var fields = new string[] {
-      
+                   //TODO:Defines the title and order of the fields to be imported's template
+                   //_localizer["Name"],
                 };
             var result = await _excelService.CreateTemplateAsync(fields, _localizer["{nameofPlural}"]);
             return result;

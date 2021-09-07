@@ -111,6 +111,12 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="TemplateMap.cs" />
+    <Content Include="Templates\Commands\AcceptChanges\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Commands\AcceptChanges\.validator.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\Events\.deletedevent.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

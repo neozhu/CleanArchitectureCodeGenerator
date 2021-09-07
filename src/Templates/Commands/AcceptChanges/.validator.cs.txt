@@ -1,0 +1,17 @@
+﻿using FluentValidation;
+
+namespace {namespace}
+{
+    public class AcceptChanges{itemname}CommandValidator : AbstractValidator<AcceptChangesProjectCommand>
+    {
+        public AcceptChanges{itemname}CommandValidator()
+        {
+            //TODO:Implementing AddEdit{itemname}CommandValidator method 
+            //ex. RuleFor(v => v.Items)
+            //      .NotNull()
+            //      .NotEmpty();
+            throw new System.NotImplementedException();
+             
+        }
+    }
+}

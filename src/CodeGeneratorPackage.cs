@@ -95,6 +95,8 @@ namespace CleanArchitecture.CodeGenerator
 
 					var list = new List<string>()
 					{
+						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}Command.cs",
+						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/Create/Create{name}Command.cs",
@@ -103,8 +105,8 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/Commands/Delete/Delete{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/Update/Update{name}Command.cs",
 						$"{nameofPlural}/Commands/Update/Update{name}CommandValidator.cs",
-						$"{nameofPlural}/Commands/Import/Import{name}Command.cs",
-						$"{nameofPlural}/Commands/Import/Import{name}CommandValidator.cs",
+						$"{nameofPlural}/Commands/Import/Import{nameofPlural}Command.cs",
+						$"{nameofPlural}/Commands/Import/Import{nameofPlural}CommandValidator.cs",
 						$"{nameofPlural}/DTOs/{name}Dto.cs",
 						$"{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs",
 						$"{nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs",

@@ -1,0 +1,67 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using {rootnamespace}.Application.Common.Interfaces;
+using {rootnamespace}.Application.Common.Mappings;
+using {rootnamespace}.Application.Common.Models;
+using {selectns}.{nameofPlural}.DTOs;
+using {rootnamespace}.Domain.Entities;
+using {rootnamespace}.Domain.Enums;
+using {rootnamespace}.Domain.Events;
+using MediatR;
+
+namespace {namespace}
+{
+    public class AcceptChanges{nameofPlural}Command:IRequest<Result>
+    {
+      public {itemname}Dto[] Items { get; set; }
+    }
+
+    public class AcceptChanges{nameofPlural}CommandHandler : IRequestHandler<AcceptChanges{nameofPlural}Command, Result>
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly IMapper _mapper;
+
+        public AcceptChanges{nameofPlural}CommandHandler(
+            IApplicationDbContext context,
+             IMapper mapper
+            )
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+        public async Task<Result> Handle(AcceptChanges{nameofPlural}Command request, CancellationToken cancellationToken)
+        {
+            //TODO:Implementing AcceptChanges{nameofPlural}CommandHandler method 
+            foreach(var item in request.Items)
+            {
+                switch (item.TrackingState)
+                {
+                    case TrackingState.Added:
+                        var newitem = _mapper.Map<{itemname}>(item);
+                        await _context.{nameofPlural}.AddAsync(newitem, cancellationToken);
+                        break;
+                    case TrackingState.Deleted:
+                        var delitem =await _context.{nameofPlural}.FindAsync(new object[] { item.Id }, cancellationToken);
+                        _context.{nameofPlural}.Remove(delitem);
+                        break;
+                    case TrackingState.Modified:
+                        var edititem = await _context.{nameofPlural}.FindAsync(new object[] { item.Id }, cancellationToken);
+                        //ex. edititem.Name = item.Name;
+                        _context.{nameofPlural}.Update(edititem);
+                        break;
+                    case TrackingState.Unchanged:
+                    default:
+                        break;
+                }
+            }
+            
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
+
+        }
+    }
+}

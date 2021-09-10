@@ -53,7 +53,7 @@ namespace {namespace}
         public async Task<Result> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Import{nameofPlural}CommandHandler method
-           var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}, object>>
+           var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object>>
             {
                 //ex. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
 

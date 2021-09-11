@@ -1,9 +1,12 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using {rootnamespace}.Application.Common.Interfaces;
 using {rootnamespace}.Application.Common.Models;
 using {rootnamespace}.Domain.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace {namespace}
 {

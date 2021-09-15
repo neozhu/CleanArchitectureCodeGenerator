@@ -12,12 +12,12 @@ using Microsoft.Extensions.Localization;
 
 namespace {namespace}
 {
-    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
+    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>
     {
       
     }
 
-    public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result>
+    public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -32,21 +32,24 @@ namespace {namespace}
             _localizer = localizer;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
         {
             //TODO:Implementing AddEdit{itemname}CommandHandler method 
             if (request.Id > 0)
             {
                 var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
                 item = _mapper.Map(request, item);
+                await _context.SaveChangesAsync(cancellationToken);
+                return Result<int>.Success(item.Id);
             }
             else
             {
                 var item = _mapper.Map<{itemname}>(request);
                 _context.{nameofPlural}.Add(item);
+                await _context.SaveChangesAsync(cancellationToken);
+                return Result<int>.Success(item.Id);
             }
-            await _context.SaveChangesAsync(cancellationToken);
-            return Result.Success();
+           
         }
     }
 }

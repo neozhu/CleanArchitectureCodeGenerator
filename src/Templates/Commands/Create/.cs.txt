@@ -12,16 +12,12 @@ using Microsoft.Extensions.Localization;
 
 namespace {namespace}
 {
-    public class Create{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
+    public class Create{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>
     {
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<{itemname}, Create{itemname}Command>().ReverseMap();
-        }
+       
     }
     
-
-    public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result>
+    public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -36,13 +32,13 @@ namespace {namespace}
             _localizer = localizer;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
            //TODO:Implementing Create{itemname}CommandHandler method 
            var item = _mapper.Map<{itemname}>(request);
-            _context.{nameofPlural}.Add(item);
-            await _context.SaveChangesAsync(cancellationToken);
-            return  Result.Success();
+           _context.{nameofPlural}.Add(item);
+           await _context.SaveChangesAsync(cancellationToken);
+           return  Result<int>.Success(item.Id);
         }
     }
 }

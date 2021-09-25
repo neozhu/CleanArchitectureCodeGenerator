@@ -111,6 +111,7 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="TemplateMap.cs" />
+    <Content Include="Templates\Caching\.cachekey.cs.txt" />
     <Content Include="Templates\Caching\.cachetokensource.cs.txt" />
     <Content Include="Templates\Commands\AcceptChanges\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>

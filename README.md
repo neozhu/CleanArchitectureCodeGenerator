@@ -38,9 +38,10 @@ See the [changelog](CHANGELOG.md) for updates and roadmap.
 
 ![Add new file dialog](art/dialog1.png)
 
-### CleanArchitecture for Razor Page project template
+### CleanArchitecture for Razor Page project
+The current project only applies to the following development projects.
 
-Github Sourcecode:https://github.com/neozhu/RazorPageCleanArchitecture
+Github :https://github.com/neozhu/RazorPageCleanArchitecture
 [![Clean Architecture Solution For Razor Page Development](https://github.com/neozhu/RazorPageCleanArchitecture/blob/main/doc/screenshot/2021-08-11_19-28-59.png?raw=true)](https://www.youtube.com/watch?v=NcMd5W3C63A)
 
 ### Show the dialog
@@ -65,6 +66,10 @@ folder **scripts** is created if it doesn't exist and the file
 
 ### Generate to-do list
 ![to-do list](art/task-list.png)
+
+### code templates
+You can modify these templates according to your own projects
+![tempaltes](art/template.png)
 
 ## Contribute
 Check out the [contribution guidelines](.github/CONTRIBUTING.md)

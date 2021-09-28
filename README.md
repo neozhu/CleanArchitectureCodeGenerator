@@ -36,8 +36,6 @@ See the [changelog](CHANGELOG.md) for updates and roadmap.
 - {nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs
 - {nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs
 
-![Add new file dialog](art/dialog1.png)
-
 ### CleanArchitecture for Razor Page project
 The current project only applies to the following development projects.
 
@@ -51,6 +49,10 @@ A new button is added to the context menu in Solution Explorer.
 ![Add new file dialog](art/menu1.png)
 
 You can either click that button or use the keybord shortcut **Shift+F2**.
+
+Select Entity Name from Domain Project
+
+![Add new file dialog](art/dialog1.png)
 
 ### Create folders and namespace
 

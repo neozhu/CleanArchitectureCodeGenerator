@@ -185,7 +185,8 @@ namespace CleanArchitecture.CodeGenerator.Models
 
         private static IEnumerable<IntellisenseProperty> GetProperties(CodeElements props, HashSet<string> traversedTypes, HashSet<string> references = null)
         {
-            return from p in props.OfType<CodeProperty>()
+			Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+			return from p in props.OfType<CodeProperty>()
                    where !p.Attributes.Cast<CodeAttribute>().Any(HasIgnoreAttribute)
                    where vsCMAccess.vsCMAccessPublic == p.Access && p.Getter != null && !p.Getter.IsShared && IsPublic(p.Getter)
                    select new IntellisenseProperty
@@ -348,7 +349,8 @@ namespace CleanArchitecture.CodeGenerator.Models
 
         private static CodeTypeRef TryToGuessGenericArgument(CodeClass rootElement, CodeTypeRef codeTypeRef)
         {
-            var codeTypeRef2 = codeTypeRef as CodeTypeRef2;
+			Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+			var codeTypeRef2 = codeTypeRef as CodeTypeRef2;
             if (codeTypeRef2 == null || !codeTypeRef2.IsGeneric)
             {
                 return codeTypeRef;

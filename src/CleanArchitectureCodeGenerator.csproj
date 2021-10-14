@@ -111,8 +111,12 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="TemplateMap.cs" />
-    <Content Include="Templates\Caching\.cachekey.cs.txt" />
-    <Content Include="Templates\Caching\.cachetokensource.cs.txt" />
+    <Content Include="Templates\Caching\.cachekey.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Templates\Caching\.cachetokensource.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\Commands\AcceptChanges\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -265,7 +269,7 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Validation">
-      <Version>17.0.25-alpha</Version>
+      <Version>17.0.34</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
       <Version>17.0.5232</Version>

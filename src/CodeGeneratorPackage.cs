@@ -136,7 +136,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private async System.Threading.Tasks.Task AddItemAsync(string name,string itemname, NewItemTarget target)
+		private async Task AddItemAsync(string name,string itemname, NewItemTarget target)
 		{
 			// The naming rules that apply to files created on disk also apply to virtual solution folders,
 			// so regardless of what type of item we are creating, we need to validate the name.
@@ -150,12 +150,13 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				else
 				{
+					 
 					AddProjectFolder(name, target);
 				}
 			}
 			else
 			{
-				await AddFileAsync(name, itemname,target);
+				await AddFileAsync(name, itemname, target);
 			}
 		}
 

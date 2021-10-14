@@ -231,6 +231,7 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 
 		public static Project FindSolutionFolder(this Project project, string name)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			return project.ProjectItems.OfType<ProjectItem>()
 					.Where(p => p.IsKind(EnvDTE.Constants.vsProjectItemKindSolutionItems))
 					.Where(p => p.Name == name)
@@ -380,6 +381,7 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 
 		public static IEnumerable<IntellisenseObject> GetEntities(this Project project)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			var list=new List<IntellisenseObject>();
 			foreach(ProjectItem projectitem in project.ProjectItems)
 			{
@@ -389,6 +391,7 @@ namespace CleanArchitecture.CodeGenerator.Helpers
 		}
 		private static void GetProjectItem(ProjectItem item ,List<IntellisenseObject> list)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			if (item.ProjectItems != null)
 			{
 				foreach(ProjectItem projectItem in item.ProjectItems)

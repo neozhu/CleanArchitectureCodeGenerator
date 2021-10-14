@@ -37,12 +37,14 @@ namespace CleanArchitecture.CodeGenerator
 		public static async Task<string> GetTemplateFilePathAsync(Project project, string file,string itemname,string selectFolder)
 		{
 			var templatefolders =new string[]{
+				"Commands\\AcceptChanges",
 				"Commands\\Create",
 				"Commands\\Delete",
 				"Commands\\Update",
 				"Commands\\AddEdit",
 				"Commands\\Import",
 				"DTOs",
+				"Caching",
 				"EventHandlers",
 				"Events",
 				"Queries\\Export",
@@ -61,18 +63,18 @@ namespace CleanArchitecture.CodeGenerator
 
 			// Look for direct file name matches
 			if (list.Any(f => {
-				var pattern = templatefolders.Where(x => relative.IndexOf(x) >= 0).FirstOrDefault().Replace("\\","\\\\");
+				 var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\","\\\\");
 				 var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 				 return result;
 			 
 				}) )
 			{
 				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
-					var pattern = templatefolders.Where(x => relative.IndexOf(x) >= 0).FirstOrDefault().Replace("\\", "\\\\"); ;
+					var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\", "\\\\"); ;
 					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)
 					{
-						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x=>name.IndexOf(x, StringComparison.OrdinalIgnoreCase)>0);
+						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x=>name.IndexOf(x, StringComparison.OrdinalIgnoreCase)>=0);
 					}
 					return false;
 				});

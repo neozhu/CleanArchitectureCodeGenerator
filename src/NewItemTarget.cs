@@ -50,6 +50,7 @@ namespace CleanArchitecture.CodeGenerator
 
 		private static NewItemTarget CreateFromActiveDocument(DTE2 dte)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			string fileName = dte.ActiveDocument?.FullName;
 			if (File.Exists(fileName))
 			{
@@ -99,6 +100,7 @@ namespace CleanArchitecture.CodeGenerator
 
 		private static NewItemTarget CreateFromProjectItem(ProjectItem projectItem)
 		{
+			ThreadHelper.ThrowIfNotOnUIThread();
 			if (projectItem.IsKind(Constants.vsProjectItemKindSolutionItems))
 			{
 				return new NewItemTarget(

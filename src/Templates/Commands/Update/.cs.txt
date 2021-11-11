@@ -1,17 +1,10 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using {rootnamespace}.Application.Common.Interfaces;
-using {rootnamespace}.Application.Common.Mappings;
-using {rootnamespace}.Application.Common.Models;
-using {selectns}.{nameofPlural}.DTOs;
-using {rootnamespace}.Domain.Entities;
-using {rootnamespace}.Domain.Events;
-using MediatR;
-using Microsoft.Extensions.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 
-namespace {namespace}
-{
+using {selectns}.{nameofPlural}.DTOs;
+
+namespace {namespace};
+
     public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
     {
         
@@ -44,4 +37,4 @@ namespace {namespace}
            return Result.Success();
         }
     }
-}
+

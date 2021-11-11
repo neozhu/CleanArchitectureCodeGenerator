@@ -1,20 +1,10 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using {rootnamespace}.Application.Common.Interfaces;
-using {rootnamespace}.Application.Common.Mappings;
-using {rootnamespace}.Application.Common.Models;
 using {selectns}.{nameofPlural}.DTOs;
-using {rootnamespace}.Domain.Entities;
-using {rootnamespace}.Domain.Enums;
-using {rootnamespace}.Domain.Events;
-using MediatR;
 
-namespace {namespace}
-{
+namespace {namespace};
+
     public class AcceptChanges{nameofPlural}Command:IRequest<Result>
     {
       public {itemname}Dto[] Items { get; set; }
@@ -64,4 +54,4 @@ namespace {namespace}
 
         }
     }
-}
+

@@ -1,15 +1,8 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using {rootnamespace}.Application.Common.Interfaces;
-using {rootnamespace}.Application.Common.Models;
-using {rootnamespace}.Domain.Events;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
 
-namespace {namespace}
-{
+namespace {namespace};
+
     public class {itemname}UpdatedEventHandler : INotificationHandler<DomainEventNotification<{itemname}UpdatedEvent>>
     {
         private readonly ILogger<{itemname}UpdatedEventHandler> _logger;
@@ -29,4 +22,3 @@ namespace {namespace}
             return Task.CompletedTask;
         }
     }
-}

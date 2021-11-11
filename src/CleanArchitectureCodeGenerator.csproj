@@ -265,7 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SDK" ExcludeAssets="runtime">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Validation">
@@ -277,7 +277,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.ComponentModel.Composition">
-      <Version>6.0.0-rc.1.21451.13</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

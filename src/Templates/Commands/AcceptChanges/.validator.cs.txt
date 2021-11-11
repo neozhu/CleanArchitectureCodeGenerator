@@ -3,7 +3,7 @@
 
 namespace {namespace};
 
-    public class AcceptChanges{itemname}CommandValidator : AbstractValidator<AcceptChangesProjectCommand>
+    public class AcceptChanges{itemname}CommandValidator : AbstractValidator<AcceptChanges{nameofPlural}Command>
     {
         public AcceptChanges{itemname}CommandValidator()
         {

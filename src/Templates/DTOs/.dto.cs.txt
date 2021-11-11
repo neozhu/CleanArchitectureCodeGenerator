@@ -12,5 +12,7 @@ namespace {namespace};
 
         }
         //TODO:Define field properties
+
+        public TrackingState TrackingState { get; set; }
     }
 

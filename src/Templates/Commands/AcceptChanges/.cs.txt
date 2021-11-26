@@ -40,6 +40,7 @@ namespace {namespace};
                         break;
                     case TrackingState.Modified:
                         var edititem = await _context.{nameofPlural}.FindAsync(new object[] { item.Id }, cancellationToken);
+                        //ex. edititem.Name = item.Name;
                         edititem = _mapper.Map(item, edititem);
                         _context.{nameofPlural}.Update(edititem);
                         break;

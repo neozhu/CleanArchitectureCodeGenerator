@@ -8,7 +8,7 @@ namespace {namespace};
         public Import{nameofPlural}CommandValidator()
         {
            //TODO:Implementing Import{itemname}CommandValidator method 
-           //ex. RuleFor(v => v.Data)
+           //eg. RuleFor(v => v.Data)
            //      .NotNull()
            //      .NotEmpty();
            throw new System.NotImplementedException();

@@ -114,9 +114,6 @@
     <Content Include="Templates\Caching\.cachekey.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\Caching\.cachetokensource.cs.txt">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Templates\Commands\AcceptChanges\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

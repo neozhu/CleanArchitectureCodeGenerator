@@ -8,7 +8,7 @@ namespace {namespace};
         public AcceptChanges{itemname}CommandValidator()
         {
             //TODO:Implementing AddEdit{itemname}CommandValidator method 
-            //ex. RuleFor(v => v.Items)
+            //eg. RuleFor(v => v.Items)
             //      .NotNull()
             //      .NotEmpty();
             //RuleForEach(x => x.Items).ChildRules(item =>

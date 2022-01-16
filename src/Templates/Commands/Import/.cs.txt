@@ -42,7 +42,7 @@ namespace {namespace};
            //TODO:Implementing Import{nameofPlural}CommandHandler method
            var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object>>
             {
-                //ex. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
+                //eg. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
 
             }, _localizer["{nameofPlural}"]);
            throw new System.NotImplementedException();

@@ -107,7 +107,6 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/Commands/Update/Update{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/Import/Import{nameofPlural}Command.cs",
 						$"{nameofPlural}/Commands/Import/Import{nameofPlural}CommandValidator.cs",
-						$"{nameofPlural}/Caching/{name}CacheTokenSource.cs",
 						$"{nameofPlural}/Caching/{name}CacheKey.cs",
 						$"{nameofPlural}/DTOs/{name}Dto.cs",
 						$"{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs",

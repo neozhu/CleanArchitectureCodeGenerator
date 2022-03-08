@@ -35,9 +35,10 @@ namespace {namespace};
         {
            //TODO:Implementing Delete{itemname}CommandHandler method 
            var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
-            _context.{nameofPlural}.Remove(item);
-            await _context.SaveChangesAsync(cancellationToken);
-            return Result.Success();
+           _ = item ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
+           _context.{nameofPlural}.Remove(item);
+           await _context.SaveChangesAsync(cancellationToken);
+           return Result.Success();
         }
 
         public async Task<Result> Handle(DeleteChecked{nameofPlural}Command request, CancellationToken cancellationToken)

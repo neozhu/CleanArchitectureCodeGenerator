@@ -36,10 +36,12 @@ namespace {namespace};
                         break;
                     case TrackingState.Deleted:
                         var delitem =await _context.{nameofPlural}.FindAsync(new object[] { item.Id }, cancellationToken);
+                        _ = delitem ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
                         _context.{nameofPlural}.Remove(delitem);
                         break;
                     case TrackingState.Modified:
                         var edititem = await _context.{nameofPlural}.FindAsync(new object[] { item.Id }, cancellationToken);
+                        _ = edititem ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
                         //eg. edititem.Name = item.Name;
                         edititem = _mapper.Map(item, edititem);
                         _context.{nameofPlural}.Update(edititem);

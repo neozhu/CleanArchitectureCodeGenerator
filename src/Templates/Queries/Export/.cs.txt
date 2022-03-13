@@ -8,9 +8,9 @@ namespace {namespace};
 
     public class Export{nameofPlural}Query : IRequest<byte[]>
     {
-        public string FilterRules { get; set; }
-        public string Sort { get; set; } = "Id";
-        public string Order { get; set; } = "desc";
+       public string OrderBy { get; set; } = "Id";
+       public string SortDirection { get; set; } = "Desc";
+       public string Keyword { get; set; } = String.Empty;
     }
     
     public class Export{nameofPlural}QueryHandler :
@@ -37,9 +37,9 @@ namespace {namespace};
         public async Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             //TODO:Implementing Export{nameofPlural}QueryHandler method 
-            var filters = PredicateBuilder.FromFilter<{itemname}>(request.FilterRules);
-            var data = await _context.{nameofPlural}.Where(filters)
-                       .OrderBy($"{request.Sort} {request.Order}")
+  
+            var data = await _context.{nameofPlural}//.Where(x=>x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword))
+                       .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
             var result = await _excelService.ExportAsync(data,

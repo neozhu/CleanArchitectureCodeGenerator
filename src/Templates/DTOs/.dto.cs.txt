@@ -12,6 +12,5 @@ public class {itemname}Dto:IMapFrom<{itemname}>
     }
     //TODO:Define field properties
 
-    public TrackingState TrackingState { get; set; }
 }
 

@@ -5,7 +5,7 @@ using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace};
 
-    public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQuery : PaginationFilter, IRequest<PaginatedData<{itemname}Dto>>
     {
        
     }
@@ -31,11 +31,10 @@ namespace {namespace};
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
             //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
-           var filters = PredicateBuilder.FromFilter<{itemname}>(request.FilterRules);
-           var data = await _context.{nameofPlural}.Where(filters)
-                .OrderBy($"{request.Sort} {request.Order}")
+           var data = await _context.{nameofPlural}
+                .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                .PaginatedDataAsync(request.Page, request.Rows);
+                .PaginatedDataAsync(request.PageNumber, request.PageSize);
             return data;
         }
    }

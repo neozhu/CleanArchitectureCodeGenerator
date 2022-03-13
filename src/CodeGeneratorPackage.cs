@@ -95,8 +95,6 @@ namespace CleanArchitecture.CodeGenerator
 
 					var list = new List<string>()
 					{
-						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}Command.cs",
-						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/Create/Create{name}Command.cs",

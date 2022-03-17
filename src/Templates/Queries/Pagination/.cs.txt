@@ -2,12 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class {nameofPlural}WithPaginationQuery : PaginationFilter, IRequest<PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQuery : PaginationFilter, IRequest<PaginatedData<{itemname}Dto>>, ICacheable
     {
-       
+        public string CacheKey => {itemname}CacheKey.GetPagtionCacheKey($"{this}");
+        public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken({itemname}CacheKey.SharedExpiryTokenSource.Token));
     }
     
     public class {nameofPlural}WithPaginationQueryHandler :

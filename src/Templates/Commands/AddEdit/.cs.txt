@@ -3,12 +3,13 @@
 
 
 using {selectns}.{nameofPlural}.DTOs;
-
+using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
 
-    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>
+    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>, ICacheInvalidator
     {
-      
+      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
     }
 
     public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>

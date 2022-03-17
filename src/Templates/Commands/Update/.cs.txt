@@ -2,12 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>
+    public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>, ICacheInvalidator
     {
-        
+        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+        public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
     }
 
     public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result>

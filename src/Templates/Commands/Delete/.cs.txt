@@ -2,12 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
+
 
 namespace {namespace};
 
-    public class Delete{itemname}Command: IRequest<Result>
+    public class Delete{itemname}Command: IRequest<Result>, ICacheInvalidator
     {
-      public int[] Id {  get; set; }
+      public int[] Id {  get; }
+      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
+      public Delete{itemname}Command(int[] id)
+      {
+        Id = id;
+      }
     }
 
     public class Delete{itemname}CommandHandler : 

@@ -2,18 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Import{nameofPlural}Command: IRequest<Result>
+    public class Import{nameofPlural}Command: IRequest<Result>, ICacheInvalidator
     {
         public string FileName { get; set; }
         public byte[] Data { get; set; }
+        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+        public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
+        public Import{nameofPlural}Command(string fileName,byte[] data)
+        {
+           FileName = fileName;
+           Data = data;
+        }
     }
-    public class Create{nameofPlural}TemplateCommand : IRequest<byte[]>
+    public record class Create{nameofPlural}TemplateCommand : IRequest<byte[]>
     {
-        public IEnumerable<string> Fields { get; set; }
-        public string SheetName { get; set; }
+ 
     }
 
     public class Import{nameofPlural}CommandHandler : 

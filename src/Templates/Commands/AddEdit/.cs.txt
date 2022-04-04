@@ -32,8 +32,7 @@ namespace {namespace};
             //TODO:Implementing AddEdit{itemname}CommandHandler method 
             if (request.Id > 0)
             {
-                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
-                _ = item ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
+                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
                 item = _mapper.Map(request, item);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Result<int>.Success(item.Id);

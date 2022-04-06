@@ -3,7 +3,7 @@
 
 namespace {namespace};
 
-    public class {itemname}UpdatedEventHandler : INotificationHandler<DomainEventNotification<{itemname}UpdatedEvent>>
+    public class {itemname}UpdatedEventHandler : INotificationHandler<DomainEventNotification<UpdatedEvent<{itemname}>>>
     {
         private readonly ILogger<{itemname}UpdatedEventHandler> _logger;
 
@@ -13,11 +13,11 @@ namespace {namespace};
         {
             _logger = logger;
         }
-        public Task Handle(DomainEventNotification<{itemname}UpdatedEvent> notification, CancellationToken cancellationToken)
+        public Task Handle(DomainEventNotification<UpdatedEvent<{itemname}>> notification, CancellationToken cancellationToken)
         {
             var domainEvent = notification.DomainEvent;
 
-            _logger.LogInformation("CleanArchitecture Domain Event: {DomainEvent}", domainEvent.GetType().Name);
+            _logger.LogInformation("Domain Event: {DomainEvent}", domainEvent.GetType().Name);
 
             return Task.CompletedTask;
         }

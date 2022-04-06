@@ -3,7 +3,7 @@
 
 namespace {namespace};
 
-    public class {itemname}DeletedEventHandler : INotificationHandler<DomainEventNotification<{itemname}DeletedEvent>>
+    public class {itemname}DeletedEventHandler : INotificationHandler<DomainEventNotification<DeletedEvent<{itemname}>>>
     {
         private readonly ILogger<{itemname}DeletedEventHandler> _logger;
 
@@ -13,11 +13,11 @@ namespace {namespace};
         {
             _logger = logger;
         }
-        public Task Handle(DomainEventNotification<{itemname}DeletedEvent> notification, CancellationToken cancellationToken)
+        public Task Handle(DomainEventNotification<DeletedEvent<{itemname}>> notification, CancellationToken cancellationToken)
         {
             var domainEvent = notification.DomainEvent;
 
-            _logger.LogInformation("CleanArchitecture Domain Event: {DomainEvent}", domainEvent.GetType().Name);
+            _logger.LogInformation("Domain Event: {DomainEvent}", domainEvent.GetType().Name);
 
             return Task.CompletedTask;
         }

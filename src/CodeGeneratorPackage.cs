@@ -83,15 +83,15 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					var name = Path.GetFileNameWithoutExtension(inputname);
 					var nameofPlural = ProjectHelpers.Pluralize(name);
-					//var events = new List<string>() {
-					//	$"Events/{name}CreatedEvent.cs",
-					//	$"Events/{name}DeletedEvent.cs",
-					//	$"Events/{name}UpdatedEvent.cs",
-					//	};
-					//foreach (var item in events)
-					//{
-					//	AddItemAsync(item, name, domain).Forget();
-					//}
+					var events = new List<string>() {
+						$"Events/{name}CreatedEvent.cs",
+						$"Events/{name}DeletedEvent.cs",
+						$"Events/{name}UpdatedEvent.cs",
+						};
+					foreach (var item in events)
+					{
+						AddItemAsync(item, name, domain).Forget();
+					}
 
 					var list = new List<string>()
 					{

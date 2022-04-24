@@ -41,6 +41,8 @@ namespace {namespace};
             var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
             foreach (var item in items)
             {
+			    // add delete domain events if this entity implement the IHasDomainEvent interface
+				// item.DomainEvents.Add(new DeletedEvent<{itemname}>(item));
                 _context.{nameofPlural}.Remove(item);
             }
             await _context.SaveChangesAsync(cancellationToken);

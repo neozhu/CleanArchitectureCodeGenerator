@@ -2,12 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class GetAll{nameofPlural}Query : IRequest<IEnumerable<{itemname}Dto>>
+    public class GetAll{nameofPlural}Query : IRequest<IEnumerable<{itemname}Dto>>, ICacheable
     {
-       
+       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAll{nameofPlural}QueryHandler :

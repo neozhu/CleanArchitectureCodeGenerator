@@ -2,21 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
+
 
 namespace {namespace};
 
-    public class Delete{itemname}Command: IRequest<Result>
+    public class Delete{itemname}Command: IRequest<Result>, ICacheInvalidator
     {
-      public int Id {  get; set; }
-    }
-    public class DeleteChecked{nameofPlural}Command : IRequest<Result>
-    {
-      public int[] Id {  get; set; }
+      public int[] Id {  get; }
+      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
+      public Delete{itemname}Command(int[] id)
+      {
+        Id = id;
+      }
     }
 
     public class Delete{itemname}CommandHandler : 
-                 IRequestHandler<Delete{itemname}Command, Result>,
-                 IRequestHandler<DeleteChecked{nameofPlural}Command, Result>
+                 IRequestHandler<Delete{itemname}Command, Result>
+
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -33,18 +37,8 @@ namespace {namespace};
         }
         public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
-           //TODO:Implementing Delete{itemname}CommandHandler method 
-           var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
-           _ = item ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
-           _context.{nameofPlural}.Remove(item);
-           await _context.SaveChangesAsync(cancellationToken);
-           return Result.Success();
-        }
-
-        public async Task<Result> Handle(DeleteChecked{nameofPlural}Command request, CancellationToken cancellationToken)
-        {
-           //TODO:Implementing DeleteChecked{nameofPlural}CommandHandler method 
-           var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
+            //TODO:Implementing DeleteChecked{nameofPlural}CommandHandler method 
+            var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
             foreach (var item in items)
             {
 			    // add delete domain events if this entity implement the IHasDomainEvent interface
@@ -54,5 +48,6 @@ namespace {namespace};
             await _context.SaveChangesAsync(cancellationToken);
             return Result.Success();
         }
+
     }
 

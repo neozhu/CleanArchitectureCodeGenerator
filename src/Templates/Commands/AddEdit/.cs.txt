@@ -3,12 +3,13 @@
 
 
 using {selectns}.{nameofPlural}.DTOs;
-
+using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
 
-    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>
+    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, ICacheInvalidator
     {
-      
+      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
 
     public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>
@@ -31,8 +32,7 @@ namespace {namespace};
             //TODO:Implementing AddEdit{itemname}CommandHandler method 
             if (request.Id > 0)
             {
-                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken);
-                _ = item ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
+                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
                 item = _mapper.Map(request, item);
 				// add update domain events if this entity implement the IHasDomainEvent interface
 				// item.DomainEvents.Add(new UpdatedEvent<{itemname}>(item));

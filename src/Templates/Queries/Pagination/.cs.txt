@@ -5,9 +5,10 @@ using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace};
 
-    public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>
+    public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>, ICacheable
     {
-       
+       public string CacheKey => {itemname}CacheKey.GetPagtionCacheKey($"{this}");
+       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
     public class {nameofPlural}WithPaginationQueryHandler :

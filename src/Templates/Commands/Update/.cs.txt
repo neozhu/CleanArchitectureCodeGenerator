@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, IMapFrom<{itemname}>, ICacheInvalidator
+    public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, ICacheInvalidator
     {
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();

@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
 
-    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>, ICacheInvalidator
+    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, ICacheInvalidator
     {
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();

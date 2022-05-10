@@ -11,7 +11,7 @@ namespace {namespace};
     {
       public int[] Id {  get; }
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
       public Delete{itemname}Command(int[] id)
       {
         Id = id;

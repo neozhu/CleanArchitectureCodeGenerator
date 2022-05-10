@@ -9,7 +9,7 @@ namespace {namespace};
     public class GetAll{nameofPlural}Query : IRequest<IEnumerable<{itemname}Dto>>, ICacheable
     {
        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken({itemname}CacheKey.SharedExpiryTokenSource.Token));
+       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAll{nameofPlural}QueryHandler :

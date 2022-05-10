@@ -9,7 +9,7 @@ namespace {namespace};
     public class Create{itemname}Command: {itemname}Dto,IRequest<Result<int>>, IMapFrom<{itemname}>, ICacheInvalidator
     {
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
     
     public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result<int>>

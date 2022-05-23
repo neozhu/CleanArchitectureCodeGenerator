@@ -3,7 +3,7 @@
 
 namespace {namespace};
 
-    public class {itemname}CreatedEventHandler : INotificationHandler<DomainEventNotification<CreatedEvent<{itemname}>>>
+    public class {itemname}CreatedEventHandler : INotificationHandler<CreatedEvent<{itemname}>>
     {
         private readonly ILogger<{itemname}CreatedEventHandler> _logger;
 
@@ -13,12 +13,9 @@ namespace {namespace};
         {
             _logger = logger;
         }
-        public Task Handle(DomainEventNotification<CreatedEvent<{itemname}>> notification, CancellationToken cancellationToken)
+        public Task Handle(CreatedEvent<{itemname}> notification, CancellationToken cancellationToken)
         {
-            var domainEvent = notification.DomainEvent;
-
-            _logger.LogInformation("Domain Event: {DomainEvent}", domainEvent.GetType().Name);
-
+            _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().FullName);
             return Task.CompletedTask;
         }
     }

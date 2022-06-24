@@ -35,7 +35,7 @@ namespace {namespace};
            {
                 item = _mapper.Map(request, item);
 				// add update domain events if this entity implement the IHasDomainEvent interface
-				// item.DomainEvents.Add(new UpdatedEvent<{itemname}>(item));
+				// item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
                 await _context.SaveChangesAsync(cancellationToken);
            }
            return Result.Success();

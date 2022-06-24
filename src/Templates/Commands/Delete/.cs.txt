@@ -42,7 +42,7 @@ namespace {namespace};
             foreach (var item in items)
             {
 			    // add delete domain events if this entity implement the IHasDomainEvent interface
-				// item.DomainEvents.Add(new DeletedEvent<{itemname}>(item));
+				// item.AddDomainEvent(new DeletedEvent<{itemname}>(item));
                 _context.{nameofPlural}.Remove(item);
             }
             await _context.SaveChangesAsync(cancellationToken);

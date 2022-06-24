@@ -32,7 +32,7 @@ namespace {namespace};
            //TODO:Implementing Create{itemname}CommandHandler method 
            var item = _mapper.Map<{itemname}>(request);
            // add create domain events if this entity implement the IHasDomainEvent interface
-	       // item.DomainEvents.Add(new CreatedEvent<{itemname}>(item));
+	       // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
            _context.{nameofPlural}.Add(item);
            await _context.SaveChangesAsync(cancellationToken);
            return  Result<int>.Success(item.Id);

@@ -52,7 +52,26 @@ namespace {namespace};
                 //eg. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
 
             }, _localizer["{nameofPlural}"]);
-           throw new System.NotImplementedException();
+            if (result.Succeeded)
+            {
+                foreach (var dto in result.Data)
+                {
+                    var exists = await _context.{nameofPlural}.AnyAsync(x => x.Name == dto.Name);
+                    if (!exists)
+                    {
+                        var item = _mapper.Map<{itemname}>(dto);
+                        // add create domain events if this entity implement the IHasDomainEvent interface
+				        // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
+                        await _context.{nameofPlural}.AddAsync(item, cancellationToken);
+                    }
+                 }
+                 await _context.SaveChangesAsync(cancellationToken);
+                 return Result.Success();
+           }
+           else
+           {
+               return Result.Failure(result.Errors);
+           }
         }
         public async Task<byte[]> Handle(Create{nameofPlural}TemplateCommand request, CancellationToken cancellationToken)
         {

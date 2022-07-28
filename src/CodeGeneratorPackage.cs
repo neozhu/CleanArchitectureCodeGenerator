@@ -53,6 +53,7 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
+			NewItemTarget ui = NewItemTarget.Create(_dte, "Blazor.Server.UI");
 			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
 			var entities = ProjectHelpers.GetEntities(domain.Project)
 				.Where(x=>includes.Contains(x.BaseName) && !includes.Contains(x.Name))
@@ -118,7 +119,17 @@ namespace CleanArchitecture.CodeGenerator
 					{
 						AddItemAsync(item, name, target).Forget();
 					}
-					
+
+					var pages = new List<string>()
+					{
+						$"Pages/{nameofPlural}/{nameofPlural}.razor",
+						$"Pages/{nameofPlural}/_{name}FormDialog.razor",
+						$"Pages/{nameofPlural}/Components/{nameofPlural}AdvancedSearchComponent.razor"
+					};
+					foreach (var item in pages)
+					{
+						AddItemAsync(item, name, ui).Forget();
+					}
 
 				}
 				catch (Exception ex) when (!ErrorHandler.IsCriticalException(ex))

@@ -50,6 +50,8 @@ namespace CleanArchitecture.CodeGenerator
 				"Queries\\Export",
 				"Queries\\GetAll",
 				"Queries\\Pagination",
+				"Pages",
+				"Pages\\Components",
 				};
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);
@@ -69,7 +71,7 @@ namespace CleanArchitecture.CodeGenerator
 			 
 				}) )
 			{
-				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
+				var tmplFile = list.OrderByDescending(x=>x.Length).FirstOrDefault(f => {
 					var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\", "\\\\"); ;
 					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)

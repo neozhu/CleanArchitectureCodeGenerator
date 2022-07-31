@@ -132,7 +132,9 @@
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <ColGroup>
-                <col style="width:48px;" />
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <col style="width:48px;" />
+                </MudHidden>
             </ColGroup>
             <HeaderContent>
                 <MudTh>@PromptText.ACTIONS</MudTh>

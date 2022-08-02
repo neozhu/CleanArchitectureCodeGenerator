@@ -36,14 +36,16 @@ namespace {namespace};
 
         public async Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
+            #pragma warning disable CS8602
+#pragma warning disable CS8602
+#pragma warning disable CS8604
             //TODO:Implementing Export{nameofPlural}QueryHandler method 
-  
             var data = await _context.{nameofPlural}//.Where(x=>x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword))
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
             var result = await _excelService.ExportAsync(data,
-                new Dictionary<string, Func<{itemname}Dto, object>>()
+                new Dictionary<string, Func<{itemname}Dto, object?>>()
                 {
                     //{ _localizer["Id"], item => item.Id },
                 }

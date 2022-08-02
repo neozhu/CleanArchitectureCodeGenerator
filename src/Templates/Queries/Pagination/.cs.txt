@@ -32,6 +32,8 @@ namespace {namespace};
 
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
+#pragma warning disable CS8602
+#pragma warning disable CS8604
             //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
            var data = await _context.{nameofPlural}
                 .OrderBy($"{request.OrderBy} {request.SortDirection}")

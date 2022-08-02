@@ -35,7 +35,7 @@ namespace {namespace};
 	       // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
            _context.{nameofPlural}.Add(item);
            await _context.SaveChangesAsync(cancellationToken);
-           return  Result<int>.Success(item.Id);
+           return  await Result<int>.SuccessAsync(item.Id);
         }
     }
 

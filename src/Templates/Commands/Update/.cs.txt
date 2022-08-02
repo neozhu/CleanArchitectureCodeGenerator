@@ -38,7 +38,7 @@ namespace {namespace};
 				// item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
                 await _context.SaveChangesAsync(cancellationToken);
            }
-           return Result.Success();
+           return await Result.SuccessAsync();
         }
     }
 

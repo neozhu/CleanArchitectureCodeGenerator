@@ -31,6 +31,7 @@ namespace {namespace};
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<Import{nameofPlural}CommandHandler> _localizer;
         private readonly IExcelService _excelService;
+        private readonly CustomerDto _dto = new();
 
         public Import{nameofPlural}CommandHandler(
             IApplicationDbContext context,
@@ -49,7 +50,9 @@ namespace {namespace};
            //TODO:Implementing Import{nameofPlural}CommandHandler method
            var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object?>>
             {
-                //eg. { _localizer["Name"], (row,item) => item.Name = row[_localizer["Name"]]?.ToString() },
+                // TODO: Define the fields that need to be read from Excel here, for example
+                // { _localizer[_dto.GetMemberDescription("Name")], (row,item) => item.Name = row[_localizer[_dto.GetMemberDescription("Name")]]?.ToString() },
+                // { _localizer[_dto.GetMemberDescription("Description")], (row,item) => item.Name = row[_localizer[_dto.GetMemberDescription("Description")]]?.ToString() },
 
             }, _localizer["{nameofPlural}"]);
             if (result.Succeeded && result.Data is not null)
@@ -77,8 +80,9 @@ namespace {namespace};
         {
             //TODO:Implementing Import{nameofPlural}CommandHandler method 
             var fields = new string[] {
-                   //TODO:Defines the title and order of the fields to be imported's template
-                   //_localizer["Name"],
+                   // TODO: Define the fields and order needed to generate the template here, for example
+                   // _localizer[_dto.GetMemberDescription("Name")],
+                   // _localizer[_dto.GetMemberDescription("Description")],
                 };
             var result = await _excelService.CreateTemplateAsync(fields, _localizer["{nameofPlural}"]);
             return result;

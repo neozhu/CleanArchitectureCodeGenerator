@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CleanArchitecture.CodeGenerator.Helpers;
+using CleanArchitecture.CodeGenerator.Models;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
@@ -17,7 +18,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static readonly List<string> _templateFiles = new List<string>();
 		private const string _defaultExt = ".txt";
 		private const string _templateDir = ".templates";
-
+		private const string _defaultNamespace = "CleanArchitecture.Razor";
 		static TemplateMap()
 		{
 			var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -34,7 +35,7 @@ namespace CleanArchitecture.CodeGenerator
 		}
 		
 
-		public static async Task<string> GetTemplateFilePathAsync(Project project, string file,string itemname,string selectFolder)
+		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file,string itemname,string selectFolder)
 		{
 			var templatefolders =new string[]{
 				"Commands\\AcceptChanges",
@@ -138,7 +139,7 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
-				return content.Replace("{rootnamespace}", "CleanArchitecture.Razor")
+				return content.Replace("{rootnamespace}", _defaultNamespace)
 					            .Replace("{namespace}", ns)
 											.Replace("{selectns}", selectNs)
 											.Replace("{itemname}", name).Replace("{nameofPlural}", nameofPlural);

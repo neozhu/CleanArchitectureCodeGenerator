@@ -55,10 +55,9 @@ namespace CleanArchitecture.CodeGenerator
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
 			NewItemTarget ui = NewItemTarget.Create(_dte, "Blazor.Server.UI");
 			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
-			var entities = ProjectHelpers.GetEntities(domain.Project)
-				.Where(x=>includes.Contains(x.BaseName) && !includes.Contains(x.Name))
-				.Select(x=>x.Name)
-				.Distinct().ToArray();
+			var objectlist = ProjectHelpers.GetEntities(domain.Project)
+				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
+			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();
 			if (target == null)
 			{
 				MessageBox.Show(
@@ -264,7 +263,7 @@ namespace CleanArchitecture.CodeGenerator
 
 				if (index > -1)
 				{
-					template = template.Remove(index, 1);
+					//template = template.Remove(index, 1);
 				}
 
 				await WriteToDiskAsync(file, template);

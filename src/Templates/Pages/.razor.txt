@@ -30,6 +30,7 @@
                   SortLabel="@PromptText.ORDERBY"
                   MultiSelection="true"
                   SelectedItems="_selectedItems"
+                  SelectedItem="_currentDto"
                   Hover="true" @ref="_table">
             <ToolBarContent>
                 <div class="justify-start pt-3">

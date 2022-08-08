@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CleanArchitecture.CodeGenerator.Helpers;
@@ -92,7 +93,10 @@ namespace CleanArchitecture.CodeGenerator
 				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
 			}
 
-			var template = await ReplaceTokensAsync(project, itemname, relative, selectRelative, templateFile);
+
+			
+
+			var template = await ReplaceTokensAsync(project, classObject, itemname, relative, selectRelative, templateFile);
 			return NormalizeLineEndings(template);
 		}
 
@@ -116,7 +120,7 @@ namespace CleanArchitecture.CodeGenerator
 			list.InsertRange(0, dynaList);
 		}
 
-		private static async Task<string> ReplaceTokensAsync(Project project, string name, string relative,string selectRelative, string templateFile)
+		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative,string selectRelative, string templateFile)
 		{
 			if (string.IsNullOrEmpty(templateFile))
 			{
@@ -139,10 +143,19 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
+				var dtoFieldDefinition = createDtoFieldDefinition(classObject);
+				var importFuncExpression = createImportFuncExpression(classObject);
+				var templateFieldDefinition = createTemplateFieldDefinition(classObject);
+				var exportFuncExpression = createExportFuncExpression(classObject);
 				return content.Replace("{rootnamespace}", _defaultNamespace)
 					            .Replace("{namespace}", ns)
-											.Replace("{selectns}", selectNs)
-											.Replace("{itemname}", name).Replace("{nameofPlural}", nameofPlural);
+							    .Replace("{selectns}", selectNs)
+								.Replace("{itemname}", name)
+								.Replace("{nameofPlural}", nameofPlural)
+								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
+								.Replace("{importFuncExpression}", importFuncExpression)
+								.Replace("{templateFieldDefinition}", templateFieldDefinition)
+								.Replace("{exportFuncExpression}", exportFuncExpression);
 			}
 		}
 
@@ -164,6 +177,53 @@ namespace CleanArchitecture.CodeGenerator
 			}
 
 			return extension;
+		}
+
+		private static string createDtoFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach(var property in classObject.Properties)
+			{
+				output.Append($"[Description(\"{property.Name}\")]\r\n");
+				if (property.Name == "Id")
+				{
+					output.Append($"public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+				}
+				else
+				{
+					output.Append($"public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+				}
+			}
+			return output.ToString();
+		}
+		private static string createImportFuncExpression(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties)
+			{
+				if (property.Name == "Id") continue;
+				output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
+			}
+			return output.ToString();
+		}
+		private static string createTemplateFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties)
+			{
+				if (property.Name == "Id") continue;
+				output.Append($"_localizer[_dto.GetMemberDescription(\"{property.Name}\")], \r\n");
+			}
+			return output.ToString();
+		}
+		private static string createExportFuncExpression(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties)
+			{
+				output.Append($"{{_localizer[_dto.GetMemberDescription(\"{property.Name}\")],item => item.{property.Name}}}, \r\n");
+			}
+			return output.ToString();
 		}
 	}
 }

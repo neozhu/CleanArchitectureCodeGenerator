@@ -52,7 +52,6 @@ namespace {namespace};
             {
                 // TODO: Define the fields that need to be read from Excel here, for example
                 {importFuncExpression}
-
             }, _localizer["{nameofPlural}"]);
             if (result.Succeeded && result.Data is not null)
             {

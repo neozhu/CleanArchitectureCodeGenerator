@@ -182,7 +182,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach(var property in classObject.Properties)
+			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
 			{
 				output.Append($"[Description(\"{property.Name}\")]\r\n");
 				if (property.Name == "Id")
@@ -191,7 +191,7 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				else
 				{
-					output.Append($"public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+					output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
 				}
 			}
 			return output.ToString();
@@ -199,7 +199,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createImportFuncExpression(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties)
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				if (property.Name == "Id") continue;
 				output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
@@ -209,7 +209,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createTemplateFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties)
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				if (property.Name == "Id") continue;
 				output.Append($"_localizer[_dto.GetMemberDescription(\"{property.Name}\")], \r\n");
@@ -219,11 +219,16 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createExportFuncExpression(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties)
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				output.Append($"{{_localizer[_dto.GetMemberDescription(\"{property.Name}\")],item => item.{property.Name}}}, \r\n");
 			}
 			return output.ToString();
+		}
+
+		private static string createMudTdHeaderDefinition(IntellisenseObject classObject)
+		{
+
 		}
 	}
 }

@@ -140,8 +140,8 @@
             </ColGroup>
             <HeaderContent>
                 <MudTh>@PromptText.ACTIONS</MudTh>
-                <MudTh><MudTableSortLabel SortLabel="Name" T="{itemname}Dto">@L["{itemname} Name"]</MudTableSortLabel></MudTh>
-                @*Add the fields to be displayed according to the actual situation*@
+                @*TODO: Display the required fields in the table*@
+                {mudTdHeaderDefinition}
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="@ButtonText.ACTIONS">
@@ -170,13 +170,8 @@
                         </MudButton>
                     }
                 </MudTd>
-                <MudTd HideSmall="false" DataLabel="@L["{itemname} Name"]">
-                    <div class="d-flex flex-column">
-                        <MudText>@context.Name</MudText>
-                        <MudText Typo="Typo.body2">@context.Description</MudText>
-                    </div>
-                </MudTd>
-                @*Add the fields to be displayed according to the actual situation*@
+                @*TODO: Display the required fields in the table*@
+                {mudTdDefinition}
             </RowTemplate>
             <NoRecordsContent>
                 <MudText>@PromptText.NOMACHING</MudText>
@@ -199,6 +194,7 @@
     public string? Title { get; private set; }
     private HashSet<{itemname}Dto> _selectedItems = new HashSet<{itemname}Dto>();
     private MudTable<{itemname}Dto> _table = default!;
+    private {itemname}Dto _currentDto = new();
 
     private string _searchString = string.Empty;
     private bool _loading;

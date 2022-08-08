@@ -92,10 +92,6 @@ namespace CleanArchitecture.CodeGenerator
 				var tmpl = AdjustForSpecific(safeName, extension);
 				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
 			}
-
-
-			
-
 			var template = await ReplaceTokensAsync(project, classObject, itemname, relative, selectRelative, templateFile);
 			return NormalizeLineEndings(template);
 		}
@@ -104,7 +100,6 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			var current = new DirectoryInfo(dir);
 			var dynaList = new List<string>();
-
 			while (current != null)
 			{
 				var tmplDir = Path.Combine(current.FullName, _templateDir);
@@ -113,10 +108,8 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					dynaList.AddRange(Directory.GetFiles(tmplDir, "*" + _defaultExt, SearchOption.AllDirectories));
 				}
-
 				current = current.Parent;
 			}
-
 			list.InsertRange(0, dynaList);
 		}
 
@@ -147,6 +140,8 @@ namespace CleanArchitecture.CodeGenerator
 				var importFuncExpression = createImportFuncExpression(classObject);
 				var templateFieldDefinition = createTemplateFieldDefinition(classObject);
 				var exportFuncExpression = createExportFuncExpression(classObject);
+				var mudTdDefinition = createMudTdDefinition(classObject);
+				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject);
 				return content.Replace("{rootnamespace}", _defaultNamespace)
 					            .Replace("{namespace}", ns)
 							    .Replace("{selectns}", selectNs)
@@ -155,7 +150,9 @@ namespace CleanArchitecture.CodeGenerator
 								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
 								.Replace("{importFuncExpression}", importFuncExpression)
 								.Replace("{templateFieldDefinition}", templateFieldDefinition)
-								.Replace("{exportFuncExpression}", exportFuncExpression);
+								.Replace("{exportFuncExpression}", exportFuncExpression)
+								.Replace("{mudTdDefinition}", mudTdDefinition)
+								.Replace("{mudTdHeaderDefinition}", mudTdHeaderDefinition);
 			}
 		}
 
@@ -228,7 +225,52 @@ namespace CleanArchitecture.CodeGenerator
 
 		private static string createMudTdHeaderDefinition(IntellisenseObject classObject)
 		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if(classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append($"<MudTh><MudTableSortLabel SortLabel=\"Name\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(\"Name\")]</MudTableSortLabel></MudTh> \r\n");
+				}
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				output.Append("                ");
+				output.Append($"<MudTh><MudTableSortLabel SortLabel=\"{property.Name}\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(\"{property.Name}\")]</MudTableSortLabel></MudTh> \r\n");
+			}
+			return output.ToString();
+		}
 
+		private static string createMudTdDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"Name\")]\"> \r\n");
+				output.Append("                ");
+				output.Append($"    <div class=\"d-flex flex-column\">\r\n");
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append("                ");
+					output.Append($"        <MudText>@context.Name</MudText>\r\n");
+				}
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any()) {
+					output.Append("                ");
+					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Description</MudText>\r\n");
+			    }
+				output.Append("                ");
+				output.Append($"    </div>\r\n");
+				output.Append("                ");
+				output.Append($"</MudTd>\r\n");
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				output.Append("                ");
+				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}</MudTd> \r\n");
+			}
+			return output.ToString();
 		}
 	}
 }

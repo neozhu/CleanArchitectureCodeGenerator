@@ -20,7 +20,7 @@ namespace {namespace};
         private readonly IMapper _mapper;
         private readonly IExcelService _excelService;
         private readonly IStringLocalizer<Export{nameofPlural}QueryHandler> _localizer;
-
+        private readonly {itemname}Dto _dto = new();
         public Export{nameofPlural}QueryHandler(
             IApplicationDbContext context,
             IMapper mapper,
@@ -39,7 +39,7 @@ namespace {namespace};
             #pragma warning disable CS8602
 #pragma warning disable CS8602
 #pragma warning disable CS8604
-            //TODO:Implementing Export{nameofPlural}QueryHandler method 
+            //TODO: Implementing Export{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}//.Where(x=>x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword))
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)

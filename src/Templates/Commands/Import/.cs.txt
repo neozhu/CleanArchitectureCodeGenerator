@@ -31,7 +31,7 @@ namespace {namespace};
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<Import{nameofPlural}CommandHandler> _localizer;
         private readonly IExcelService _excelService;
-        private readonly CustomerDto _dto = new();
+        private readonly {itemname}Dto _dto = new();
 
         public Import{nameofPlural}CommandHandler(
             IApplicationDbContext context,

@@ -10,7 +10,7 @@
             @*<MudTextField @bind-Value="TRequest.Name" 
                           Placeholder="@L["Search for name"]"
                           Clearable="true"
-                          TextChanged="OnSearchStringChanged">
+                          TextChanged="TextChanged">
             </MudTextField>*@
         </MudItem>
      </MudGrid>
@@ -19,8 +19,8 @@
 @code {
     [EditorRequired][Parameter] public {nameofPlural}WithPaginationQuery TRequest { get; set; } = null!;
     [EditorRequired][Parameter] public EventCallback<string> OnConditionChanged { get; set; }
-    private bool _advancedSearchExpanded { get; set; }
-    private async Task OnSearchStringChanged(string str)
+    private bool _advancedSearchExpanded;
+    private async Task TextChanged(string str)
     {
         if (_advancedSearchExpanded)
         {

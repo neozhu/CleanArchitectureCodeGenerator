@@ -39,7 +39,7 @@ namespace {namespace};
             #pragma warning disable CS8602
             #pragma warning disable CS8602
             #pragma warning disable CS8604
-            // TODO:  Implement Export{nameofPlural}QueryHandler method 
+            // TODO: Implement Export{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}//.Where(x=>x.Name.Contains(request.Keyword) || x.Description.Contains(request.Keyword))
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)

@@ -181,13 +181,14 @@ namespace CleanArchitecture.CodeGenerator
 			return extension;
 		}
 
+		public const string PRIMARYKEY = "Id";
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
 			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
 			{
 				output.Append($"[Description(\"{property.Name}\")]\r\n");
-				if (property.Name == "Id")
+				if (property.Name == PRIMARYKEY)
 				{
 					output.Append($"public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 				}
@@ -203,7 +204,7 @@ namespace CleanArchitecture.CodeGenerator
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
-				if (property.Name == "Id") continue;
+				if (property.Name == PRIMARYKEY) continue;
 				output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
 			}
 			return output.ToString();
@@ -213,7 +214,7 @@ namespace CleanArchitecture.CodeGenerator
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
-				if (property.Name == "Id") continue;
+				if (property.Name == PRIMARYKEY) continue;
 				output.Append($"_localizer[_dto.GetMemberDescription(\"{property.Name}\")], \r\n");
 			}
 			return output.ToString();
@@ -241,6 +242,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
 			{
+				if (property.Name == PRIMARYKEY) continue;
 				output.Append("                ");
 				output.Append($"<MudTh><MudTableSortLabel SortLabel=\"{property.Name}\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(\"{property.Name}\")]</MudTableSortLabel></MudTh> \r\n");
 			}
@@ -272,6 +274,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
 			{
+				if (property.Name == PRIMARYKEY) continue;
 				output.Append("                ");
 				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}</MudTd> \r\n");
 			}
@@ -304,6 +307,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
 			{
+				if (property.Name == PRIMARYKEY) continue;
 				output.Append($"<MudItem xs=\"12\"> \r\n");
 				output.Append("                ");
 				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{property.Name} is required!\"]\"></MudTextField>\r\n");

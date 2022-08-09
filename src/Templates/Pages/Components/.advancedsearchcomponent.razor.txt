@@ -18,13 +18,13 @@
 
 @code {
     [EditorRequired][Parameter] public {nameofPlural}WithPaginationQuery TRequest { get; set; } = null!;
-    [EditorRequired][Parameter] public EventCallback<string> OnFilterChanged { get; set; }
+    [EditorRequired][Parameter] public EventCallback<string> OnConditionChanged { get; set; }
     private bool _advancedSearchExpanded { get; set; }
     private async Task OnSearchStringChanged(string str)
     {
         if (_advancedSearchExpanded)
         {
-          await OnFilterChanged.InvokeAsync(str);
+          await OnConditionChanged.InvokeAsync(str);
         }
     }
 }

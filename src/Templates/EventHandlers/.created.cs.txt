@@ -3,8 +3,8 @@
 
 namespace {namespace};
 
-    public class {itemname}CreatedEventHandler : INotificationHandler<CreatedEvent<{itemname}>>
-    {
+public class {itemname}CreatedEventHandler : INotificationHandler<CreatedEvent<{itemname}>>
+{
         private readonly ILogger<{itemname}CreatedEventHandler> _logger;
 
         public {itemname}CreatedEventHandler(
@@ -18,4 +18,4 @@ namespace {namespace};
             _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().FullName);
             return Task.CompletedTask;
         }
-    }
+}

@@ -47,10 +47,10 @@ namespace {namespace};
         }
         public async Task<Result> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
-           //TODO:Implementing Import{nameofPlural}CommandHandler method
+           // TODO: Implement Import{nameofPlural}CommandHandler method
            var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object?>>
             {
-                // TODO: Define the fields that need to be read from Excel here, for example
+                // TODO: Define the fields that should be read from Excel, for example:
                 {importFuncExpression}
             }, _localizer["{nameofPlural}"]);
             if (result.Succeeded && result.Data is not null)
@@ -76,9 +76,9 @@ namespace {namespace};
         }
         public async Task<byte[]> Handle(Create{nameofPlural}TemplateCommand request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing Import{nameofPlural}CommandHandler method 
+            // TODO: Implement Import{nameofPlural}CommandHandler method 
             var fields = new string[] {
-                   // TODO: Define the fields and order needed to generate the template here, for example
+                   // TODO: Define the fields that should be generate in the template, for example:
                    {templateFieldDefinition}
                 };
             var result = await _excelService.CreateTemplateAsync(fields, _localizer["{nameofPlural}"]);

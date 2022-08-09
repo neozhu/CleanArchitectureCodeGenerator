@@ -141,7 +141,7 @@
             </ColGroup>
             <HeaderContent>
                 <MudTh>@PromptText.ACTIONS</MudTh>
-                @*TODO: Display the required fields in the table*@
+                @*TODO: Define the fields that should be displayed in data table*@
                 {mudTdHeaderDefinition}
             </HeaderContent>
             <RowTemplate>
@@ -171,7 +171,7 @@
                         </MudButton>
                     }
                 </MudTd>
-                @*TODO: Display the required fields in the table*@
+                @*TODO: Define the fields that should be displayed in data table*@
                 {mudTdDefinition}
             </RowTemplate>
             <NoRecordsContent>
@@ -281,12 +281,10 @@
 
     private async Task OnEdit({itemname}Dto dto)
     {
-        // TODO: Add the fields to be displayed according to the actual situation
+        // TODO: define assignment that should be edit fields, for example:
         var command = new AddEdit{itemname}Command()
             {
-                Id = dto.Id,
-                Name = dto.Name,
-                Description = dto.Description,
+               {fieldAssignmentDefinition}
             };
         var parameters = new DialogParameters
             {
@@ -308,7 +306,7 @@
     {
         var parameters = new DialogParameters
                     {
-                { nameof(DeleteConfirmation.ContentText), string.Format(PromptText.DELETECONFIRMATION, dto.Name) }
+                        { nameof(DeleteConfirmation.ContentText), string.Format(PromptText.DELETECONFIRMATION, dto.Name) }
                     };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, DisableBackdropClick = true };
         var dialog = DialogService.Show<DeleteConfirmation>(string.Format(PromptText.EDITTHEITEM,L["{itemname}"]), parameters, options);

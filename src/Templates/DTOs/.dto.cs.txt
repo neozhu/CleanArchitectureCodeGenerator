@@ -11,7 +11,7 @@ public class {itemname}Dto:IMapFrom<{itemname}>
     {
         profile.CreateMap<{itemname}, {itemname}Dto>().ReverseMap();
     }
-    // TODO: Define specific fields, for example.
+    // TODO: define data transfer object (DTO) fields, for example:
     {dtoFieldDefinition}
 }
 

@@ -29,10 +29,10 @@ namespace {namespace};
         }
         public async Task<Result<int>> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
-           //TODO:Implementing Create{itemname}CommandHandler method 
+           // TODO: Implement Create{itemname}CommandHandler method 
            var item = _mapper.Map<{itemname}>(request);
-           // add create domain events if this entity implement the IHasDomainEvent interface
-	       // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
+           // raise a create domain event
+	       item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
            _context.{nameofPlural}.Add(item);
            await _context.SaveChangesAsync(cancellationToken);
            return  await Result<int>.SuccessAsync(item.Id);

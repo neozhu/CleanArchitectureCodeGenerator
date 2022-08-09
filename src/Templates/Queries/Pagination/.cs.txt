@@ -34,7 +34,7 @@ namespace {namespace};
         {
 #pragma warning disable CS8602
 #pragma warning disable CS8604
-            //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
+            // TODO: Implement {nameofPlural}WithPaginationQueryHandler method 
            var data = await _context.{nameofPlural}
                 .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)

@@ -7,8 +7,8 @@ namespace {namespace};
     {
         public Create{itemname}CommandValidator()
         {
-           //TODO:Implementing Create{itemname}CommandValidator method 
-           //eg. RuleFor(v => v.Name)
+           // TODO: Implement Create{itemname}CommandValidator method, for example: 
+           // RuleFor(v => v.Name)
            //      .MaximumLength(256)
            //      .NotEmpty();
            throw new System.NotImplementedException();

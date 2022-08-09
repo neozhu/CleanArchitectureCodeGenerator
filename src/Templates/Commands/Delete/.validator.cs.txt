@@ -7,8 +7,8 @@ public class Delete{itemname}CommandValidator : AbstractValidator<Delete{itemnam
 {
         public Delete{itemname}CommandValidator()
         {
-           //TODO:Implementing Delete{itemname}CommandValidator method 
-           //eg. RuleFor(v => v.Id).NotNull().ForEach(v=>v.GreaterThan(0));
+           // TODO: Implement Delete{itemname}CommandValidator method, for example: 
+           // RuleFor(v => v.Id).NotNull().ForEach(v=>v.GreaterThan(0));
            throw new System.NotImplementedException();
         }
 }

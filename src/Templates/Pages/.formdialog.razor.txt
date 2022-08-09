@@ -7,20 +7,8 @@
     <DialogContent>
         <MudForm Model="@model" @ref="@_form" Validation="@(_modelValidator.ValidateValue)">
             <MudGrid>
-                <MudItem xs="12">
-                    <MudTextField Label="@L["{itemname} Name"]" @bind-Value="model.Name"
-                                  For="@(() => model.Name)"
-                                  Required="true"
-                                  RequiredError="@L["{itemname} name is required!"]"
-                                  >
-                    </MudTextField>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudTextField Label="@L["Description"]"
-                                  Lines="3"
-                                  For="@(() => model.Description)"
-                                  @bind-Value="model.Description"></MudTextField>
-                </MudItem>
+                @*TODO: define mudform that should be edit fields, for example:*@
+                {mudFormFieldDefinition}
             </MudGrid>
         </MudForm>
     </DialogContent>

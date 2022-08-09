@@ -142,17 +142,22 @@ namespace CleanArchitecture.CodeGenerator
 				var exportFuncExpression = createExportFuncExpression(classObject);
 				var mudTdDefinition = createMudTdDefinition(classObject);
 				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject);
+				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject);
+				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
 				return content.Replace("{rootnamespace}", _defaultNamespace)
 					            .Replace("{namespace}", ns)
 							    .Replace("{selectns}", selectNs)
 								.Replace("{itemname}", name)
 								.Replace("{nameofPlural}", nameofPlural)
 								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
+								.Replace("{fieldAssignmentDefinition}", fieldAssignmentDefinition)
 								.Replace("{importFuncExpression}", importFuncExpression)
 								.Replace("{templateFieldDefinition}", templateFieldDefinition)
 								.Replace("{exportFuncExpression}", exportFuncExpression)
 								.Replace("{mudTdDefinition}", mudTdDefinition)
-								.Replace("{mudTdHeaderDefinition}", mudTdHeaderDefinition);
+								.Replace("{mudTdHeaderDefinition}", mudTdHeaderDefinition)
+								.Replace("{mudFormFieldDefinition}", mudFormFieldDefinition)
+								;
 			}
 		}
 
@@ -269,6 +274,53 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				output.Append("                ");
 				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}</MudTd> \r\n");
+			}
+			return output.ToString();
+		}
+
+		private static string createMudFormFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append("                ");
+					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Name\")]\" @bind-Value=\"model.Name\" For=\"@(() => model.Name)\" Required=\"true\" RequiredError=\"@L[\"name is required!\"]\"></MudTextField>\r\n");
+					output.Append("                ");
+					output.Append($"</MudItem> \r\n");
+				}
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
+				{
+					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append("                ");
+					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Description\")]\" Lines=\"3\" For=\"@(() => model.Description)\" @bind-Value=\"model.Description\"></MudTextField>\r\n");
+					output.Append("                ");
+					output.Append($"</MudItem> \r\n");
+				}
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				output.Append($"<MudItem xs=\"12\"> \r\n");
+				output.Append("                ");
+				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{property.Name} is required!\"]\"></MudTextField>\r\n");
+				output.Append("                ");
+				output.Append($"</MudItem> \r\n");
+			}
+			return output.ToString();
+		}
+
+
+		private static string createFieldAssignmentDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			{
+				output.Append($"        ");
+				output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
 			}
 			return output.ToString();
 		}

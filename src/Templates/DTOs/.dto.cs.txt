@@ -6,10 +6,7 @@ namespace {namespace};
 
 public class {itemname}Dto:IMapFrom<{itemname}>
 {
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<{itemname}, {itemname}Dto>().ReverseMap();
-    }
+   
     //TODO:Define field properties
 
     public TrackingState TrackingState { get; set; }

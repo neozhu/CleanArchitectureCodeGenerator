@@ -5,9 +5,11 @@ using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace};
 
-    public class AcceptChanges{nameofPlural}Command:IRequest<Result>
+    public class AcceptChanges{nameofPlural}Command:IRequest<Result>,ICacheInvalidator
     {
       public {itemname}Dto[] Items { get; set; }
+      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
 
     public class AcceptChanges{nameofPlural}CommandHandler : IRequestHandler<AcceptChanges{nameofPlural}Command, Result>
@@ -53,7 +55,7 @@ namespace {namespace};
             }
             
             await _context.SaveChangesAsync(cancellationToken);
-            return Result.Success();
+            return await Result.SuccessAsync();
 
         }
     }

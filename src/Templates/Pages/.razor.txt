@@ -24,13 +24,13 @@
                   FixedHeader="true"
                   FixedFooter="true"
                   Virtualize="true"
-                  RowsPerPage="15"
+                  @bind-RowsPerPage="_defaultPageSize"
                   Height="calc(100vh - 330px)"
                   Loading="@_loading"
                   SortLabel="@PromptText.ORDERBY"
                   MultiSelection="true"
-                  SelectedItems="_selectedItems"
-                  SelectedItem="_currentDto"
+                  @bind-SelectedItems="_selectedItems"
+                  @bind-SelectedItem="_currentDto"
                   Hover="true" @ref="_table">
             <ToolBarContent>
                 <div class="justify-start pt-3">
@@ -193,6 +193,7 @@
 
 @code {
     public string? Title { get; private set; }
+    private int _defaultPageSize = 15;
     private HashSet<{itemname}Dto> _selectedItems = new HashSet<{itemname}Dto>();
     private MudTable<{itemname}Dto> _table = default!;
     private {itemname}Dto _currentDto = new();

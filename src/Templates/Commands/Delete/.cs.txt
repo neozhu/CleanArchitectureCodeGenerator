@@ -37,16 +37,16 @@ namespace {namespace};
         }
         public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing DeleteChecked{nameofPlural}CommandHandler method 
+            // TODO: Implement DeleteChecked{nameofPlural}CommandHandler method 
             var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
             foreach (var item in items)
             {
-			    // add delete domain events if this entity implement the IHasDomainEvent interface
-				// item.DomainEvents.Add(new DeletedEvent<{itemname}>(item));
+			    // raise a delete domain event
+				item.AddDomainEvent(new DeletedEvent<{itemname}>(item));
                 _context.{nameofPlural}.Remove(item);
             }
             await _context.SaveChangesAsync(cancellationToken);
-            return Result.Success();
+            return await Result.SuccessAsync();
         }
 
     }

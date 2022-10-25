@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CleanArchitecture.CodeGenerator.Helpers;
+using CleanArchitecture.CodeGenerator.Models;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 
@@ -17,7 +19,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static readonly List<string> _templateFiles = new List<string>();
 		private const string _defaultExt = ".txt";
 		private const string _templateDir = ".templates";
-
+		private const string _defaultNamespace = "CleanArchitecture.Razor";
 		static TemplateMap()
 		{
 			var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -34,7 +36,7 @@ namespace CleanArchitecture.CodeGenerator
 		}
 		
 
-		public static async Task<string> GetTemplateFilePathAsync(Project project, string file,string itemname,string selectFolder)
+		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file,string itemname,string selectFolder)
 		{
 			var templatefolders =new string[]{
 				"Commands\\AcceptChanges",
@@ -50,6 +52,8 @@ namespace CleanArchitecture.CodeGenerator
 				"Queries\\Export",
 				"Queries\\GetAll",
 				"Queries\\Pagination",
+				"Pages",
+				"Pages\\Components",
 				};
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);
@@ -69,7 +73,7 @@ namespace CleanArchitecture.CodeGenerator
 			 
 				}) )
 			{
-				var tmplFile = list.OrderByDescending(x=>x).FirstOrDefault(f => {
+				var tmplFile = list.OrderByDescending(x=>x.Length).FirstOrDefault(f => {
 					var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\", "\\\\"); ;
 					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)
@@ -88,8 +92,7 @@ namespace CleanArchitecture.CodeGenerator
 				var tmpl = AdjustForSpecific(safeName, extension);
 				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
 			}
-
-			var template = await ReplaceTokensAsync(project, itemname, relative, selectRelative, templateFile);
+			var template = await ReplaceTokensAsync(project, classObject, itemname, relative, selectRelative, templateFile);
 			return NormalizeLineEndings(template);
 		}
 
@@ -97,7 +100,6 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			var current = new DirectoryInfo(dir);
 			var dynaList = new List<string>();
-
 			while (current != null)
 			{
 				var tmplDir = Path.Combine(current.FullName, _templateDir);
@@ -106,14 +108,12 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					dynaList.AddRange(Directory.GetFiles(tmplDir, "*" + _defaultExt, SearchOption.AllDirectories));
 				}
-
 				current = current.Parent;
 			}
-
 			list.InsertRange(0, dynaList);
 		}
 
-		private static async Task<string> ReplaceTokensAsync(Project project, string name, string relative,string selectRelative, string templateFile)
+		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative,string selectRelative, string templateFile)
 		{
 			if (string.IsNullOrEmpty(templateFile))
 			{
@@ -136,10 +136,28 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
-				return content.Replace("{rootnamespace}", "CleanArchitecture.Razor")
+				var dtoFieldDefinition = createDtoFieldDefinition(classObject);
+				var importFuncExpression = createImportFuncExpression(classObject);
+				var templateFieldDefinition = createTemplateFieldDefinition(classObject);
+				var exportFuncExpression = createExportFuncExpression(classObject);
+				var mudTdDefinition = createMudTdDefinition(classObject);
+				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject);
+				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject);
+				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
+				return content.Replace("{rootnamespace}", _defaultNamespace)
 					            .Replace("{namespace}", ns)
-											.Replace("{selectns}", selectNs)
-											.Replace("{itemname}", name).Replace("{nameofPlural}", nameofPlural);
+							    .Replace("{selectns}", selectNs)
+								.Replace("{itemname}", name)
+								.Replace("{nameofPlural}", nameofPlural)
+								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
+								.Replace("{fieldAssignmentDefinition}", fieldAssignmentDefinition)
+								.Replace("{importFuncExpression}", importFuncExpression)
+								.Replace("{templateFieldDefinition}", templateFieldDefinition)
+								.Replace("{exportFuncExpression}", exportFuncExpression)
+								.Replace("{mudTdDefinition}", mudTdDefinition)
+								.Replace("{mudTdHeaderDefinition}", mudTdHeaderDefinition)
+								.Replace("{mudFormFieldDefinition}", mudFormFieldDefinition)
+								;
 			}
 		}
 
@@ -161,6 +179,154 @@ namespace CleanArchitecture.CodeGenerator
 			}
 
 			return extension;
+		}
+
+		public const string PRIMARYKEY = "Id";
+		private static string createDtoFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
+			{
+				output.Append($"[Description(\"{property.Name}\")]\r\n");
+				if (property.Name == PRIMARYKEY)
+				{
+					output.Append($"public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+				}
+				else
+				{
+					output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+				}
+			}
+			return output.ToString();
+		}
+		private static string createImportFuncExpression(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
+			}
+			return output.ToString();
+		}
+		private static string createTemplateFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				output.Append($"_localizer[_dto.GetMemberDescription(\"{property.Name}\")], \r\n");
+			}
+			return output.ToString();
+		}
+		private static string createExportFuncExpression(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			{
+				output.Append($"{{_localizer[_dto.GetMemberDescription(\"{property.Name}\")],item => item.{property.Name}}}, \r\n");
+			}
+			return output.ToString();
+		}
+
+		private static string createMudTdHeaderDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if(classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append($"<MudTh><MudTableSortLabel SortLabel=\"Name\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(\"Name\")]</MudTableSortLabel></MudTh> \r\n");
+				}
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				output.Append("                ");
+				output.Append($"<MudTh><MudTableSortLabel SortLabel=\"{property.Name}\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(\"{property.Name}\")]</MudTableSortLabel></MudTh> \r\n");
+			}
+			return output.ToString();
+		}
+
+		private static string createMudTdDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"Name\")]\"> \r\n");
+				output.Append("                ");
+				output.Append($"    <div class=\"d-flex flex-column\">\r\n");
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append("                ");
+					output.Append($"        <MudText>@context.Name</MudText>\r\n");
+				}
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any()) {
+					output.Append("                ");
+					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Description</MudText>\r\n");
+			    }
+				output.Append("                ");
+				output.Append($"    </div>\r\n");
+				output.Append("                ");
+				output.Append($"</MudTd>\r\n");
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				output.Append("                ");
+				output.Append($"<MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}</MudTd> \r\n");
+			}
+			return output.ToString();
+		}
+
+		private static string createMudFormFieldDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			var defaultfieldName = new string[] { "Name", "Description" };
+			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			{
+				
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
+				{
+					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append("                ");
+					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Name\")]\" @bind-Value=\"model.Name\" For=\"@(() => model.Name)\" Required=\"true\" RequiredError=\"@L[\"name is required!\"]\"></MudTextField>\r\n");
+					output.Append("                ");
+					output.Append($"</MudItem> \r\n");
+				}
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
+				{
+					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append("                ");
+					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Description\")]\" Lines=\"3\" For=\"@(() => model.Description)\" @bind-Value=\"model.Description\"></MudTextField>\r\n");
+					output.Append("                ");
+					output.Append($"</MudItem> \r\n");
+				}
+			}
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				output.Append($"<MudItem xs=\"12\"> \r\n");
+				output.Append("                ");
+				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{property.Name} is required!\"]\"></MudTextField>\r\n");
+				output.Append("                ");
+				output.Append($"</MudItem> \r\n");
+			}
+			return output.ToString();
+		}
+
+
+		private static string createFieldAssignmentDefinition(IntellisenseObject classObject)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			{
+				output.Append($"        ");
+				output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
+			}
+			return output.ToString();
 		}
 	}
 }

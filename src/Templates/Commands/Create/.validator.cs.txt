@@ -7,11 +7,18 @@ namespace {namespace};
     {
         public Create{itemname}CommandValidator()
         {
-           //TODO:Implementing Create{itemname}CommandValidator method 
-           //eg. RuleFor(v => v.Name)
+           // TODO: Implement Create{itemname}CommandValidator method, for example: 
+           // RuleFor(v => v.Name)
            //      .MaximumLength(256)
            //      .NotEmpty();
            throw new System.NotImplementedException();
         }
+        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
+     {
+        var result = await ValidateAsync(ValidationContext<Create{itemname}Command>.CreateWithOptions((Create{itemname}Command)model, x => x.IncludeProperties(propertyName)));
+        if (result.IsValid)
+            return Array.Empty<string>();
+        return result.Errors.Select(e => e.ErrorMessage);
+     };
     }
 

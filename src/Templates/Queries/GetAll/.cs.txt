@@ -32,7 +32,7 @@ namespace {namespace};
 
         public async Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing GetAll{nameofPlural}QueryHandler method 
+            // TODO: Implement GetAll{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}
                          .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                          .ToListAsync(cancellationToken);

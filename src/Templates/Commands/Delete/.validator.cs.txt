@@ -3,22 +3,14 @@
 
 namespace {namespace};
 
-    public class Delete{itemname}CommandValidator : AbstractValidator<Delete{itemname}Command>
-    {
+public class Delete{itemname}CommandValidator : AbstractValidator<Delete{itemname}Command>
+{
         public Delete{itemname}CommandValidator()
         {
-           //TODO:Implementing Delete{itemname}CommandValidator method 
-           //eg .RuleFor(v => v.Id).NotNull().GreaterThan(0);
+           // TODO: Implement Delete{itemname}CommandValidator method, for example: 
+           // RuleFor(v => v.Id).NotNull().ForEach(v=>v.GreaterThan(0));
            throw new System.NotImplementedException();
         }
-    }
-    public class DeleteChecked{nameofPlural}CommandValidator : AbstractValidator<DeleteChecked{nameofPlural}Command>
-    {
-        public DeleteChecked{nameofPlural}CommandValidator()
-        {
-            //TODO:Implementing DeleteProductCommandValidator method 
-            //eg. RuleFor(v => v.Id).NotNull().NotEmpty();
-            throw new System.NotImplementedException();
-        }
-    }
+}
+    
 

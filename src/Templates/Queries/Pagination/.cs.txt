@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class {nameofPlural}WithPaginationQuery : PaginationRequest, IRequest<PaginatedData<{itemname}Dto>>, ICacheable
+    public class {nameofPlural}WithPaginationQuery : PaginationFilter, IRequest<PaginatedData<{itemname}Dto>>, ICacheable
     {
-       public string CacheKey => {itemname}CacheKey.GetPagtionCacheKey($"{this}");
-       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
+        public string CacheKey => {itemname}CacheKey.GetPaginationCacheKey($"{this}");
+        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
     public class {nameofPlural}WithPaginationQueryHandler :
@@ -31,12 +32,11 @@ namespace {namespace};
 
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing {nameofPlural}WithPaginationQueryHandler method 
-           var filters = PredicateBuilder.FromFilter<{itemname}>(request.FilterRules);
-           var data = await _context.{nameofPlural}.Where(filters)
-                .OrderBy($"{request.Sort} {request.Order}")
+            // TODO: Implement {nameofPlural}WithPaginationQueryHandler method 
+           var data = await _context.{nameofPlural}
+                .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                .PaginatedDataAsync(request.Page, request.Rows);
+                .PaginatedDataAsync(request.PageNumber, request.PageSize);
             return data;
         }
    }

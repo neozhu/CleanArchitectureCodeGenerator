@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.CodeGenerator.Helpers;
+using CleanArchitecture.CodeGenerator.Models;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft;
@@ -53,11 +54,11 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
+			NewItemTarget ui = NewItemTarget.Create(_dte, "Blazor.Server.UI");
 			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
-			var entities = ProjectHelpers.GetEntities(domain.Project)
-				.Where(x=>includes.Contains(x.BaseName) && !includes.Contains(x.Name))
-				.Select(x=>x.Name)
-				.Distinct().ToArray();
+			var objectlist = ProjectHelpers.GetEntities(domain.Project)
+				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
+			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();
 			if (target == null)
 			{
 				MessageBox.Show(
@@ -83,6 +84,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					var name = Path.GetFileNameWithoutExtension(inputname);
 					var nameofPlural = ProjectHelpers.Pluralize(name);
+					var objectClass = objectlist.Where(x => x.Name == name).First();
 					var events = new List<string>() {
 						$"Events/{name}CreatedEvent.cs",
 						$"Events/{name}DeletedEvent.cs",
@@ -90,13 +92,11 @@ namespace CleanArchitecture.CodeGenerator
 						};
 					foreach (var item in events)
 					{
-						AddItemAsync(item, name, domain).Forget();
+						AddItemAsync(objectClass,item, name, domain).Forget();
 					}
 
 					var list = new List<string>()
 					{
-						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}Command.cs",
-						$"{nameofPlural}/Commands/AcceptChanges/AcceptChanges{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs",
 						$"{nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs",
 						$"{nameofPlural}/Commands/Create/Create{name}Command.cs",
@@ -118,9 +118,19 @@ namespace CleanArchitecture.CodeGenerator
 					};
 					foreach (var item in list)
 					{
-						AddItemAsync(item, name, target).Forget();
+						AddItemAsync(objectClass,item, name, target).Forget();
 					}
-					
+
+					var pages = new List<string>()
+					{
+						$"Pages/{nameofPlural}/{nameofPlural}.razor",
+						$"Pages/{nameofPlural}/_{name}FormDialog.razor",
+						$"Pages/{nameofPlural}/Components/{nameofPlural}AdvancedSearchComponent.razor"
+					};
+					foreach (var item in pages)
+					{
+						AddItemAsync(objectClass,item, name, ui).Forget();
+					}
 
 				}
 				catch (Exception ex) when (!ErrorHandler.IsCriticalException(ex))
@@ -135,7 +145,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private async Task AddItemAsync(string name,string itemname, NewItemTarget target)
+		private async Task AddItemAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target)
 		{
 			// The naming rules that apply to files created on disk also apply to virtual solution folders,
 			// so regardless of what type of item we are creating, we need to validate the name.
@@ -155,7 +165,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			else
 			{
-				await AddFileAsync(name, itemname, target);
+				await AddFileAsync(classObject,name, itemname, target);
 			}
 		}
 
@@ -179,7 +189,7 @@ namespace CleanArchitecture.CodeGenerator
 			} while (!string.IsNullOrEmpty(path));
 		}
 
-		private async System.Threading.Tasks.Task AddFileAsync(string name,string itemname, NewItemTarget target)
+		private async Task AddFileAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target)
 		{
 			await JoinableTaskFactory.SwitchToMainThreadAsync();
 			FileInfo file;
@@ -213,7 +223,7 @@ namespace CleanArchitecture.CodeGenerator
 					project = target.Project;
 				}
 
-				int position = await WriteFileAsync(project, file.FullName, itemname, target.Directory);
+				int position = await WriteFileAsync(project, classObject, file.FullName, itemname, target.Directory);
 				if (target.ProjectItem != null && target.ProjectItem.IsKind(Constants.vsProjectItemKindVirtualFolder))
 				{
 					target.ProjectItem.ProjectItems.AddFromFile(file.FullName);
@@ -245,9 +255,9 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private static async Task<int> WriteFileAsync(Project project, string file,string itemname,string selectFolder)
+		private static async Task<int> WriteFileAsync(Project project, IntellisenseObject classObject,  string file,string itemname,string selectFolder)
 		{
-			string template = await TemplateMap.GetTemplateFilePathAsync(project, file, itemname, selectFolder);
+			string template = await TemplateMap.GetTemplateFilePathAsync(project, classObject,file, itemname, selectFolder);
 
 			if (!string.IsNullOrEmpty(template))
 			{
@@ -255,7 +265,7 @@ namespace CleanArchitecture.CodeGenerator
 
 				if (index > -1)
 				{
-					template = template.Remove(index, 1);
+					//template = template.Remove(index, 1);
 				}
 
 				await WriteToDiskAsync(file, template);

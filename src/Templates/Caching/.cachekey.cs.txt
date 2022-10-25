@@ -6,10 +6,10 @@ namespace {namespace};
 public static class {itemname}CacheKey
 {
     public const string GetAllCacheKey = "all-{nameofPlural}";
-    public static string GetPagtionCacheKey(string parameters) {
+    public static string GetPaginationCacheKey(string parameters) {
         return $"{nameofPlural}WithPaginationQuery,{parameters}";
     }
-        static {itemname}CacheKey()
+    static {itemname}CacheKey()
     {
         _tokensource = new CancellationTokenSource(new TimeSpan(3,0,0));
     }

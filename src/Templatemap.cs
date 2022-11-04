@@ -187,14 +187,21 @@ namespace CleanArchitecture.CodeGenerator
 			var output = new StringBuilder();
 			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
 			{
-				output.Append($"[Description(\"{property.Name}\")]\r\n");
+				output.Append($"    [Description(\"{property.Name}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
 				{
-					output.Append($"public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+					output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 				}
 				else
 				{
-					output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+					if (property.Type.CodeName.Any(x => x == '?'))
+					{
+						output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+					}
+					else
+					{
+						output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+					}
 				}
 			}
 			return output.ToString();
@@ -290,7 +297,7 @@ namespace CleanArchitecture.CodeGenerator
 				
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
 				{
-					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 					output.Append("                ");
 					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Name\")]\" @bind-Value=\"model.Name\" For=\"@(() => model.Name)\" Required=\"true\" RequiredError=\"@L[\"name is required!\"]\"></MudTextField>\r\n");
 					output.Append("                ");
@@ -298,7 +305,7 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
 				{
-					output.Append($"<MudItem xs=\"12\"> \r\n");
+					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 					output.Append("                ");
 					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Description\")]\" Lines=\"3\" For=\"@(() => model.Description)\" @bind-Value=\"model.Description\"></MudTextField>\r\n");
 					output.Append("                ");
@@ -308,7 +315,7 @@ namespace CleanArchitecture.CodeGenerator
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
 			{
 				if (property.Name == PRIMARYKEY) continue;
-				output.Append($"<MudItem xs=\"12\"> \r\n");
+				output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 				output.Append("                ");
 				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{property.Name} is required!\"]\"></MudTextField>\r\n");
 				output.Append("                ");

@@ -200,7 +200,7 @@ namespace CleanArchitecture.CodeGenerator
 					}
 					else
 					{
-						output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+						output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
 					}
 				}
 			}

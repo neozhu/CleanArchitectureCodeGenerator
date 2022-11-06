@@ -54,6 +54,7 @@ namespace CleanArchitecture.CodeGenerator
 				"Queries\\Pagination",
 				"Pages",
 				"Pages\\Components",
+				"Persistence\\Configurations",
 				};
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);

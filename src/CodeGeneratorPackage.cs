@@ -54,6 +54,7 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
+			NewItemTarget infrastructure = NewItemTarget.Create(_dte, "Infrastructure");
 			NewItemTarget ui = NewItemTarget.Create(_dte, "Blazor.Server.UI");
 			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
@@ -93,6 +94,13 @@ namespace CleanArchitecture.CodeGenerator
 					foreach (var item in events)
 					{
 						AddItemAsync(objectClass,item, name, domain).Forget();
+					}
+					var configurations = new List<string>() {
+						 $"Persistence/Configurations/{name}Configuration.cs"
+						};
+					foreach (var item in configurations)
+					{
+						AddItemAsync(objectClass, item, name, infrastructure).Forget();
 					}
 
 					var list = new List<string>()

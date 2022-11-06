@@ -33,7 +33,7 @@ namespace {namespace};
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
             // TODO: Implement {nameofPlural}WithPaginationQueryHandler method 
-           var data = await _context.{nameofPlural}
+           var data = await _context.{nameofPlural}//.Where(x=>x.Name!.Contains(request.Keyword) || x.Description!.Contains(request.Keyword))
                 .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                 .PaginatedDataAsync(request.PageNumber, request.PageSize);

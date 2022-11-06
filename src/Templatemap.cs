@@ -180,14 +180,21 @@ namespace CleanArchitecture.CodeGenerator
 
 			return extension;
 		}
-
+		private static string splitCamelCase(string str)
+		{
+			var r = new Regex(@"
+                (?<=[A-Z])(?=[A-Z][a-z]) |
+                 (?<=[^A-Z])(?=[A-Z]) |
+                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+			return r.Replace(str, " ");
+		}
 		public const string PRIMARYKEY = "Id";
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
 			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
 			{
-				output.Append($"    [Description(\"{property.Name}\")]\r\n");
+				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
 				{
 					output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
@@ -317,7 +324,7 @@ namespace CleanArchitecture.CodeGenerator
 				if (property.Name == PRIMARYKEY) continue;
 				output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 				output.Append("                ");
-				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{property.Name} is required!\"]\"></MudTextField>\r\n");
+				output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
 				output.Append("                ");
 				output.Append($"</MudItem> \r\n");
 			}

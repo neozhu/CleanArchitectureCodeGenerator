@@ -201,21 +201,39 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				else
 				{
-					if (property.Type.CodeName.Any(x => x == '?'))
+					switch (property.Type.CodeName)
 					{
-						output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
-					}
-					else
-					{
-						if (property.Type.IsOptional)
-						{
+						case "string" when property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
+							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} = String.Empty; \r\n");
+						    break;
+						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
 							output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
-						}
-						else
-						{
-							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
-						}
+							break;
+						case "System.DateTime?":
+							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.DateTime":
+							output.Append($"    public DateTime {property.Name} {{get;set;}} \r\n");
+							break;
+						default:
+							if (property.Type.CodeName.Any(x => x == '?'))
+							{
+								output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+							}
+							else
+							{
+								if (property.Type.IsOptional)
+								{
+									output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+								}
+								else
+								{
+									output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+								}
+							}
+							break;
 					}
+					
 				}
 			}
 			return output.ToString();
@@ -301,6 +319,14 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" ><MudCheckBox Checked=\"@context.{property.Name}\" ReadOnly></MudCheckBox></MudTd> \r\n");
 				}
+				else if(property.Type.CodeName.Equals("System.DateTime", StringComparison.OrdinalIgnoreCase))
+				{
+					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}.Date.ToString(\"d\")</MudTd> \r\n");
+				}
+				else if (property.Type.CodeName.Equals("System.DateTime?", StringComparison.OrdinalIgnoreCase))
+				{
+					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}?.Date.ToString(\"d\")</MudTd> \r\n");
+				}
 				else
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" >@context.{property.Name}</MudTd> \r\n");
@@ -313,45 +339,71 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createMudFormFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			var defaultfieldName = new string[] { "Name", "Description" };
-			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
-			{
-				
-				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
-				{
-					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-					output.Append("                ");
-					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Name\")]\" @bind-Value=\"model.Name\" For=\"@(() => model.Name)\" Required=\"true\" RequiredError=\"@L[\"name is required!\"]\"></MudTextField>\r\n");
-					output.Append("                ");
-					output.Append($"</MudItem> \r\n");
-				}
-				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
-				{
-					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-					output.Append("                ");
-					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Description\")]\" Lines=\"3\" For=\"@(() => model.Description)\" @bind-Value=\"model.Description\"></MudTextField>\r\n");
-					output.Append("                ");
-					output.Append($"</MudItem> \r\n");
-				}
-			}
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				if (property.Name == PRIMARYKEY) continue;
-				if(property.Type.CodeName.Equals("bool", StringComparison.OrdinalIgnoreCase))
+				switch (property.Type.CodeName.ToLower())
 				{
-					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-					output.Append("                ");
-					output.Append($"        <MudCheckBox Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Checked=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" ></MudCheckBox>\r\n");
-					output.Append("                ");
-					output.Append($"</MudItem> \r\n");
-				}
-				else
-				{
-					output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-					output.Append("                ");
-					output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
-					output.Append("                ");
-					output.Append($"</MudItem> \r\n");
+					case "string" when property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"true\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "string" when property.Name.Equals("Description", StringComparison.OrdinalIgnoreCase):
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"Description\")]\" Lines=\"3\" For=\"@(() => model.Description)\" @bind-Value=\"model.Description\"></MudTextField>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "bool?":
+					case "bool":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudCheckBox Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Checked=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" ></MudCheckBox>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "int?":
+					case "int":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudNumericField  Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Min=\"0\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudNumericField >\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "decimal?":
+					case "decimal":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudNumericField  Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Min=\"0.00\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudNumericField >\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "system.datetime?": 
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudDatePicker Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Date=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudDatePicker>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "system.datetime":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudDatePicker Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Date=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"true\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\" ></MudDatePicker>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					default:
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+
 				}
 				
 			}

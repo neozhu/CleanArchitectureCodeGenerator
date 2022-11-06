@@ -315,7 +315,7 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				if (property.Name == PRIMARYKEY) continue;
 				output.Append("                ");
-				if (property.Type.CodeName.Equals("bool", StringComparison.OrdinalIgnoreCase))
+				if (property.Type.CodeName.StartsWith("bool", StringComparison.OrdinalIgnoreCase))
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(\"{property.Name}\")]\" ><MudCheckBox Checked=\"@context.{property.Name}\" ReadOnly></MudCheckBox></MudTd> \r\n");
 				}
@@ -378,6 +378,14 @@ namespace CleanArchitecture.CodeGenerator
 					case "decimal":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
+						output.Append($"        <MudNumericField  Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Min=\"0.00m\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudNumericField >\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "double?":
+					case "double":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
 						output.Append($"        <MudNumericField  Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Min=\"0.00\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudNumericField >\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
@@ -386,13 +394,6 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
 						output.Append($"        <MudDatePicker Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Date=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudDatePicker>\r\n");
-						output.Append("                ");
-						output.Append($"</MudItem> \r\n");
-						break;
-					case "system.datetime":
-						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-						output.Append("                ");
-						output.Append($"        <MudDatePicker Label=\"@L[model.GetMemberDescription(\"{property.Name}\")]\" @bind-Date=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"true\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\" ></MudDatePicker>\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;

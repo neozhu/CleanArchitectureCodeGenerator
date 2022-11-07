@@ -204,6 +204,8 @@
     private bool _downloading;
     [Inject]
     private ISender _mediator { get; set; } = default!;
+    [Inject]
+    private IMapper _mapper { get; set; } = default!;
     [CascadingParameter]
     private Task<AuthenticationState> _authState { get; set; } = default!;
 
@@ -282,11 +284,7 @@
 
     private async Task OnEdit({itemname}Dto dto)
     {
-        // TODO: define assignment that should be edit fields, for example:
-        var command = new AddEdit{itemname}Command()
-            {
-               {fieldAssignmentDefinition}
-            };
+        var command = _mapper.Map<AddEdit{itemname}Command>(dto);
         var parameters = new DialogParameters
             {
                 { nameof(_{itemname}FormDialog.model),command },

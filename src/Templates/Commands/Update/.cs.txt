@@ -6,8 +6,9 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: {itemname}Dto,IRequest<Result>, ICacheInvalidator
+    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,IRequest<Result>, ICacheInvalidator
     {
+        {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
@@ -33,7 +34,8 @@ namespace {namespace};
            var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken);
            if (item != null)
            {
-                item = _mapper.Map(request, item);
+                var dto = _mapper.Map<{itemname}Dto>(request);
+                item = _mapper.Map(dto, item);
 				// raise a update domain event
 				item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
                 await _context.SaveChangesAsync(cancellationToken);

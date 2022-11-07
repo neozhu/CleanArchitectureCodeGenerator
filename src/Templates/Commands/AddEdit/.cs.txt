@@ -6,8 +6,9 @@ using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
 
-    public class AddEdit{itemname}Command: {itemname}Dto,IRequest<Result<int>>, ICacheInvalidator
+    public class AddEdit{itemname}Command: IMapFrom<{itemname}Dto>,IRequest<Result<int>>, ICacheInvalidator
     {
+      {dtoFieldDefinition}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
@@ -30,10 +31,11 @@ namespace {namespace};
         public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
         {
             // TODO: Implement AddEdit{itemname}CommandHandler method 
+            var dto = _mapper.Map<{itemname}Dto>(request);
             if (request.Id > 0)
             {
                 var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
-                item = _mapper.Map(request, item);
+                item = _mapper.Map(dto, item);
 				// raise a update domain event
 				item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
                 await _context.SaveChangesAsync(cancellationToken);
@@ -41,7 +43,7 @@ namespace {namespace};
             }
             else
             {
-                var item = _mapper.Map<{itemname}>(request);
+                var item = _mapper.Map<{itemname}>(dto);
                 // raise a create domain event
 				item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
                 _context.{nameofPlural}.Add(item);

@@ -141,6 +141,9 @@
     <Content Include="Templates\Pages\Components\.advancedsearchcomponent.razor.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Templates\Persistence\Configurations\.configuration.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\Queries\Export\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

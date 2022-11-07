@@ -6,8 +6,9 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Create{itemname}Command: {itemname}Dto,IRequest<Result<int>>, ICacheInvalidator
+    public class Create{itemname}Command: IMapFrom<{itemname}Dto>,IRequest<Result<int>>, ICacheInvalidator
     {
+      {dtoFieldDefinition}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
@@ -30,7 +31,8 @@ namespace {namespace};
         public async Task<Result<int>> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Create{itemname}CommandHandler method 
-           var item = _mapper.Map<{itemname}>(request);
+           var dto = _mapper.Map<{itemname}Dto>(request);
+           var item = _mapper.Map<{itemname}>(dto);
            // raise a create domain event
 	       item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
            _context.{nameofPlural}.Add(item);

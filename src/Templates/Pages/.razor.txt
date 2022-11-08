@@ -203,7 +203,7 @@
     private bool _uploading;
     private bool _downloading;
     [Inject]
-    private ISender _mediator { get; set; } = default!;
+    private IMediator _mediator { get; set; } = default!;
     [Inject]
     private IMapper _mapper { get; set; } = default!;
     [CascadingParameter]

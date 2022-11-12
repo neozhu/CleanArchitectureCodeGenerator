@@ -193,7 +193,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach(var property in classObject.Properties.Where(x=>x.Type.IsKnownType==true))
+			foreach(var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
@@ -207,14 +207,25 @@ namespace CleanArchitecture.CodeGenerator
 						case "string" when property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
 							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} = String.Empty; \r\n");
 						    break;
-						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
+						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) && !property.Type.IsArray && !property.Type.IsDictionary:
 							output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) && property.Type.IsArray:
+							output.Append($"    public HashSet<{property.Type.CodeName}>? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTime?":
 							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTime":
 							output.Append($"    public DateTime {property.Name} {{get;set;}} \r\n");
+							break;
+						case "decimal?":
+						case "decimal":
+						case "int?":
+						case "int":
+						case "double?":
+						case "double":
+							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 							break;
 						default:
 							if (property.Type.CodeName.Any(x => x == '?'))

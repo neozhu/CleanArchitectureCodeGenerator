@@ -135,7 +135,7 @@
             <ColGroup>
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">
                     <col style="width:50px;" />
-                    <col style="width:100px;" />
+                    <col style="width:120px;" />
                     <col />
                 </MudHidden>
             </ColGroup>

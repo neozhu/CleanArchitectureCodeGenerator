@@ -3,7 +3,7 @@
 
 namespace {namespace};
 
-    public class {itemname}UpdatedEventHandler : INotificationHandler<UpdatedEvent<{itemname}>>
+    public class {itemname}UpdatedEventHandler : INotificationHandler<{itemname}UpdatedEvent>
     {
         private readonly ILogger<{itemname}UpdatedEventHandler> _logger;
 
@@ -13,7 +13,7 @@ namespace {namespace};
         {
             _logger = logger;
         }
-        public Task Handle(UpdatedEvent<{itemname}> notification, CancellationToken cancellationToken)
+        public Task Handle({itemname}UpdatedEvent notification, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().FullName);
             return Task.CompletedTask;

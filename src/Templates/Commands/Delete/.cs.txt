@@ -42,7 +42,7 @@ namespace {namespace};
             foreach (var item in items)
             {
 			    // raise a delete domain event
-				item.AddDomainEvent(new DeletedEvent<{itemname}>(item));
+				item.AddDomainEvent(new {itemname}DeletedEvent(item));
                 _context.{nameofPlural}.Remove(item);
             }
             await _context.SaveChangesAsync(cancellationToken);

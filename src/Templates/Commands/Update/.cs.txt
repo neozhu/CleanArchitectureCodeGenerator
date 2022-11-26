@@ -37,7 +37,7 @@ namespace {namespace};
                 var dto = _mapper.Map<{itemname}Dto>(request);
                 item = _mapper.Map(dto, item);
 				// raise a update domain event
-				item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
+				item.AddDomainEvent(new {itemname}UpdatedEvent(item));
                 await _context.SaveChangesAsync(cancellationToken);
            }
            return await Result.SuccessAsync();

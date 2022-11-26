@@ -37,7 +37,7 @@ namespace {namespace};
                 var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
                 item = _mapper.Map(dto, item);
 				// raise a update domain event
-				item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
+				item.AddDomainEvent(new {itemname}UpdatedEvent(item));
                 await _context.SaveChangesAsync(cancellationToken);
                 return await Result<int>.SuccessAsync(item.Id);
             }
@@ -45,7 +45,7 @@ namespace {namespace};
             {
                 var item = _mapper.Map<{itemname}>(dto);
                 // raise a create domain event
-				item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
+				item.AddDomainEvent(new {itemname}CreatedEvent(item));
                 _context.{nameofPlural}.Add(item);
                 await _context.SaveChangesAsync(cancellationToken);
                 return await Result<int>.SuccessAsync(item.Id);

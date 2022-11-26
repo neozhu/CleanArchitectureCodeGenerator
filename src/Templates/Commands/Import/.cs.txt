@@ -62,7 +62,7 @@ namespace {namespace};
                     {
                         var item = _mapper.Map<{itemname}>(dto);
                         // add create domain events if this entity implement the IHasDomainEvent interface
-				        // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
+				        // item.AddDomainEvent(new {itemname}CreatedEvent(item));
                         await _context.{nameofPlural}.AddAsync(item, cancellationToken);
                     }
                  }

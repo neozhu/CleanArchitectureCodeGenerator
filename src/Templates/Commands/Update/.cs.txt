@@ -31,15 +31,13 @@ namespace {namespace};
         public async Task<Result> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Update{itemname}CommandHandler method 
-           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken);
-           if (item != null)
-           {
-                var dto = _mapper.Map<{itemname}Dto>(request);
-                item = _mapper.Map(dto, item);
-				// raise a update domain event
-				item.AddDomainEvent(new {itemname}UpdatedEvent(item));
-                await _context.SaveChangesAsync(cancellationToken);
-           }
+           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"The {itemname} [{request.Id}] was not found.");;
+           var dto = _mapper.Map<{itemname}Dto>(request);
+           item = _mapper.Map(dto, item);
+		    // raise a update domain event
+		   item.AddDomainEvent(new {itemname}UpdatedEvent(item));
+           await _context.SaveChangesAsync(cancellationToken);
+           
            return await Result.SuccessAsync();
         }
     }

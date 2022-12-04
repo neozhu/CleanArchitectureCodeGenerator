@@ -34,7 +34,7 @@ namespace {namespace};
             var dto = _mapper.Map<{itemname}Dto>(request);
             if (request.Id > 0)
             {
-                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} {request.Id} Not Found.");
+                var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"The {itemname} [{request.Id}] was not found.");
                 item = _mapper.Map(dto, item);
 				// raise a update domain event
 				item.AddDomainEvent(new {itemname}UpdatedEvent(item));

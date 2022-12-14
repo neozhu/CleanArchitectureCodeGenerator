@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-
+using System.ComponentModel;
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,IRequest<Result>, ICacheInvalidator
+    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result>
     {
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
@@ -31,15 +31,13 @@ namespace {namespace};
         public async Task<Result> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Update{itemname}CommandHandler method 
-           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken);
-           if (item != null)
-           {
-                var dto = _mapper.Map<{itemname}Dto>(request);
-                item = _mapper.Map(dto, item);
-				// raise a update domain event
-				item.AddDomainEvent(new UpdatedEvent<{itemname}>(item));
-                await _context.SaveChangesAsync(cancellationToken);
-           }
+           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"The {itemname} [{request.Id}] was not found.");;
+           var dto = _mapper.Map<{itemname}Dto>(request);
+           item = _mapper.Map(dto, item);
+		    // raise a update domain event
+		   item.AddDomainEvent(new {itemname}UpdatedEvent(item));
+           await _context.SaveChangesAsync(cancellationToken);
+           
            return await Result.SuccessAsync();
         }
     }

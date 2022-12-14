@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Import{nameofPlural}Command: IRequest<Result>, ICacheInvalidator
+    public class Import{nameofPlural}Command: ICacheInvalidatorRequest<Result>
     {
         public string FileName { get; set; }
         public byte[] Data { get; set; }
@@ -62,7 +62,7 @@ namespace {namespace};
                     {
                         var item = _mapper.Map<{itemname}>(dto);
                         // add create domain events if this entity implement the IHasDomainEvent interface
-				        // item.AddDomainEvent(new CreatedEvent<{itemname}>(item));
+				        // item.AddDomainEvent(new {itemname}CreatedEvent(item));
                         await _context.{nameofPlural}.AddAsync(item, cancellationToken);
                     }
                  }

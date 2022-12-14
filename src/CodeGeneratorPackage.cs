@@ -259,7 +259,8 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			else
 			{
-				MessageBox.Show($"The file '{file}' already exists.", Vsix.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+				//MessageBox.Show($"The file '{file}' already exists.", Vsix.Name, MessageBoxButton.OK, MessageBoxImage.Information);
+				Console.WriteLine($"The file '{file}' already exists.");
 			}
 		}
 

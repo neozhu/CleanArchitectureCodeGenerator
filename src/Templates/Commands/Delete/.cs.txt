@@ -7,7 +7,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Delete{itemname}Command: IRequest<Result>, ICacheInvalidator
+    public class Delete{itemname}Command: ICacheInvalidatorRequest<Result>
     {
       public int[] Id {  get; }
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;

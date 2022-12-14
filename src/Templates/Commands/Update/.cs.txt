@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,IRequest<Result>, ICacheInvalidator
+    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result>
     {
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;

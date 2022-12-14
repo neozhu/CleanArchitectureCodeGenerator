@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Import{nameofPlural}Command: IRequest<Result>, ICacheInvalidator
+    public class Import{nameofPlural}Command: ICacheInvalidatorRequest<Result>
     {
         public string FileName { get; set; }
         public byte[] Data { get; set; }

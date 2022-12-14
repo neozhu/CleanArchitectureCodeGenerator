@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class GetAll{nameofPlural}Query : IRequest<IEnumerable<{itemname}Dto>>, ICacheable
+    public class GetAll{nameofPlural}Query : ICacheableRequest<IEnumerable<{itemname}Dto>>
     {
        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;

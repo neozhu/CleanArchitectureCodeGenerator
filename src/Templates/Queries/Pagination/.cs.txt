@@ -6,15 +6,15 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class {nameofPlural}WithPaginationQuery : PaginationFilter, ICacheableRequest<PaginatedData<{itemname}Dto>>
+public class {nameofPlural}WithPaginationQuery : PaginationFilter, ICacheableRequest<PaginatedData<{itemname}Dto>>
     {
         public string CacheKey => {itemname}CacheKey.GetPaginationCacheKey($"{this}");
         public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
-    public class {nameofPlural}WithPaginationQueryHandler :
+public class {nameofPlural}WithPaginationQueryHandler :
          IRequestHandler<{nameofPlural}WithPaginationQuery, PaginatedData<{itemname}Dto>>
-    {
+{
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<{nameofPlural}WithPaginationQueryHandler> _localizer;
@@ -33,10 +33,23 @@ namespace {namespace};
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
             // TODO: Implement {nameofPlural}WithPaginationQueryHandler method 
-           var data = await _context.{nameofPlural}//.Where(x=>x.Name!.Contains(request.Keyword) || x.Description!.Contains(request.Keyword))
+           var data = await _context.{nameofPlural}.Specify(new {nameofPlural}PaginationSpecification(request))
                 .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                 .PaginatedDataAsync(request.PageNumber, request.PageSize);
             return data;
         }
-   }
+}
+
+public class {nameofPlural}PaginationSpecification : Specification<{itemname}>
+{
+    public {nameofPlural}PaginationSpecification({nameofPlural}WithPaginationQuery query)
+    {
+        Criteria = q => q.Name != null;
+        if (!string.IsNullOrEmpty(query.Keyword))
+        {
+            And(x => x.Name.Contains(query.Keyword));
+        }
+       
+    }
+}

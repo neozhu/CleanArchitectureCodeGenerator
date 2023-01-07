@@ -6,16 +6,16 @@ using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace};
 
-    public class Export{nameofPlural}Query : IRequest<byte[]>
+public class Export{nameofPlural}Query : IRequest<byte[]>
     {
        public string OrderBy { get; set; } = "Id";
        public string SortDirection { get; set; } = "Desc";
        public string Keyword { get; set; } = String.Empty;
     }
     
-    public class Export{nameofPlural}QueryHandler :
+public class Export{nameofPlural}QueryHandler :
          IRequestHandler<Export{nameofPlural}Query, byte[]>
-    {
+{
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IExcelService _excelService;
@@ -37,7 +37,7 @@ namespace {namespace};
         public async Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             // TODO: Implement Export{nameofPlural}QueryHandler method 
-            var data = await _context.{nameofPlural}//.Where(x=>x.Name!.Contains(request.Keyword) || x.Description!.Contains(request.Keyword))
+            var data = await _context.{nameofPlural}.Specify(new {nameofPlural}ExportSpecification(request))
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
@@ -50,4 +50,18 @@ namespace {namespace};
                 , _localizer["{nameofPlural}"]);
             return result;
         }
+}
+
+
+public class {nameofPlural}ExportSpecification : Specification<{itemname}>
+{
+    public {nameofPlural}ExportSpecification(Export{nameofPlural}Query request)
+    {
+        Criteria = q => q.Name != null;
+        if (!string.IsNullOrEmpty(request.Keyword))
+        {
+            And(x => x.Name.Contains(request.Keyword));
+        }
+       
     }
+}

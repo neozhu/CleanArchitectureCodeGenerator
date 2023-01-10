@@ -147,7 +147,9 @@
     <Content Include="Templates\Queries\Export\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Resource Include="Templates\Queries\GetById\.cs.txt" />
+    <Content Include="Templates\Queries\GetById\.cs.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\Queries\Pagination\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

@@ -1,0 +1,44 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Caching;
+
+namespace {namespace};
+
+    public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto>
+    {
+       public required int Id { get; set; }
+       public string CacheKey => {itemname}CacheKey.GetByIdCacheKey(Id);
+       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
+    }
+    
+    public class Get{itemname}ByIdQueryHandler :
+         IRequestHandler<Get{itemname}ByIdQuery, {itemname}Dto>
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IStringLocalizer<Get{itemname}ByIdQueryHandler> _localizer;
+
+        public Get{itemname}ByIdQueryHandler(
+            IApplicationDbContext context,
+            IMapper mapper,
+            IStringLocalizer<Get{itemname}ByIdQueryHandler> localizer
+            )
+        {
+            _context = context;
+            _mapper = mapper;
+            _localizer = localizer;
+        }
+
+        public async Task<{itemname}Dto> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
+        {
+            // TODO: Implement Get{itemname}ByIdQueryHandler method 
+            var data = await _context.{nameofPlural}.Where(x=>x.Id==request.Id)
+                         .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                         .FirstOrDefaultAsync(cancellationToken);
+            return data;
+        }
+    }
+
+

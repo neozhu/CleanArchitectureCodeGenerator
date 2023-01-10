@@ -8,7 +8,13 @@ public static class {itemname}CacheKey
     private static readonly TimeSpan refreshInterval = TimeSpan.FromHours(3);
     public const string GetAllCacheKey = "all-{nameofPlural}";
     public static string GetPaginationCacheKey(string parameters) {
-        return $"{nameofPlural}WithPaginationQuery,{parameters}";
+        return $"{itemname}CacheKey:{nameofPlural}WithPaginationQuery,{parameters}";
+    }
+    public static string GetByNameCacheKey(string parameters) {
+        return $"{itemname}CacheKey:GetByNameCacheKey,{parameters}";
+    }
+    public static string GetByIdCacheKey(string parameters) {
+        return $"{itemname}CacheKey:GetByIdCacheKey,{parameters}";
     }
     static {itemname}CacheKey()
     {

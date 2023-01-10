@@ -122,6 +122,7 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs",
 						$"{nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs",
 						$"{nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs",
+						$"{nameofPlural}/Queries/GetById/Get{name}ByIdQuery.cs",
 						$"{nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs",
 					};
 					foreach (var item in list)

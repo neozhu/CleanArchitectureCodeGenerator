@@ -51,6 +51,7 @@ namespace CleanArchitecture.CodeGenerator
 				"Events",
 				"Queries\\Export",
 				"Queries\\GetAll",
+				"Queries\\GetById",
 				"Queries\\Pagination",
 				"Pages",
 				"Pages\\Components",
@@ -256,7 +257,14 @@ namespace CleanArchitecture.CodeGenerator
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				if (property.Name == PRIMARYKEY) continue;
-				output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
+				if (property.Type.CodeName.StartsWith("bool"))
+				{
+					output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} =Convert.ToBoolean(row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]) }}, \r\n");
+				}
+				else
+				{
+					output.Append($"{{ _localizer[_dto.GetMemberDescription(\"{property.Name}\")], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(\"{property.Name}\")]]?.ToString() }}, \r\n");
+				}
 			}
 			return output.ToString();
 		}

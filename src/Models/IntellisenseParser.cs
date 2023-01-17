@@ -90,7 +90,7 @@ namespace CleanArchitecture.CodeGenerator.Models
                                   .FirstOrDefault(c => c.FullName != "System.Object");
                 }
                 catch { /* Silently continue. */ }
-				var baseClasses = new string[] { "AuditableSoftDeleteEntity", "AuditableEntity", "IAuditTrial", "IEntity", "ISoftDelete" };
+				var baseClasses = new string[] { "AuditableSoftDeleteEntity", "AuditableEntity", "IAuditTrial", "IEntity", "ISoftDelete", "BaseAuditableEntity", "BaseEntity" };
 				if (baseClass!=null && baseClasses.Contains(GetClassName(baseClass)))
 				{
 					ProcessClass(cc, baseClass, list, underProcess);

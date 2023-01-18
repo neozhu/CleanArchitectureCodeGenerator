@@ -56,7 +56,7 @@ namespace CleanArchitecture.CodeGenerator
 			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
 			NewItemTarget infrastructure = NewItemTarget.Create(_dte, "Infrastructure");
 			NewItemTarget ui = NewItemTarget.Create(_dte, "Blazor.Server.UI");
-			var includes = new string[] { "IEntity", "AuditableEntity", "AuditableSoftDeleteEntity" };
+			var includes = new string[] { "IEntity", "BaseEntity", "BaseAuditableEntity", "BaseAuditableSoftDeleteEntity", "AuditTrail" };
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
 				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
 			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();

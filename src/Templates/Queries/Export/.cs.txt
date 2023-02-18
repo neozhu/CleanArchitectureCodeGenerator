@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.DTOs;
 
 namespace {namespace};
 
-public class Export{nameofPlural}Query : OrderableFilterBase, IRequest<byte[]>
+public class Export{nameofPlural}Query : OrderableFilterBase, IRequest<Result<byte[]>>
 {
         [CompareTo("Name", "Description")] // <-- This filter will be applied to Name or Description.
         [StringFilterOptions(StringFilterOption.Contains)]
@@ -14,7 +14,7 @@ public class Export{nameofPlural}Query : OrderableFilterBase, IRequest<byte[]>
 }
     
 public class Export{nameofPlural}QueryHandler :
-         IRequestHandler<Export{nameofPlural}Query, byte[]>
+         IRequestHandler<Export{nameofPlural}Query, Result<byte[]>>
 {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -34,7 +34,7 @@ public class Export{nameofPlural}QueryHandler :
             _localizer = localizer;
         }
 
-        public async Task<byte[]> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
+        public async Task<Result<byte[]>> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             // TODO: Implement Export{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}.ApplyOrder(request)
@@ -47,7 +47,7 @@ public class Export{nameofPlural}QueryHandler :
                     {exportFuncExpression}
                 }
                 , _localizer["{nameofPlural}"]);
-            return result;
+            return await Result<byte[]>.SuccessAsync(result);;
         }
 }
 

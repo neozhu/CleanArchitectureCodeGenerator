@@ -9,7 +9,7 @@ namespace {namespace};
     public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto>
     {
        public required int Id { get; set; }
-       public string CacheKey => {itemname}CacheKey.GetByIdCacheKey(Id);
+       public string CacheKey => {itemname}CacheKey.GetByIdCacheKey($"{Id}");
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     

@@ -31,7 +31,7 @@ namespace {namespace};
         public async Task<Result<int>> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Update{itemname}CommandHandler method 
-           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"The {itemname} [{request.Id}] was not found.");;
+           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"{itemname} with id:[{request.Id}] not found.");;
            var dto = _mapper.Map<{itemname}Dto>(request);
            item = _mapper.Map(dto, item);
 		    // raise a update domain event

@@ -6,14 +6,14 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result>
+    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result<int>>
     {
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }
 
-    public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result>
+    public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ namespace {namespace};
             _localizer = localizer;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Update{itemname}CommandHandler method 
            var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"The {itemname} [{request.Id}] was not found.");;
@@ -37,8 +37,7 @@ namespace {namespace};
 		    // raise a update domain event
 		   item.AddDomainEvent(new {itemname}UpdatedEvent(item));
            await _context.SaveChangesAsync(cancellationToken);
-           
-           return await Result.SuccessAsync();
+           return await Result<int>.SuccessAsync(item.Id);
         }
     }
 

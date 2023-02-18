@@ -6,7 +6,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Import{nameofPlural}Command: ICacheInvalidatorRequest<Result>
+    public class Import{nameofPlural}Command: ICacheInvalidatorRequest<Result<int>>
     {
         public string FileName { get; set; }
         public byte[] Data { get; set; }
@@ -18,14 +18,14 @@ namespace {namespace};
            Data = data;
         }
     }
-    public record class Create{nameofPlural}TemplateCommand : IRequest<byte[]>
+    public record class Create{nameofPlural}TemplateCommand : IRequest<Result<byte[]>>
     {
  
     }
 
     public class Import{nameofPlural}CommandHandler : 
-                 IRequestHandler<Create{nameofPlural}TemplateCommand, byte[]>,
-                 IRequestHandler<Import{nameofPlural}Command, Result>
+                 IRequestHandler<Create{nameofPlural}TemplateCommand, Result<byte[]>>,
+                 IRequestHandler<Import{nameofPlural}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -45,7 +45,7 @@ namespace {namespace};
             _excelService = excelService;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Import{nameofPlural}CommandHandler method
            var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object?>>
@@ -67,14 +67,14 @@ namespace {namespace};
                     }
                  }
                  await _context.SaveChangesAsync(cancellationToken);
-                 return await Result.SuccessAsync();
+                 return await Result<int>.SuccessAsync(result.Data.Count());
            }
            else
            {
-               return await Result.FailureAsync(result.Errors);
+               return await Result<int>.FailureAsync(result.Errors);
            }
         }
-        public async Task<byte[]> Handle(Create{nameofPlural}TemplateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<byte[]>> Handle(Create{nameofPlural}TemplateCommand request, CancellationToken cancellationToken)
         {
             // TODO: Implement Import{nameofPlural}CommandHandler method 
             var fields = new string[] {
@@ -82,7 +82,7 @@ namespace {namespace};
                    {templateFieldDefinition}
                 };
             var result = await _excelService.CreateTemplateAsync(fields, _localizer["{nameofPlural}"]);
-            return result;
+            return await Result<byte[]>.SuccessAsync(result);
         }
     }
 

@@ -7,7 +7,7 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Delete{itemname}Command: ICacheInvalidatorRequest<Result>
+    public class Delete{itemname}Command: ICacheInvalidatorRequest<Result<int>>
     {
       public int[] Id {  get; }
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
@@ -19,7 +19,7 @@ namespace {namespace};
     }
 
     public class Delete{itemname}CommandHandler : 
-                 IRequestHandler<Delete{itemname}Command, Result>
+                 IRequestHandler<Delete{itemname}Command, Result<int>>
 
     {
         private readonly IApplicationDbContext _context;
@@ -35,7 +35,7 @@ namespace {namespace};
             _localizer = localizer;
             _mapper = mapper;
         }
-        public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
             // TODO: Implement DeleteChecked{nameofPlural}CommandHandler method 
             var items = await _context.{nameofPlural}.Where(x => request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
@@ -45,8 +45,8 @@ namespace {namespace};
 				item.AddDomainEvent(new {itemname}DeletedEvent(item));
                 _context.{nameofPlural}.Remove(item);
             }
-            await _context.SaveChangesAsync(cancellationToken);
-            return await Result.SuccessAsync();
+            var result = await _context.SaveChangesAsync(cancellationToken);
+            return await Result<int>.SuccessAsync(result);
         }
 
     }

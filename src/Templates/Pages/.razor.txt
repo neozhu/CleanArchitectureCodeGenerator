@@ -143,9 +143,8 @@
                     @if (_canEdit || _canDelete)
                     {
                         <MudMenu Label="@ConstantString.ACTIONS" Variant="Variant.Filled" DisableElevation="true" Size="Size.Small"
-                             Dense="true"
-                             EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Info" Direction="Direction.Left"
-                             OffsetX="true">
+                             Dense="true" AnchorOrigin="Origin.CenterLeft"
+                             EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Info">
                             @if (_canEdit)
                             {
                                 <MudMenuItem OnClick="@(()=>OnEdit(context))">@ConstantString.EDIT</MudMenuItem>

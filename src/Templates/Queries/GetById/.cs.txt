@@ -6,8 +6,9 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto>
+    public class Get{itemname}ByIdQuery :FilterBase, ICacheableRequest<{itemname}Dto>
     {
+       [OperatorComparison(OperatorType.Equal)]
        public required int Id { get; set; }
        public string CacheKey => {itemname}CacheKey.GetByIdCacheKey($"{Id}");
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
@@ -34,9 +35,9 @@ namespace {namespace};
         public async Task<{itemname}Dto> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
         {
             // TODO: Implement Get{itemname}ByIdQueryHandler method 
-            var data = await _context.{nameofPlural}.Where(x=>x.Id==request.Id)
+            var data = await _context.{nameofPlural}.ApplyFilter(request)
                          .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                         .FirstOrDefaultAsync(cancellationToken);
+                         .FirstAsync(cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");;
             return data;
         }
     }

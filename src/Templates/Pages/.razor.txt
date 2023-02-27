@@ -1,9 +1,10 @@
 ﻿@page "/pages/{nameofPlural}"
 
 @using BlazorDownloadFile
+@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Caching
+@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.DTOs
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Import
-@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.DTOs
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Export
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
@@ -251,6 +252,7 @@
 
     private async Task OnRefresh()
     {
+        {itemname}CacheKey.Refresh();
         _selectedItems = new();
         _searchString = string.Empty;
         await _table.ReloadServerData();

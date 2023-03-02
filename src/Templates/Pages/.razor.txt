@@ -271,16 +271,7 @@
         var state = await dialog.Result;
         if (!state.Canceled)
         {
-            var result = await _mediator.Send(command);
-            if (result.Succeeded)
-            {
-                await _table.ReloadServerData();
-                Snackbar.Add($"{ConstantString.CREATESUCCESS}", MudBlazor.Severity.Info);
-            }
-            else
-            {
-                Snackbar.Add($"{result.ErrorMessage}", MudBlazor.Severity.Error);
-            }
+            await _table.ReloadServerData();
         }
     }
 
@@ -297,23 +288,16 @@
         var state = await dialog.Result;
         if (!state.Canceled)
         {
-            var result = await _mediator.Send(command);
-            if (result.Succeeded)
-            {
-                await _table.ReloadServerData();
-                Snackbar.Add($"{ConstantString.SAVESUCCESS}", MudBlazor.Severity.Info);
-            }
-            else
-            {
-                Snackbar.Add($"{result.ErrorMessage}", MudBlazor.Severity.Error);
-            }
+            await _table.ReloadServerData();
         }
     }
 
     private async Task OnDelete({itemname}Dto dto)
     {
+        var command = new Delete{itemname}Command(new int[] { dto.Id });
         var parameters = new DialogParameters 
            {
+             { nameof(DeleteConfirmation.Command),  command },
              { nameof(DeleteConfirmation.ContentText), string.Format(ConstantString.DELETECONFIRMATION, dto.Name) }
            };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, DisableBackdropClick = true };
@@ -321,24 +305,16 @@
         var state = await dialog.Result;
         if (!state.Canceled)
         {
-            var command = new Delete{itemname}Command(new int[] { dto.Id });
-            var result = await _mediator.Send(command);
-            if (result.Succeeded)
-            {
-                await _table.ReloadServerData();
-                Snackbar.Add($"{ConstantString.DELETESUCCESS}", MudBlazor.Severity.Info);
-            }
-            else
-            {
-                Snackbar.Add($"{result.ErrorMessage}", MudBlazor.Severity.Error);
-            }
+             await _table.ReloadServerData();
         }
     }
 
     private async Task OnDeleteChecked()
     {
+        var command = new Delete{itemname}Command(_selectedItems.Select(x => x.Id).ToArray());
         var parameters = new DialogParameters
                         {
+                             { nameof(DeleteConfirmation.Command),  command },
                              { nameof(DeleteConfirmation.ContentText), string.Format(ConstantString.DELETECONFIRMWITHSELECTED,_selectedItems.Count) }
                         };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, DisableBackdropClick = true };
@@ -346,18 +322,7 @@
         var state = await dialog.Result;
         if (!state.Canceled)
         {
-            var command = new Delete{itemname}Command(_selectedItems.Select(x => x.Id).ToArray());
-            var result = await _mediator.Send(command);
-            if (result.Succeeded)
-            {
-                await _table.ReloadServerData();
-                Snackbar.Add($"{ConstantString.DELETESUCCESS}", MudBlazor.Severity.Info);
-                _selectedItems = new HashSet<{itemname}Dto>();
-            }
-            else
-            {
-                Snackbar.Add($"{result.ErrorMessage}", MudBlazor.Severity.Error);
-            }
+            await _table.ReloadServerData();
         }
     }
 

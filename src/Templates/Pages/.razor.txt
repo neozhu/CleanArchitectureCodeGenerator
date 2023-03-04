@@ -65,22 +65,16 @@
                         }
                         @if (_canExport)
                         {
-                            <MudButton Disabled="@_downloading" DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Download"
-                                   Size="Size.Small"
-                                   Style="margin-right: 4px; margin-bottom:4px"
-                                   OnClick="OnExport"
-                                   IconColor="Color.Surface">
-                                @if (_downloading)
-                                {
-                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                                    <MudText Class="ms-2"> @ConstantString.DOWNLOADING</MudText>
-                                }
-                                else
-                                {
-                                    <MudText>@ConstantString.EXPORT</MudText>
-                                }
-                            </MudButton>
+                            <MudLoadingButton @bind-Loading="_exporting" DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                          Label="@ConstantString.EXPORT"
+                                          Disabled="@_loading"
+                                          StartIcon="@Icons.Custom.FileFormats.FileExcel"
+                                          Size="Size.Small"
+                                          Style="margin-right: 4px; margin-bottom:4px"
+                                          OnClick="OnExport"
+                                          IconColor="Color.Surface">
+                            @ConstantString.EXPORT
+                            </MudLoadingButton>
                         }
                         @if (_canImport)
                         {
@@ -110,7 +104,7 @@
                             <MudMenuItem Disabled="@_loading" OnClick="@(()=>OnRefresh())">@ConstantString.REFRESH</MudMenuItem>
                             @if (_canCreate)
                             {
-                                <MudMenuItem Disabled="@_loading" OnClick="OnCreate">@ConstantString.CREATE</MudMenuItem>
+                                <MudMenuItem OnClick="OnCreate">@ConstantString.CREATE</MudMenuItem>
                             }
                             @if (_canDelete)
                             {
@@ -124,8 +118,11 @@
                     </MudHidden>
                 </div>
                 <MudSpacer />
-                <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Value="@_searchString" Placeholder="@ConstantString.SEARCH" Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                @if (_canSearch)
+                {
+                    <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Value="@_searchString" Placeholder="@ConstantString.SEARCH" Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small"></MudTextField>
+                }
             </ToolBarContent>
             <ColGroup>
                 <MudHidden Breakpoint="Breakpoint.SmAndDown">

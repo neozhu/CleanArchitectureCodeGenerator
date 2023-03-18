@@ -3,6 +3,7 @@
 
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Queries.Pagination;
 
 namespace {namespace};
 
@@ -11,6 +12,8 @@ public class Export{nameofPlural}Query : OrderableFilterBase, IRequest<Result<by
         [CompareTo("Name", "Description")] // <-- This filter will be applied to Name or Description.
         [StringFilterOptions(StringFilterOption.Contains)]
         public string? Keyword { get; set; }
+        [CompareTo(typeof(Search{nameofPlural}WithListView), "Id")]
+        public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
 }
     
 public class Export{nameofPlural}QueryHandler :
@@ -49,18 +52,4 @@ public class Export{nameofPlural}QueryHandler :
                 , _localizer["{nameofPlural}"]);
             return await Result<byte[]>.SuccessAsync(result);;
         }
-}
-
-
-public class {nameofPlural}ExportSpecification : Specification<{itemname}>
-{
-    public {nameofPlural}ExportSpecification(Export{nameofPlural}Query request)
-    {
-        Criteria = q => q.Name != null;
-        if (!string.IsNullOrEmpty(request.Keyword))
-        {
-            And(x => x.Name.Contains(request.Keyword));
-        }
-       
-    }
 }

@@ -15,7 +15,7 @@
 <PageTitle>@Title</PageTitle>
 <style>
     .mud-table-toolbar {
-        height: 84px !important;
+        height: 120px !important;
     }
 </style>
 

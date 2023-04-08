@@ -42,6 +42,7 @@ public class Export{nameofPlural}QueryHandler :
             // TODO: Implement Export{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}.ApplyOrder(request)
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                       .AsNoTracking()
                        .ToListAsync(cancellationToken);
             var result = await _excelService.ExportAsync(data,
                 new Dictionary<string, Func<{itemname}Dto, object?>>()
@@ -49,7 +50,7 @@ public class Export{nameofPlural}QueryHandler :
                     // TODO: Define the fields that should be exported, for example:
                     {exportFuncExpression}
                 }
-                , _localizer["{nameofPlural}"]);
+                , _localizer[_dto.GetClassDescription()]);
             return await Result<byte[]>.SuccessAsync(result);;
         }
 }

@@ -231,7 +231,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Title = L["{nameofPlural}"];
+        Title = L[_currentDto.GetClassDescription()];
         var state = await _authState;
         _canCreate = (await AuthService.AuthorizeAsync(state.User, Permissions.{nameofPlural}.Create)).Succeeded;
         _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.{nameofPlural}.Search)).Succeeded;

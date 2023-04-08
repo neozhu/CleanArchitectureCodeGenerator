@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System.ComponentModel;
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
@@ -9,6 +8,7 @@ namespace {namespace};
     public class AddEdit{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result<int>>
     {
       {dtoFieldDefinition}
+
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
     }

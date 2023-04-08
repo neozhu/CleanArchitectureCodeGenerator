@@ -4,7 +4,7 @@
 using System.ComponentModel;
 namespace {namespace};
 
-
+[Description("{nameofPlural}")]
 public class {itemname}Dto:IMapFrom<{itemname}>
 {
     public void Mapping(Profile profile)

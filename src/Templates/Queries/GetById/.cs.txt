@@ -10,7 +10,9 @@ namespace {namespace};
     {
        [OperatorComparison(OperatorType.Equal)]
        public required int Id { get; set; }
+       [IgnoreFilter]
        public string CacheKey => {itemname}CacheKey.GetByIdCacheKey($"{Id}");
+       [IgnoreFilter]
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     

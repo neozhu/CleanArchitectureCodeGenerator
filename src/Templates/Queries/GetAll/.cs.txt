@@ -8,7 +8,9 @@ namespace {namespace};
 
     public class GetAll{nameofPlural}Query : ICacheableRequest<IEnumerable<{itemname}Dto>>
     {
+       [IgnoreFilter]
        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+       [IgnoreFilter]
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     
@@ -35,6 +37,7 @@ namespace {namespace};
             // TODO: Implement GetAll{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}
                          .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                         .AsNoTracking()
                          .ToListAsync(cancellationToken);
             return data;
         }

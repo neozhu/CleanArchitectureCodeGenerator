@@ -81,7 +81,7 @@ namespace {namespace};
                    // TODO: Define the fields that should be generate in the template, for example:
                    {templateFieldDefinition}
                 };
-            var result = await _excelService.CreateTemplateAsync(fields, _localizer["{nameofPlural}"]);
+            var result = await _excelService.CreateTemplateAsync(fields, _localizer[_dto.GetClassDescription()]);
             return await Result<byte[]>.SuccessAsync(result);
         }
     }

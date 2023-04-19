@@ -292,18 +292,28 @@ namespace CleanArchitecture.CodeGenerator
 		{
 			var output = new StringBuilder();
 			var defaultfieldName = new string[] { "Name", "Description" };
-			if(classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
+			if (classObject.Properties.Where(x => x.Type.IsKnownType == true && defaultfieldName.Contains(x.Name)).Any())
 			{
+				output.Append($"<PropertyColumn Property=\"x => x.Name\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.Name)]\"> \r\n");
+				output.Append("   <CellTemplate>\r\n");
+				output.Append($"      <div class=\"d-flex flex-column\">\r\n");
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
 				{
-					output.Append($"<MudTh><MudTableSortLabel SortLabel=\"@nameof(_currentDto.Name)\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(x=>x.Name)]</MudTableSortLabel></MudTh> \r\n");
+					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Item.Name</MudText>\r\n");
 				}
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
+				{
+					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Item.Description</MudText>\r\n");
+				}
+				output.Append($"     </div>\r\n");
+				output.Append("    </CellTemplate>\r\n");
+				output.Append($"</PropertyColumn>\r\n");
 			}
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			foreach (var property in classObject.Properties.Where(x => !defaultfieldName.Contains(x.Name)))
 			{
 				if (property.Name == PRIMARYKEY) continue;
 				output.Append("                ");
-				output.Append($"<MudTh><MudTableSortLabel SortLabel=\"@nameof(_currentDto.{property.Name})\" T=\"{classObject.Name}Dto\">@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]</MudTableSortLabel></MudTh> \r\n");
+				output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
 			}
 			return output.ToString();
 		}

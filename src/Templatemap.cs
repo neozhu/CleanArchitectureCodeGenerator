@@ -296,7 +296,7 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				output.Append($"<PropertyColumn Property=\"x => x.Name\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.Name)]\"> \r\n");
 				output.Append("   <CellTemplate>\r\n");
-				output.Append($"    <div class=\"d-flex flex-column\">\r\n");
+				output.Append($"      <div class=\"d-flex flex-column\">\r\n");
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
 				{
 					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Item.Name</MudText>\r\n");
@@ -305,8 +305,8 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Item.Description</MudText>\r\n");
 				}
-				output.Append($"    </div>\r\n");
-				output.Append("   </CellTemplate>\r\n");
+				output.Append($"     </div>\r\n");
+				output.Append("    </CellTemplate>\r\n");
 				output.Append($"</PropertyColumn>\r\n");
 			}
 			foreach (var property in classObject.Properties.Where(x => !defaultfieldName.Contains(x.Name)))

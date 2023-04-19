@@ -28,7 +28,6 @@
                   @bind-RowsPerPage="_defaultPageSize"
                   Height="calc(100vh - 330px)"
                   Loading="@_loading"
-                  SortLabel="@ConstantString.ORDERBY"
                   MultiSelection="true"
                   @bind-SelectedItems="_selectedItems"
                   @bind-SelectedItem="_currentDto"
@@ -62,7 +61,7 @@
                                            Disabled="@_loading"
                                            OnClick="OnCreate"
                                            Style="margin-right: 4px; margin-bottom:4px"
-                                           IconColor="Color.Surface">@ConstantString.CREATE</MudButton>
+                                           IconColor="Color.Surface">@ConstantString.NEW</MudButton>
                                 }
                                 @if (_canDelete)
                                 {
@@ -121,7 +120,7 @@
                                            Disabled="@_loading"
                                            OnClick="OnCreate"
                                            Style="margin-right: 4px; margin-bottom:4px"
-                                           IconColor="Color.Surface">@ConstantString.CREATE</MudButton>
+                                           IconColor="Color.Surface">@ConstantString.NEW</MudButton>
                                 }
                                 @if (_canDelete)
                                 {
@@ -177,7 +176,7 @@
                 {mudTdHeaderDefinition}
             </Columns>
             <NoRecordsContent>
-                <MudText>@ConstantString.NOMACHING</MudText>
+                <MudText>@ConstantString.NORECORDS</MudText>
             </NoRecordsContent>
             <LoadingContent>
                 <MudText>@ConstantString.LOADING</MudText>

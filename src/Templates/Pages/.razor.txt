@@ -62,6 +62,13 @@
                                            OnClick="OnCreate"
                                            Style="margin-right: 4px; margin-bottom:4px"
                                            IconColor="Color.Surface">@ConstantString.NEW</MudButton>
+                                    <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                               StartIcon="@Icons.Material.Filled.ContentCopy"
+                                               Size="Size.Small"
+                                               Disabled="@(_selectedItems.Count!=1)"
+                                               OnClick="OnClone"
+                                               Style="margin-right: 4px; margin-bottom:4px"
+                                               IconColor="Color.Surface">@ConstantString.Clone</MudButton>
                                 }
                                 @if (_canDelete)
                                 {
@@ -283,7 +290,26 @@
             await _table.ReloadServerData();
         }
     }
-
+    private async Task OnClone()
+    {
+        var copyitem = _selectedItems.First();
+        var command = new AddEdit{itemname}Command(){
+            Name = copyitem.Name,
+            Description = copyitem.Description,    
+        };
+        var parameters = new DialogParameters
+            {
+                { nameof(_{itemname}FormDialog.model),command },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = DialogService.Show<_{itemname}FormDialog>
+        (L["Create a new item"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Canceled)
+        {
+            await _table.ReloadServerData();
+        }
+    }
     private async Task OnEdit({itemname}Dto dto)
     {
         var command = Mapper.Map<AddEdit{itemname}Command>(dto);

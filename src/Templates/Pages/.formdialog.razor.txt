@@ -14,6 +14,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@ConstantString.CANCEL</MudButton>
+        <MudLoadingButton Loading="@_saving" OnClick="SaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
         <MudButton Loading="@_saving" Color="MudBlazor.Color.Primary" OnClick="Submit">@ConstantString.SAVE</MudButton>
     </DialogActions>
 </MudDialog>
@@ -32,16 +33,38 @@
         {
             _saving = true;
             await _form!.Validate().ConfigureAwait(false);
-
             if (!_form!.IsValid)
                 return;
-
             var result = await _mediator.Send(model);
-
             if (result.Succeeded)
             {
                 MudDialog.Close(DialogResult.Ok(true));
                 Snackbar.Add(ConstantString.SAVESUCCESS, MudBlazor.Severity.Info);
+            }
+            else
+            {
+                Snackbar.Add(result.ErrorMessage, MudBlazor.Severity.Error);
+            }
+        }
+        finally
+        {
+            _saving = false;
+        }
+    }
+    async Task SaveAndNew()
+    {
+        try
+        {
+            _saving = true;
+            await _form!.Validate().ConfigureAwait(false);
+            if (!_form!.IsValid)
+               return;
+            var result = await Mediator.Send(Model);
+            if (result.Succeeded)
+            {
+                Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
+                await Task.Delay(300);
+                Model = new AddEdit{itemname}Command() { };
             }
             else
             {

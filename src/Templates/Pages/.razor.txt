@@ -310,6 +310,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
+            _selectedItems.Remove(copyitem);
         }
     }
     private async Task OnEdit({itemname}Dto dto)
@@ -343,6 +344,7 @@
         if (!state.Canceled)
         {
              await _table.ReloadServerData();
+             _selectedItems.Remove(dto);
         }
     }
 
@@ -360,6 +362,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
+            _selectedItems = new();
         }
     }
 

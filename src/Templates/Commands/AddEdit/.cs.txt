@@ -5,13 +5,21 @@ using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 namespace {namespace};
 
-    public class AddEdit{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result<int>>
-    {
+public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
+{
       {dtoFieldDefinition}
 
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
+
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<{itemname}Dto, AddEdit{itemname}Command>().ReverseMap();
+        }
     }
+}
 
     public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>
     {

@@ -5,13 +5,17 @@ using System.ComponentModel;
 namespace {namespace};
 
 [Description("{nameofPlural}")]
-public class {itemname}Dto:IMapFrom<{itemname}>
+public class {itemname}Dto
 {
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<{itemname}, {itemname}Dto>().ReverseMap();
-    }
     // TODO: define data transfer object (DTO) fields, for example:
     {dtoFieldDefinition}
+
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<{itemname}, {itemname}Dto>().ReverseMap();
+        }
+    }
 }
 

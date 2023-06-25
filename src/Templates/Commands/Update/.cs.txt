@@ -6,12 +6,19 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Update{itemname}Command: IMapFrom<{itemname}Dto>,ICacheInvalidatorRequest<Result<int>>
-    {
+public class Update{itemname}Command: ICacheInvalidatorRequest<Result<int>>
+{
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
+    private class Mapping : Profile
+    {
+        public Mapping()
+        {
+            CreateMap<{itemname}Dto, Update{itemname}Command>().ReverseMap();
+        }
     }
+}
 
     public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result<int>>
     {

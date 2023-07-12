@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [ "other", "coding" ],
+  "identity": {
+    "internalName": "CleanArchitectureCodeGenerator"
+  },
+  "assetFiles": [
+    {
+      "pathOnDisk": "art/dialog.png",
+      "targetPath": "art/dialog.png"
+    },
+    {
+      "pathOnDisk": "art/menu.png",
+      "targetPath": "art/menu.png"
+    }
+  ],
+  "overview": "README.md",
+  "publisher": "neozhu",
+  "repo": "https://github.com/neozhu/CleanArchitectureCodeGenerator"
+}

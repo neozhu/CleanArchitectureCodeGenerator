@@ -2,7 +2,7 @@
   "$schema": "http://json.schemastore.org/vsix-publish",
   "categories": [ "other", "coding" ],
   "identity": {
-    "internalName": "CleanArchitectureCodeGenerator"
+    "internalName": "247365"
   },
   "assetFiles": [
     {
@@ -15,6 +15,6 @@
     }
   ],
   "overview": "README.md",
-  "publisher": "neozhu",
+  "publisher": "7d4891e8-2f14-45ce-a707-8a3915e9b380",
   "repo": "https://github.com/neozhu/CleanArchitectureCodeGenerator"
 }

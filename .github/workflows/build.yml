@@ -72,7 +72,7 @@ jobs:
    
 
       - name: Publish extension to Marketplace
-        uses: cezarypiatek/VsixPublisherAction@0.1
+        uses: cezarypiatek/VsixPublisherAction@1.0
         with:
           extension-file: CleanArchitectureCodeGenerator.vsix
           publish-manifest-file: 'vs-publish.json'

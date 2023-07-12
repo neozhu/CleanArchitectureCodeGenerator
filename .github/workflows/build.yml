@@ -76,4 +76,4 @@ jobs:
         with:
           extension-file: CleanArchitectureCodeGenerator.vsix
           publish-manifest-file: 'vs-publish.json'
-          personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
+          personal-access-code: ${{ secrets.NUGET_API_KEY }}

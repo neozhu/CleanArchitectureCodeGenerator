@@ -15,6 +15,7 @@ selected folder or in the same folder as the selected file.
 
 See the [changelog](CHANGELOG.md) for updates and roadmap.
 
+
 ### Features
 
 - Easily create following application features code

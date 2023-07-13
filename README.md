@@ -8,10 +8,11 @@
 [CleanArchitecture CodeGenerator For Blaozr App](https://www.vsixgallery.com/extension/CleanArchitecture_CodeGenerator_BlazorApp)
 
 ![image](https://github.com/neozhu/CleanArchitectureCodeGenerator/assets/1549611/fbcce4ee-f14a-47c5-8dd3-37503f4ec52e)
+![image](https://github.com/neozhu/CleanArchitectureCodeGenerator/assets/1549611/72b3800a-58e5-4853-ba7e-f1d7a46286be)
 
 
 ### How to start
-[![How to](art/nuget.png)](https://www.youtube.com/watch?v=Hp6cjdfgMT8)
+
 <div><video controls src="https://user-images.githubusercontent.com/1549611/197116874-f28414ca-7fc1-463a-b887-0754a5bb3e01.mp4" muted="false"></video></div>
 -------------------------------------------------
 

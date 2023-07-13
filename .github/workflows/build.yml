@@ -64,10 +64,10 @@ jobs:
         with:
           name: CleanArchitectureCodeGenerator.vsix
 
-      # - name: Upload to Open VSIX
-      #   uses: timheuer/openvsixpublish@v1
-      #   with:
-      #     vsix-file: CleanArchitectureCodeGenerator.vsix
+      - name: Upload to Open VSIX
+        uses: timheuer/openvsixpublish@v1
+        with:
+          vsix-file: CleanArchitectureCodeGenerator.vsix
 
    
 

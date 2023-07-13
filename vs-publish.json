@@ -2,7 +2,9 @@
   "$schema": "http://json.schemastore.org/vsix-publish",
   "categories": [ "other", "coding" ],
   "identity": {
-    "internalName": "247365"
+   "internalName": "cleanarchitecturecodegenerator",
+    "displayName": "CleanArchitecture CodeGenerator For Blazor Server Application",
+    "vsixId": "cleanarchitecturecodegenerator",
   },
   "assetFiles": [
     {
@@ -14,6 +16,7 @@
       "targetPath": "art/menu.png"
     }
   ],
+  "priceCategory": "free",
   "overview": "README.md",
   "publisher": "neozhu",
   "repo": "https://github.com/neozhu/CleanArchitectureCodeGenerator"

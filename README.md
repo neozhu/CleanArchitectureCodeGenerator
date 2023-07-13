@@ -5,7 +5,6 @@
 Download the extension at the
 [VS Gallery](https://marketplace.visualstudio.com/items?itemName=SmartCodeMVC5Enginever3898.247365)
 
-
 ### How to start
 [![How to](art/nuget.png)](https://www.youtube.com/watch?v=Hp6cjdfgMT8)
 <div><video controls src="https://user-images.githubusercontent.com/1549611/197116874-f28414ca-7fc1-463a-b887-0754a5bb3e01.mp4" muted="false"></video></div>

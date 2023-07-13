@@ -7,11 +7,11 @@ namespace CleanArchitecture.CodeGenerator
 {
     internal sealed partial class Vsix
     {
-        public const string Id = "6A168388-B6A2-42F9-BA5A-B577D3CD4DB5";
-        public const string Name = "CleanArchitecture CodeGenerator";
+        public const string Id = "CleanArchitecture_CodeGenerator_BlazorApp";
+        public const string Name = "CleanArchitecture CodeGenerator For Blaozr App";
         public const string Description = @"The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application";
         public const string Language = "en-US";
-        public const string Version = "0.8";
+        public const string Version = "0.1";
         public const string Author = "neozhu";
         public const string Tags = "templat,CleanArchitecture,CodeGenerator";
     }

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Id="6A168388-B6A2-42F9-BA5A-B577D3CD4DB5" Version="0.8" Language="en-US" Publisher="7d4891e8-2f14-45ce-a707-8a3915e9b380" />
-		<DisplayName>CleanArchitecture CodeGenerator For Blazor App</DisplayName>
+		<Identity Id="6A168388-B6A2-42F9-BA5A-B577D3CD4DB5" Version="0.8" Language="en-US" Publisher="neozhu" />
+		<DisplayName>CleanArchitecture CodeGenerator</DisplayName>
 		<Description xml:space="preserve">The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application</Description>
 		<MoreInfo>https://marketplace.visualstudio.com/items?itemName=CleanArchitecture.CodeGenerator</MoreInfo>
 		<License>Resources\LICENSE</License>

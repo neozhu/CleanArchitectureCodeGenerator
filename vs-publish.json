@@ -2,10 +2,7 @@
   "$schema": "http://json.schemastore.org/vsix-publish",
   "categories": [ "other", "coding" ],
   "identity": {
-    "description": "The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application.", // The description of the extension. Required for non-vsix extensions.
-    "displayName": "CleanArchitecture CodeGenerator For Blazor App",
-    "internalName": "CleanArchitectureCodeGenerator",
-    "vsixId": "CleanArchitectureCodeGenerator"
+    "internalName": "CleanArchitectureCodeGenerator"
   },
   "assetFiles": [
     {

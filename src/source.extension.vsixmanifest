@@ -1,28 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-    <Metadata>
-        <Identity Id="6A168388-B6A2-42F9-BA5A-B577D3CD4DB5" Version="0.7" Language="en-US" Publisher="neozhu" />
-        <DisplayName>CleanArchitecture CodeGenerator</DisplayName>
-        <Description xml:space="preserve">The fastest and easiest way to generate application features code that up to clean architecture principles</Description>
-        <MoreInfo>https://marketplace.visualstudio.com/items?itemName=CleanArchitecture.CodeGenerator</MoreInfo>
-        <License>Resources\LICENSE</License>
-        <ReleaseNotes>https://raw.githubusercontent.com/neozhu/CleanCleanArchitectureCodeGenerator/main/README.md</ReleaseNotes>
-        <Icon>Resources\logo.png</Icon>
-        <PreviewImage>Resources\logo.png</PreviewImage>
-        <Tags>file, add, template</Tags>
-    </Metadata>
-    <Installation InstalledByMsi="false">
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
-            <ProductArchitecture>x86</ProductArchitecture>
-        </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
-            <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-    </Installation>
-    <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
-    </Prerequisites>
-    <Assets>
-        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-    </Assets>
+	<Metadata>
+		<Identity Id="CleanArchitectureCodeGenerator" Version="0.1" Language="en-US" Publisher="neozhu" />
+		<DisplayName>CleanArchitecture CodeGenerator For Blazor App</DisplayName>
+		<Description xml:space="preserve">The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application</Description>
+		<MoreInfo>https://marketplace.visualstudio.com/items?itemName=CleanArchitecture.CodeGenerator</MoreInfo>
+		<License>Resources\LICENSE</License>
+		<ReleaseNotes>https://raw.githubusercontent.com/neozhu/CleanCleanArchitectureCodeGenerator/main/README.md</ReleaseNotes>
+		<Icon>Resources\logo.png</Icon>
+		<PreviewImage>Resources\logo.png</PreviewImage>
+		<Tags>file, add, template</Tags>
+		<Preview>true</Preview>
+	</Metadata>
+	<Installation InstalledByMsi="false">
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
+			<ProductArchitecture>x86</ProductArchitecture>
+		</InstallationTarget>
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
+			<ProductArchitecture>amd64</ProductArchitecture>
+		</InstallationTarget>
+	</Installation>
+	<Prerequisites>
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+	</Prerequisites>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+	</Assets>
 </PackageManifest>

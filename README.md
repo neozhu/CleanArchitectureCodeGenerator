@@ -2,8 +2,13 @@
 
 [![Build](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml/badge.svg)](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml)
 
-Download the extension at the
-[VS Gallery](https://marketplace.visualstudio.com/items?itemName=SmartCodeMVC5Enginever3898.247365)
+## Download the extension
+[CleanArchitecture CodeGenerator For Blaozr App](https://marketplace.visualstudio.com/items?itemName=neozhu.247365)
+
+[CleanArchitecture CodeGenerator For Blaozr App](https://www.vsixgallery.com/extension/CleanArchitecture_CodeGenerator_BlazorApp)
+
+![image](https://github.com/neozhu/CleanArchitectureCodeGenerator/assets/1549611/fbcce4ee-f14a-47c5-8dd3-37503f4ec52e)
+
 
 ### How to start
 [![How to](art/nuget.png)](https://www.youtube.com/watch?v=Hp6cjdfgMT8)

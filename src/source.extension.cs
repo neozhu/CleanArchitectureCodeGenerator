@@ -12,7 +12,7 @@ namespace CleanArchitecture.CodeGenerator
         public const string Description = @"The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application";
         public const string Language = "en-US";
         public const string Version = "0.8";
-        public const string Author = "neozhu";
+        public const string Author = "7d4891e8-2f14-45ce-a707-8a3915e9b380";
         public const string Tags = "templat,CleanArchitecture,CodeGenerator";
     }
 }

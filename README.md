@@ -44,13 +44,13 @@ See the [changelog](CHANGELOG.md) for updates and roadmap.
 - {nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs
 - {nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs
 
-### CleanArchitecture for Razor Page project
-The current project only applies to the following development projects.
+### CleanArchitecture for Blazor Server Application project
+Please use this in collaboration with this project.
 
-Github :https://github.com/neozhu/RazorPageCleanArchitecture
-[![Clean Architecture Solution For Razor Page Development](https://github.com/neozhu/RazorPageCleanArchitecture/blob/main/doc/screenshot/2021-08-11_19-28-59.png?raw=true)](https://www.youtube.com/watch?v=NcMd5W3C63A)
+Github :[https://github.com/neozhu/RazorPageCleanArchitecture](https://github.com/neozhu/CleanArchitectureWithBlazorServer)
+![Clean Architecture With Blazor Server](https://raw.githubusercontent.com/neozhu/CleanArchitectureWithBlazorServer/main/doc/page.png)
 
-### Show the dialog
+### How to use
 
 A new button is added to the context menu in Solution Explorer.
 

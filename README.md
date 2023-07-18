@@ -1,6 +1,9 @@
 # Code Generator for Clean Architecture 
 
 [![Build](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml/badge.svg)](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml)
+![Visual Studio Marketplace Version (including pre-releases)](https://img.shields.io/visual-studio-marketplace/v/neozhu.247365)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/neozhu.247365?label=Downloads)
+
 
 ## Download the extension
 

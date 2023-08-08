@@ -8,9 +8,7 @@ namespace {namespace};
 
     public class GetAll{nameofPlural}Query : ICacheableRequest<IEnumerable<{itemname}Dto>>
     {
-       [IgnoreFilter]
        public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-       [IgnoreFilter]
        public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
     }
     

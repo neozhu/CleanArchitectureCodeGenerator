@@ -9,6 +9,7 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
 
+@inherits FluxorComponent
 @inject IJSRuntime JS
 @inject IStringLocalizer<{nameofPlural}> L
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.View)]
@@ -212,6 +213,10 @@
     private bool _downloading;
     private bool _exporting;
     [Inject]
+    private IState<UserProfileState> UserProfileState { get; set; } = null!;
+    private UserProfile UserProfile => UserProfileState.Value.UserProfile;
+
+    [Inject]
     private IMediator Mediator { get; set; } = default!;
     [Inject]
     private IMapper Mapper { get; set; } = default!;
@@ -244,10 +249,11 @@
         try
         {
             _loading = true;
-            Query.Sort = state.SortDefinitions.FirstOrDefault()?.SortBy ?? "Id";
-            Query.SortBy = (state.SortDefinitions.FirstOrDefault()?.Descending ?? true ? AutoFilterer.Enums.Sorting.Descending : AutoFilterer.Enums.Sorting.Ascending);
-            Query.Page = state.Page + 1;
-            Query.PerPage = state.PageSize;
+            Query.CurrentUser = UserProfile;
+            Query.OrderBy = state.SortDefinitions.FirstOrDefault()?.SortBy ?? "Id";
+            Query.SortDirection = state.SortDefinitions.FirstOrDefault()?.Descending ?? true ? SortDirection.Descending.ToString() : SortDirection.Ascending.ToString();
+            Query.PageNumber = state.Page + 1;
+            Query.PageSize = state.PageSize;
             var result = await Mediator.Send(Query).ConfigureAwait(false);
             return new GridData<{itemname}Dto>() { TotalItems = result.TotalItems, Items = result.Items };
         }
@@ -372,9 +378,10 @@
         var request = new Export{nameofPlural}Query()
             {
                 Keyword = Query.Keyword,
+                CurrentUser = UserProfile,
                 ListView = Query.ListView,
-                Sort = _table.SortDefinitions.Values.FirstOrDefault()?.SortBy ?? "Id",
-                SortBy = (_table.SortDefinitions.Values.FirstOrDefault()?.Descending ?? false) ? AutoFilterer.Enums.Sorting.Ascending : AutoFilterer.Enums.Sorting.Descending
+                OrderBy = _table.SortDefinitions.Values.FirstOrDefault()?.SortBy ?? "Id",
+                SortDirection = (_table.SortDefinitions.Values.FirstOrDefault()?.Descending ?? true) ? SortDirection.Descending.ToString() : SortDirection.Ascending.ToString()
             };
         var result = await Mediator.Send(request);
         if (result.Succeeded)

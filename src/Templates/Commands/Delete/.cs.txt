@@ -1,15 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
 
 
 namespace {namespace};
 
-    public class Delete{itemname}Command: FilterBase, ICacheInvalidatorRequest<Result<int>>
+    public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
     {
-      [ArraySearchFilter()]
       public int[] Id {  get; }
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
@@ -39,7 +37,7 @@ namespace {namespace};
         public async Task<Result<int>> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
         {
             // TODO: Implement DeleteChecked{nameofPlural}CommandHandler method 
-            var items = await _context.{nameofPlural}.ApplyFilter(request).ToListAsync(cancellationToken);
+            var items = await _context.{nameofPlural}.Where(x=>request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
             foreach (var item in items)
             {
 			    // raise a delete domain event

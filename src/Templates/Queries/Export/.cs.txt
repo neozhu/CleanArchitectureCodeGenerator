@@ -40,7 +40,7 @@ public class Export{nameofPlural}QueryHandler :
         public async Task<Result<byte[]>> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             // TODO: Implement Export{nameofPlural}QueryHandler method 
-            var data = await _context.{nameofPlural}.Specify(request.Specification)
+            var data = await _context.{nameofPlural}.ApplySpecification(request.Specification)
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                        .AsNoTracking()

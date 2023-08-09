@@ -6,39 +6,39 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class GetAll{nameofPlural}Query : ICacheableRequest<IEnumerable<{itemname}Dto>>
-    {
-       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
-    }
-    
-    public class GetAll{nameofPlural}QueryHandler :
-         IRequestHandler<GetAll{nameofPlural}Query, IEnumerable<{itemname}Dto>>
-    {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<GetAll{nameofPlural}QueryHandler> _localizer;
+public class GetAll{nameofPlural}Query : ICacheableRequest<IEnumerable<{itemname}Dto>>
+{
+   public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+   public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
+}
 
-        public GetAll{nameofPlural}QueryHandler(
-            IApplicationDbContext context,
-            IMapper mapper,
-            IStringLocalizer<GetAll{nameofPlural}QueryHandler> localizer
-            )
-        {
-            _context = context;
-            _mapper = mapper;
-            _localizer = localizer;
-        }
+public class GetAll{nameofPlural}QueryHandler :
+     IRequestHandler<GetAll{nameofPlural}Query, IEnumerable<{itemname}Dto>>
+{
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly IStringLocalizer<GetAll{nameofPlural}QueryHandler> _localizer;
 
-        public async Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
-        {
-            // TODO: Implement GetAll{nameofPlural}QueryHandler method 
-            var data = await _context.{nameofPlural}
-                         .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                         .AsNoTracking()
-                         .ToListAsync(cancellationToken);
-            return data;
-        }
+    public GetAll{nameofPlural}QueryHandler(
+        IApplicationDbContext context,
+        IMapper mapper,
+        IStringLocalizer<GetAll{nameofPlural}QueryHandler> localizer
+        )
+    {
+        _context = context;
+        _mapper = mapper;
+        _localizer = localizer;
     }
+
+    public async Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
+    {
+        // TODO: Implement GetAll{nameofPlural}QueryHandler method 
+        var data = await _context.{nameofPlural}
+                     .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                     .AsNoTracking()
+                     .ToListAsync(cancellationToken);
+        return data;
+    }
+}
 
 

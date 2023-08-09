@@ -40,10 +40,8 @@ public class {nameofPlural}WithPaginationQueryHandler :
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
            // TODO: Implement {nameofPlural}WithPaginationQueryHandler method 
-           var data = await _context.{nameofPlural}.Specify(request.Specification)
-                .OrderBy($"{request.OrderBy} {request.SortDirection}")
-                .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                .PaginatedDataAsync(request.PageNumber, request.PageSize);
+           var data = await _context.{nameofPlural}.OrderBy($"{request.OrderBy} {request.SortDirection}")
+                                    .ProjectToPaginatedDataAsync<{itemname}, {itemname}Dto>(request.Specification, request.PageNumber, request.PageSize, _mapper.ConfigurationProvider, cancellationToken);
             return data;
         }
 }

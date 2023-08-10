@@ -7,6 +7,7 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Import
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Export
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
+@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Specification
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
 
 @inherits FluxorComponent

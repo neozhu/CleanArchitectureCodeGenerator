@@ -124,6 +124,9 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs",
 						$"{nameofPlural}/Queries/GetById/Get{name}ByIdQuery.cs",
 						$"{nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs",
+						$"{nameofPlural}/Queries/Specification/{name}AdvancedFilter.cs",
+						$"{nameofPlural}/Queries/Specification/{name}AdvancedSpec.cs",
+						$"{nameofPlural}/Queries/Specification/{name}ByIdSpec.cs",
 					};
 					foreach (var item in list)
 					{

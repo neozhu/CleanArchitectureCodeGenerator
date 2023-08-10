@@ -3,20 +3,19 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Queries.Specification;
 
 namespace {namespace};
 
-public class {nameofPlural}WithPaginationQuery : PaginationFilter, ICacheableRequest<PaginatedData<{itemname}Dto>>
+public class {nameofPlural}WithPaginationQuery : {itemname}AdvancedFilter, ICacheableRequest<PaginatedData<{itemname}Dto>>
 {
-    public {itemname}ListView ListView { get; set; } = {itemname}ListView.All; 
-    public UserProfile? CurrentUser { get; set; }
     public override string ToString()
     {
         return $"Listview:{ListView}, Search:{Keyword}, {OrderBy}, {SortDirection}, {PageNumber}, {PageSize}";
     }
     public string CacheKey => {itemname}CacheKey.GetPaginationCacheKey($"{this}");
     public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
-    public {nameofPlural}PaginationSpecification Specification => new {nameofPlural}PaginationSpecification(this);
+    public {itemname}AdvancedPaginationSpec Specification => new {itemname}AdvancedPaginationSpec(this);
 }
     
 public class {nameofPlural}WithPaginationQueryHandler :
@@ -44,38 +43,4 @@ public class {nameofPlural}WithPaginationQueryHandler :
                                     .ProjectToPaginatedDataAsync<{itemname}, {itemname}Dto>(request.Specification, request.PageNumber, request.PageSize, _mapper.ConfigurationProvider, cancellationToken);
             return data;
         }
-}
-
-public class {nameofPlural}PaginationSpecification : Specification<{itemname}>
-{
-    public {nameofPlural}PaginationSpecification({nameofPlural}WithPaginationQuery query)
-    {
-        var today = DateTime.Now.Date;
-        var start = Convert.ToDateTime(today.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 00:00:00",
-            CultureInfo.CurrentCulture);
-        var end = Convert.ToDateTime(today.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 23:59:59",
-            CultureInfo.CurrentCulture);
-        var last30day = Convert.ToDateTime(
-            today.AddDays(-30).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 00:00:00",
-            CultureInfo.CurrentCulture);
-
-       Query.Where(q => q.Name != null)
-             .Where(q => q.Name!.Contains(query.Keyword) || q.Description!.Contains(query.Keyword), !string.IsNullOrEmpty(query.Keyword))
-             .Where(q => q.CreatedBy == query.CurrentUser.UserId, query.ListView == {itemname}ListView.My && query.CurrentUser is not null)
-             .Where(q => q.Created >= start && q.Created <= end, query.ListView == {itemname}ListView.CreatedToday)
-             .Where(q => q.Created >= last30day, query.ListView == {itemname}ListView.Created30Days);
-       
-    }
-}
-
-public enum {itemname}ListView
-{
-    [Description("All")]
-    All,
-    [Description("My")]
-    My,
-    [Description("Created Toady")]
-    CreatedToday,
-    [Description("Created within the last 30 days")]
-    Created30Days
 }

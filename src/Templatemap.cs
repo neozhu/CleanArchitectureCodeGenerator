@@ -53,6 +53,7 @@ namespace CleanArchitecture.CodeGenerator
 				"Queries\\GetAll",
 				"Queries\\GetById",
 				"Queries\\Pagination",
+				"Queries\\Specification",
 				"Pages",
 				"Pages\\Components",
 				"Persistence\\Configurations",

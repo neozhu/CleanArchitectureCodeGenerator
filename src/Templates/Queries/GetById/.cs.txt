@@ -3,6 +3,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Queries.Specification;
 
 namespace {namespace};
 
@@ -38,13 +39,5 @@ public class Get{itemname}ByIdQueryHandler :
                      .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                      .FirstAsync(cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");;
         return data;
-    }
-}
-
-public class {itemname}ByIdSpec : Specification<{itemname}>
-{
-    public {itemname}ByIdSpec(int id)
-    {
-        Query.Where(x => x.Id == id);
     }
 }

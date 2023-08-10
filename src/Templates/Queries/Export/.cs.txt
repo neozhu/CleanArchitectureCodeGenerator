@@ -1,19 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Queries.Pagination;
+using {selectns}.{nameofPlural}.Queries.Specification;
 
 namespace {namespace};
 
-public class Export{nameofPlural}Query : BaseFilter, IRequest<Result<byte[]>>
+public class Export{nameofPlural}Query : {itemname}AdvancedFilter, IRequest<Result<byte[]>>
 {
       public string OrderBy { get; set; } = "Id";
       public string SortDirection { get; set; } = "Descending";
       public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
       public UserProfile? CurrentUser { get; set; }
-      public {nameofPlural}ExportSpecification Specification => new {nameofPlural}ExportSpecification(this);
+      public {itemname}AdvancedPaginationSpec Specification => new {itemname}AdvancedPaginationSpec(this);
 }
     
 public class Export{nameofPlural}QueryHandler :

@@ -1,0 +1,9 @@
+﻿namespace {selectns}.{nameofPlural}.Queries.Specification;
+
+public class {itemname}ByIdSpec : Specification<{itemname}>
+{
+    public {itemname}ByIdSpec(int id)
+    {
+       Query.Where(q => q.Id == id);
+    }
+}

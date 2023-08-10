@@ -1,0 +1,19 @@
+namespace {selectns}.{nameofPlural}.Queries.Specification;
+
+public enum {itemname}ListView
+{
+    [Description("All")]
+    All,
+    [Description("My")]
+    My,
+    [Description("Created Toady")]
+    CreatedToday,
+    [Description("Created within the last 30 days")]
+    Created30Days
+}
+
+public class {itemname}AdvancedFilter: PaginationFilter
+{
+    public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
+    public UserProfile? CurrentUser { get; set; }
+}

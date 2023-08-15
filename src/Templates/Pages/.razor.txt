@@ -3,11 +3,11 @@
 @using BlazorDownloadFile
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Caching
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.DTOs
+@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Specifications
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Import
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Export
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
-@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Specification
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
 
 @inherits FluxorComponent

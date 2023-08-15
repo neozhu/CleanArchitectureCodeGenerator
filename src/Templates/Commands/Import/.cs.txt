@@ -45,6 +45,7 @@ namespace {namespace};
             _excelService = excelService;
             _mapper = mapper;
         }
+        #nullable disable warnings
         public async Task<Result<int>> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
            // TODO: Implement Import{nameofPlural}CommandHandler method

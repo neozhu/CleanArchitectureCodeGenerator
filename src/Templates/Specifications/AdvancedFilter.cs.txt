@@ -1,5 +1,5 @@
-namespace {selectns}.{nameofPlural}.Queries.Specification;
-
+namespace {selectns}.{nameofPlural}.Specifications;
+#nullable disable warnings
 public enum {itemname}ListView
 {
     [Description("All")]

@@ -120,13 +120,14 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs",
 						$"{nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs",
 						$"{nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs",
+						$"{nameofPlural}/Specifications/{name}AdvancedFilter.cs",
+						$"{nameofPlural}/Specifications/{name}AdvancedSpecification.cs",
+						$"{nameofPlural}/Specifications/{name}ByIdSpecification.cs",
 						$"{nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs",
 						$"{nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs",
 						$"{nameofPlural}/Queries/GetById/Get{name}ByIdQuery.cs",
 						$"{nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs",
-						$"{nameofPlural}/Queries/Specification/{name}AdvancedFilter.cs",
-						$"{nameofPlural}/Queries/Specification/{name}AdvancedSpec.cs",
-						$"{nameofPlural}/Queries/Specification/{name}ByIdSpec.cs",
+						
 					};
 					foreach (var item in list)
 					{

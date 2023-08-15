@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Specifications;
 using {selectns}.{nameofPlural}.Queries.Pagination;
-using {selectns}.{nameofPlural}.Queries.Specification;
 
 namespace {namespace};
 
@@ -13,7 +13,7 @@ public class Export{nameofPlural}Query : {itemname}AdvancedFilter, IRequest<Resu
       public string SortDirection { get; set; } = "Descending";
       public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
       public UserProfile? CurrentUser { get; set; }
-      public {itemname}AdvancedPaginationSpec Specification => new {itemname}AdvancedPaginationSpec(this);
+      public {itemname}AdvancedSpecification Specification => new {itemname}AdvancedSpecification(this);
 }
     
 public class Export{nameofPlural}QueryHandler :
@@ -36,7 +36,7 @@ public class Export{nameofPlural}QueryHandler :
             _excelService = excelService;
             _localizer = localizer;
         }
-
+        #nullable disable warnings
         public async Task<Result<byte[]>> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
             // TODO: Implement Export{nameofPlural}QueryHandler method 
@@ -54,26 +54,4 @@ public class Export{nameofPlural}QueryHandler :
                 , _localizer[_dto.GetClassDescription()]);
             return await Result<byte[]>.SuccessAsync(result);;
         }
-}
-
-public class {nameofPlural}ExportSpecification : Specification<{itemname}>
-{
-    public {nameofPlural}ExportSpecification(Export{nameofPlural}Query query)
-    {
-        var today = DateTime.Now.Date;
-        var start = Convert.ToDateTime(today.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 00:00:00",
-            CultureInfo.CurrentCulture);
-        var end = Convert.ToDateTime(today.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 23:59:59",
-            CultureInfo.CurrentCulture);
-        var last30day = Convert.ToDateTime(
-            today.AddDays(-30).ToString("yyyy-MM-dd", CultureInfo.CurrentCulture) + " 00:00:00",
-            CultureInfo.CurrentCulture);
-
-       Query.Where(q => q.Name != null)
-             .Where(q => q.Name!.Contains(query.Keyword) || q.Description!.Contains(query.Keyword), !string.IsNullOrEmpty(query.Keyword))
-             .Where(q => q.CreatedBy == query.CurrentUser.UserId, query.ListView == {itemname}ListView.My && query.CurrentUser is not null)
-             .Where(q => q.Created >= start && q.Created <= end, query.ListView == {itemname}ListView.CreatedToday)
-             .Where(q => q.Created >= last30day, query.ListView == {itemname}ListView.Created30Days);
-       
-    }
 }

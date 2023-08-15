@@ -3,7 +3,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
-using {selectns}.{nameofPlural}.Queries.Specification;
+using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
 
@@ -35,7 +35,7 @@ public class Get{itemname}ByIdQueryHandler :
     public async Task<{itemname}Dto> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
     {
         // TODO: Implement Get{itemname}ByIdQueryHandler method 
-        var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpec(request.Id))
+        var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
                      .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                      .FirstAsync(cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");;
         return data;

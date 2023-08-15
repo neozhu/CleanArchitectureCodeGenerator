@@ -111,7 +111,7 @@
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
     <Compile Include="TemplateMap.cs" />
-    <Content Include="Templates\Queries\Specification\ByIdSpec.cs.txt">
+    <Content Include="Templates\Specifications\ByIdSpecification.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Templates\Caching\.cachekey.cs.txt">
@@ -222,10 +222,10 @@
     <Content Include="Templates\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\Queries\Specification\AdvancedSpec.txt">
+    <Content Include="Templates\Specifications\AdvancedSpecification.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\Queries\Specification\AdvancedFilter.cs.txt">
+    <Content Include="Templates\Specifications\AdvancedFilter.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Resources\icon.png" />

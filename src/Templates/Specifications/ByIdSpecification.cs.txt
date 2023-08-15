@@ -1,0 +1,9 @@
+﻿namespace {selectns}.{nameofPlural}.Specifications;
+#nullable disable warnings
+public class {itemname}ByIdSpecification : Specification<{itemname}>
+{
+    public {itemname}ByIdSpecification(int id)
+    {
+       Query.Where(q => q.Id == id);
+    }
+}

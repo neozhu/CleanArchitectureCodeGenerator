@@ -8,7 +8,7 @@ namespace CleanArchitecture.CodeGenerator
     internal sealed partial class Vsix
     {
         public const string Id = "CleanArchitecture_CodeGenerator_BlazorApp";
-        public const string Name = "CleanArchitecture CodeGenerator For Blaozr App";
+        public const string Name = "CleanArchitecture CodeGenerator For Blazor App";
         public const string Description = @"The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application";
         public const string Language = "en-US";
         public const string Version = "0.1";

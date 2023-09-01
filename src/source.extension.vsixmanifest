@@ -2,14 +2,14 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
 		<Identity Id="CleanArchitecture_CodeGenerator_BlazorApp" Version="0.1" Language="en-US" Publisher="neozhu" />
-		<DisplayName>CleanArchitecture CodeGenerator For Blaozr App</DisplayName>
+		<DisplayName>CleanArchitecture CodeGenerator For Blazor App</DisplayName>
 		<Description xml:space="preserve">The fastest and easiest way to generate application features code that up to clean architecture principles  for Blazor Server Application</Description>
 		<MoreInfo>https://marketplace.visualstudio.com/items?itemName=CleanArchitecture.CodeGenerator</MoreInfo>
 		<License>Resources\LICENSE</License>
 		<ReleaseNotes>https://raw.githubusercontent.com/neozhu/CleanCleanArchitectureCodeGenerator/main/README.md</ReleaseNotes>
 		<Icon>Resources\logo.png</Icon>
 		<PreviewImage>Resources\logo.png</PreviewImage>
-		<Tags>templat, CleanArchitecture, CodeGenerator </Tags>
+		<Tags>template, CleanArchitecture, CodeGenerator </Tags>
 		<Preview>true</Preview>
 	</Metadata>
 	<Installation InstalledByMsi="false">

@@ -21,9 +21,7 @@
     }
 </style>
 
-<ErrorBoundary>
-    <ChildContent>
-       <MudDataGrid ServerData="@(ServerReload)"
+<MudDataGrid ServerData="@(ServerReload)"
                   FixedHeader="true"
                   FixedFooter="true"
                   Virtualize="true"
@@ -195,12 +193,8 @@
             <PagerContent>
                 <MudDataGridPager PageSizeOptions="@(new int[]{10,15,30,50,100,500,1000})" />
             </PagerContent>
-        </MudDataGrid>
-    </ChildContent>
-    <ErrorContent>
-        <CustomError Exception="context"></CustomError>
-    </ErrorContent>
-</ErrorBoundary>
+</MudDataGrid>
+
 
 
 @code {

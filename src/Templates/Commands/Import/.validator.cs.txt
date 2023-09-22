@@ -7,11 +7,11 @@ namespace {namespace};
     {
         public Import{nameofPlural}CommandValidator()
         {
-           // TODO: Implement Import{itemname}CommandValidator method, for example: 
-           // RuleFor(v => v.Data)
-           //      .NotNull()
-           //      .NotEmpty();
-           throw new System.NotImplementedException();
+           
+           RuleFor(v => v.Data)
+                .NotNull()
+                .NotEmpty();
+
         }
     }
 

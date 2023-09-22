@@ -8,6 +8,8 @@ namespace {namespace};
 
 public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
 {
+      [Description("Id")]
+      public int Id { get; set; }
       {dtoFieldDefinition}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
@@ -15,7 +17,8 @@ public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
     {
         public Mapping()
         {
-            CreateMap<{itemname}Dto, Create{itemname}Command>().ReverseMap();
+             CreateMap<{itemname}Dto,Create{itemname}Command>(MemberList.None);
+             CreateMap<Create{itemname}Command,{itemname}>(MemberList.None);
         }
     }
 }
@@ -37,7 +40,6 @@ public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
         }
         public async Task<Result<int>> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
-           // TODO: Implement Create{itemname}CommandHandler method 
            var dto = _mapper.Map<{itemname}Dto>(request);
            var item = _mapper.Map<{itemname}>(dto);
            // raise a create domain event

@@ -32,7 +32,6 @@ public class GetAll{nameofPlural}QueryHandler :
 
     public async Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
     {
-        // TODO: Implement GetAll{nameofPlural}QueryHandler method 
         var data = await _context.{nameofPlural}
                      .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                      .AsNoTracking()

@@ -7,7 +7,8 @@ namespace {namespace};
 [Description("{nameofPlural}")]
 public class {itemname}Dto
 {
-    // TODO: define data transfer object (DTO) fields, for example:
+    [Description("Id")]
+    public int Id { get; set; }
     {dtoFieldDefinition}
 
     private class Mapping : Profile

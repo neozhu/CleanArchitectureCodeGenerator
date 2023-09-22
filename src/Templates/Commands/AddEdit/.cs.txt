@@ -7,6 +7,8 @@ namespace {namespace};
 
 public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
 {
+      [Description("Id")]
+      public int Id { get; set; }
       {dtoFieldDefinition}
 
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
@@ -16,7 +18,9 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
     {
         public Mapping()
         {
-            CreateMap<{itemname}Dto, AddEdit{itemname}Command>().ReverseMap();
+            CreateMap<{itemname}Dto,AddEdit{itemname}Command>(MemberList.None);
+            CreateMap<AddEdit{itemname}Command,{itemname}>(MemberList.None);
+         
         }
     }
 }
@@ -38,7 +42,6 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
         }
         public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
         {
-            // TODO: Implement AddEdit{itemname}CommandHandler method 
             var dto = _mapper.Map<{itemname}Dto>(request);
             if (request.Id > 0)
             {

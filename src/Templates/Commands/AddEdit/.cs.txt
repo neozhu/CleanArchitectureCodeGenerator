@@ -42,11 +42,10 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
         }
         public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
         {
-            var dto = _mapper.Map<{itemname}Dto>(request);
             if (request.Id > 0)
             {
                 var item = await _context.{nameofPlural}.FindAsync(new object[] { request.Id }, cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");
-                item = _mapper.Map(dto, item);
+                item = _mapper.Map(request, item);
 				// raise a update domain event
 				item.AddDomainEvent(new {itemname}UpdatedEvent(item));
                 await _context.SaveChangesAsync(cancellationToken);
@@ -54,7 +53,7 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
             }
             else
             {
-                var item = _mapper.Map<{itemname}>(dto);
+                var item = _mapper.Map<{itemname}>(request);
                 // raise a create domain event
 				item.AddDomainEvent(new {itemname}CreatedEvent(item));
                 _context.{nameofPlural}.Add(item);

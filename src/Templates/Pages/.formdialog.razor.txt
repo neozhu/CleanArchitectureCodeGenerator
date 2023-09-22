@@ -15,7 +15,7 @@
     <DialogActions>
         <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
         <MudLoadingButton Loading="@_savingnew" OnClick="SaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
-        <MudButton Loading="@_saving" Color="MudBlazor.Color.Primary" OnClick="Submit">@ConstantString.Save</MudButton>
+        <MudLoadingButton Loading="@_saving"  OnClick="Submit">@ConstantString.Save</MudButton>
     </DialogActions>
 </MudDialog>
 

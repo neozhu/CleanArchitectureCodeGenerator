@@ -8,6 +8,8 @@ namespace {namespace};
 
 public class Update{itemname}Command: ICacheInvalidatorRequest<Result<int>>
 {
+      [Description("Id")]
+      public int Id { get; set; }
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
@@ -15,7 +17,8 @@ public class Update{itemname}Command: ICacheInvalidatorRequest<Result<int>>
     {
         public Mapping()
         {
-            CreateMap<{itemname}Dto, Update{itemname}Command>().ReverseMap();
+            CreateMap<{itemname}Dto,Update{itemname}Command>(MemberList.None);
+            CreateMap<Update{itemname}Command,{itemname}>(MemberList.None);
         }
     }
 }

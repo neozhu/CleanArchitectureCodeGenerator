@@ -9,10 +9,6 @@ namespace {namespace};
 
 public class Export{nameofPlural}Query : {itemname}AdvancedFilter, IRequest<Result<byte[]>>
 {
-      public string OrderBy { get; set; } = "Id";
-      public string SortDirection { get; set; } = "Descending";
-      public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
-      public UserProfile? CurrentUser { get; set; }
       public {itemname}AdvancedSpecification Specification => new {itemname}AdvancedSpecification(this);
 }
     
@@ -39,7 +35,6 @@ public class Export{nameofPlural}QueryHandler :
         #nullable disable warnings
         public async Task<Result<byte[]>> Handle(Export{nameofPlural}Query request, CancellationToken cancellationToken)
         {
-            // TODO: Implement Export{nameofPlural}QueryHandler method 
             var data = await _context.{nameofPlural}.ApplySpecification(request.Specification)
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
                        .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)

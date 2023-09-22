@@ -48,10 +48,9 @@ namespace {namespace};
         #nullable disable warnings
         public async Task<Result<int>> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
         {
-           // TODO: Implement Import{nameofPlural}CommandHandler method
+
            var result = await _excelService.ImportAsync(request.Data, mappers: new Dictionary<string, Func<DataRow, {itemname}Dto, object?>>
             {
-                // TODO: Define the fields that should be read from Excel, for example:
                 {importFuncExpression}
             }, _localizer[_dto.GetClassDescription()]);
             if (result.Succeeded && result.Data is not null)

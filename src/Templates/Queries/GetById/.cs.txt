@@ -34,7 +34,6 @@ public class Get{itemname}ByIdQueryHandler :
 
     public async Task<{itemname}Dto> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
     {
-        // TODO: Implement Get{itemname}ByIdQueryHandler method 
         var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
                      .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                      .FirstAsync(cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");;

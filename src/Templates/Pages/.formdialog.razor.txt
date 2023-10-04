@@ -15,7 +15,7 @@
     <DialogActions>
         <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
         <MudLoadingButton Loading="@_savingnew" OnClick="SaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
-        <MudLoadingButton Loading="@_saving"  OnClick="Submit">@ConstantString.Save</MudButton>
+        <MudLoadingButton Loading="@_saving"  OnClick="Submit">@ConstantString.Save</MudLoadingButton>
     </DialogActions>
 </MudDialog>
 

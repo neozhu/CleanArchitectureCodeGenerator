@@ -47,6 +47,6 @@ public class Export{nameofPlural}QueryHandler :
                     {exportFuncExpression}
                 }
                 , _localizer[_dto.GetClassDescription()]);
-            return await Result<byte[]>.SuccessAsync(result);;
+            return await Result<byte[]>.SuccessAsync(result);
         }
 }

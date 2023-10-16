@@ -3,8 +3,8 @@
 
 namespace {namespace};
 
-    public class Create{itemname}CommandValidator : AbstractValidator<Create{itemname}Command>
-    {
+public class Create{itemname}CommandValidator : AbstractValidator<Create{itemname}Command>
+{
         public Create{itemname}CommandValidator()
         {
            
@@ -13,12 +13,6 @@ namespace {namespace};
                  .NotEmpty();
         
         }
-        public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-     {
-        var result = await ValidateAsync(ValidationContext<Create{itemname}Command>.CreateWithOptions((Create{itemname}Command)model, x => x.IncludeProperties(propertyName)));
-        if (result.IsValid)
-            return Array.Empty<string>();
-        return result.Errors.Select(e => e.ErrorMessage);
-     };
-    }
+       
+}
 

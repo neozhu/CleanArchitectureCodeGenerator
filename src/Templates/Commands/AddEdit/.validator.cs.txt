@@ -12,12 +12,6 @@ public class AddEdit{itemname}CommandValidator : AbstractValidator<AddEdit{itemn
                 .NotEmpty();
        
      }
-     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-     {
-        var result = await ValidateAsync(ValidationContext<AddEdit{itemname}Command>.CreateWithOptions((AddEdit{itemname}Command)model, x => x.IncludeProperties(propertyName)));
-        if (result.IsValid)
-            return Array.Empty<string>();
-        return result.Errors.Select(e => e.ErrorMessage);
-     };
+
 }
 

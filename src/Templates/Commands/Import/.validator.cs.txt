@@ -3,8 +3,8 @@
 
 namespace {namespace};
 
-    public class Import{nameofPlural}CommandValidator : AbstractValidator<Import{nameofPlural}Command>
-    {
+public class Import{nameofPlural}CommandValidator : AbstractValidator<Import{nameofPlural}Command>
+{
         public Import{nameofPlural}CommandValidator()
         {
            
@@ -13,5 +13,5 @@ namespace {namespace};
                 .NotEmpty();
 
         }
-    }
+}
 

@@ -304,7 +304,7 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
 				{
-					output.Append($"        <MudText Typo=\"Typo.body2\" Style=\"@($\"color:{{Theme.Theme.ApplicationTheme().Palette.TextSecondary}}\")\">@context.Item.Description</MudText>\r\n");
+					output.Append($"        <MudText Typo=\"Typo.body2\" Class=\"mud-text-secondary\">@context.Item.Description</MudText>\r\n");
 				}
 				output.Append($"     </div>\r\n");
 				output.Append("    </CellTemplate>\r\n");
@@ -335,7 +335,7 @@ namespace CleanArchitecture.CodeGenerator
 				}
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any()) {
 					output.Append("                ");
-					output.Append($"        <MudText Typo=\"Typo.body2\" Style=\"@($\"color:{{Theme.Theme.ApplicationTheme().Palette.TextSecondary}}\")\">@context.Description</MudText>\r\n");
+					output.Append($"        <MudText Typo=\"Typo.body2\" Class=\"mud-text-secondary\">@context.Description</MudText>\r\n");
 			    }
 				output.Append("                ");
 				output.Append($"    </div>\r\n");

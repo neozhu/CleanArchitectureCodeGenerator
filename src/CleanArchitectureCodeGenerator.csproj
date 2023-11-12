@@ -138,7 +138,7 @@
     <Content Include="Templates\Pages\.razor.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\Pages\.formdialog.razor.txt">
+    <Content Include="Templates\Pages\Components\.formdialog.razor.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Templates\Pages\Components\.advancedsearchcomponent.razor.txt">

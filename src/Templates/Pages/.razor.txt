@@ -295,10 +295,9 @@
     }
     private async Task OnClone()
     {
-        var copyitem = _selectedItems.First();
+        var dto = _selectedItems.First();
         var command = new AddEdit{itemname}Command(){
-            Name = copyitem.Name,
-            Description = copyitem.Description,    
+            {fieldAssignmentDefinition}  
         };
         var parameters = new DialogParameters<{itemname}FormDialog>
             {
@@ -311,7 +310,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
-            _selectedItems.Remove(copyitem);
+            _selectedItems=new HashSet<{itemname}Dto>(); 
         }
     }
     private async Task OnEdit({itemname}Dto dto)
@@ -337,7 +336,7 @@
         var parameters = new DialogParameters<DeleteConfirmation> 
            {
              { x=>x.Command,  command },
-             { x=>x.ContentText, string.Format(ConstantString.DeleteConfirmation, dto.Name) }
+             { x=>x.ContentText, string.Format(ConstantString.DeleteConfirmation, dto.Id) }
            };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, DisableBackdropClick = true };
         var dialog = DialogService.Show<DeleteConfirmation>(ConstantString.DeleteConfirmationTitle, parameters, options);

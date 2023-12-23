@@ -58,10 +58,10 @@ namespace CleanArchitecture.CodeGenerator
 		private void ExecuteAsync(object sender, EventArgs e)
 		{
 			NewItemTarget target = NewItemTarget.Create(_dte);
-			NewItemTarget domain= NewItemTarget.Create(_dte, DOMAINPROJECT);
-			NewItemTarget infrastructure = NewItemTarget.Create(_dte, INFRASTRUCTUREPROJECT);
-			NewItemTarget ui = NewItemTarget.Create(_dte, UIPROJECT);
-			var includes = new string[] { "IEntity", "BaseEntity", "BaseAuditableEntity", "BaseAuditableSoftDeleteEntity", "AuditTrail", "OwnerPropertyEntity" };
+			NewItemTarget domain= NewItemTarget.Create(_dte,"Domain");
+			NewItemTarget infrastructure = NewItemTarget.Create(_dte, "Infrastructure");
+			NewItemTarget ui = NewItemTarget.Create(_dte, "Server.UI");
+			var includes = new string[] { "IEntity", "BaseEntity", "BaseAuditableEntity", "BaseAuditableSoftDeleteEntity", "AuditTrail", "OwnerPropertyEntity","KeyValue" };
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
 				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
 			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();

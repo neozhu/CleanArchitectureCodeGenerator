@@ -34,11 +34,11 @@ namespace CleanArchitecture.CodeGenerator
 			_folder = Path.Combine(Path.GetDirectoryName(assembly), "Templates");
 			_templateFiles.AddRange(Directory.GetFiles(_folder, "*" + _defaultExt, SearchOption.AllDirectories));
 		}
-		
 
-		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file,string itemname,string selectFolder)
+
+		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file, string itemname, string selectFolder)
 		{
-			var templatefolders =new string[]{
+			var templatefolders = new string[]{
 				"Commands\\AcceptChanges",
 				"Commands\\Create",
 				"Commands\\Delete",
@@ -70,18 +70,18 @@ namespace CleanArchitecture.CodeGenerator
 
 			// Look for direct file name matches
 			if (list.Any(f => {
-				 var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\","\\\\");
-				 var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
-				 return result;
-			 
-				}) )
+				var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\", "\\\\");
+				var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
+				return result;
+
+			}))
 			{
-				var tmplFile = list.OrderByDescending(x=>x.Length).FirstOrDefault(f => {
+				var tmplFile = list.OrderByDescending(x => x.Length).FirstOrDefault(f => {
 					var pattern = templatefolders.Where(x => relative.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0).First().Replace("\\", "\\\\"); ;
 					var result = Regex.IsMatch(f, pattern, RegexOptions.IgnoreCase);
 					if (result)
 					{
-						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x=>name.IndexOf(x, StringComparison.OrdinalIgnoreCase)>=0);
+						return Path.GetFileNameWithoutExtension(f).Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).All(x => name.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0);
 					}
 					return false;
 				});
@@ -116,7 +116,7 @@ namespace CleanArchitecture.CodeGenerator
 			list.InsertRange(0, dynaList);
 		}
 
-		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative,string selectRelative, string templateFile)
+		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative, string selectRelative, string templateFile)
 		{
 			if (string.IsNullOrEmpty(templateFile))
 			{
@@ -148,8 +148,8 @@ namespace CleanArchitecture.CodeGenerator
 				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject);
 				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
 				return content.Replace("{rootnamespace}", _defaultNamespace)
-					            .Replace("{namespace}", ns)
-							    .Replace("{selectns}", selectNs)
+								.Replace("{namespace}", ns)
+								.Replace("{selectns}", selectNs)
 								.Replace("{itemname}", name)
 								.Replace("{nameofPlural}", nameofPlural)
 								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
@@ -195,7 +195,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach(var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
 			{
 				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
@@ -208,7 +208,7 @@ namespace CleanArchitecture.CodeGenerator
 					{
 						case "string" when property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
 							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} = String.Empty; \r\n");
-						    break;
+							break;
 						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) && !property.Type.IsArray && !property.Type.IsDictionary:
 							output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
 							break;
@@ -247,7 +247,7 @@ namespace CleanArchitecture.CodeGenerator
 							}
 							break;
 					}
-					
+
 				}
 			}
 			return output.ToString();
@@ -333,10 +333,11 @@ namespace CleanArchitecture.CodeGenerator
 					output.Append("                ");
 					output.Append($"        <MudText>@context.Name</MudText>\r\n");
 				}
-				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any()) {
+				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
+				{
 					output.Append("                ");
 					output.Append($"        <MudText Typo=\"Typo.body2\" Class=\"mud-text-secondary\">@context.Description</MudText>\r\n");
-			    }
+			  }
 				output.Append("                ");
 				output.Append($"    </div>\r\n");
 				output.Append("                ");
@@ -350,7 +351,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" ><MudCheckBox Checked=\"@context.{property.Name}\" ReadOnly></MudCheckBox></MudTd> \r\n");
 				}
-				else if(property.Type.CodeName.Equals("System.DateTime", StringComparison.OrdinalIgnoreCase))
+				else if (property.Type.CodeName.Equals("System.DateTime", StringComparison.OrdinalIgnoreCase))
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name}))]\" >@context.{property.Name}.Date.ToString(\"d\")</MudTd> \r\n");
 				}
@@ -362,7 +363,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_currentDto.GetMemberDescription(x=>.{property.Name})]\" >@context.{property.Name}</MudTd> \r\n");
 				}
-				
+
 			}
 			return output.ToString();
 		}
@@ -421,7 +422,7 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;
-					case "system.datetime?": 
+					case "system.datetime?":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
 						output.Append($"        <MudDatePicker Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Date=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudDatePicker>\r\n");
@@ -437,7 +438,7 @@ namespace CleanArchitecture.CodeGenerator
 						break;
 
 				}
-				
+
 			}
 			return output.ToString();
 		}
@@ -446,9 +447,8 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createFieldAssignmentDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name != "Id"))
 			{
-				output.Append($"        ");
 				output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
 			}
 			return output.ToString();

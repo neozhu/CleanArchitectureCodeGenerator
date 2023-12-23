@@ -9,7 +9,7 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Export
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
-
+@using CleanArchitecture.Blazor.Server.UI.Pages.{nameofPlural}.Components
 @inherits FluxorComponent
 @inject IJSRuntime JS
 @inject IStringLocalizer<{nameofPlural}> L
@@ -280,12 +280,12 @@
     private async Task OnCreate()
     {
         var command = new AddEdit{itemname}Command();
-        var parameters = new DialogParameters<_{itemname}FormDialog>
+        var parameters = new DialogParameters<{itemname}FormDialog>
             {
                 { x=>x.model,command },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<_{itemname}FormDialog>
+        var dialog = DialogService.Show<{itemname}FormDialog>
         (L["Create a new item"], parameters, options);
         var state = await dialog.Result;
         if (!state.Canceled)
@@ -299,12 +299,12 @@
         var command = new AddEdit{itemname}Command(){
             {fieldAssignmentDefinition}  
         };
-        var parameters = new DialogParameters<_{itemname}FormDialog>
+        var parameters = new DialogParameters<{itemname}FormDialog>
             {
                { x=>x.model,command },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<_{itemname}FormDialog>
+        var dialog = DialogService.Show<{itemname}FormDialog>
         (L["Create a new item"], parameters, options);
         var state = await dialog.Result;
         if (!state.Canceled)
@@ -316,12 +316,12 @@
     private async Task OnEdit({itemname}Dto dto)
     {
         var command = Mapper.Map<AddEdit{itemname}Command>(dto);
-        var parameters = new DialogParameters<_{itemname}FormDialog>
+        var parameters = new DialogParameters<{itemname}FormDialog>
             {
                 { x=>x.model,command },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<_{itemname}FormDialog>
+        var dialog = DialogService.Show<{itemname}FormDialog>
         (L["Edit the item"], parameters, options);
         var state = await dialog.Result;
         if (!state.Canceled)

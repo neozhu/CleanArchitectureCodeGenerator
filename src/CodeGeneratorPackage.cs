@@ -27,6 +27,11 @@ namespace CleanArchitecture.CodeGenerator
 	[Guid(PackageGuids.guidCodeGeneratorPkgString)]
 	public sealed class CodeGeneratorPackage : AsyncPackage
 	{
+		public const string DOMAINPROJECT = "Domain";
+		public const string UIPROJECT = "Server.UI";
+		public const string INFRASTRUCTUREPROJECT = "Infrastructure";
+		public const string APPLICATIONPROJECT = "Application";
+
 		private const string _solutionItemsProjectName = "Solution Items";
 		private static readonly Regex _reservedFileNamePattern = new Regex($@"(?i)^(PRN|AUX|NUL|CON|COM\d|LPT\d)(\.|$)");
 		private static readonly HashSet<char> _invalidFileNameChars = new HashSet<char>(Path.GetInvalidFileNameChars());
@@ -60,10 +65,10 @@ namespace CleanArchitecture.CodeGenerator
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
 				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
 			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();
-			if (target == null)
+			if (target == null && target.Project.Name == APPLICATIONPROJECT)
 			{
 				MessageBox.Show(
-						"Could not determine where to create the new file. Select a file or folder in Solution Explorer and try again.",
+						"Unable to determine the location for creating the new file. Please select a folder within the Application Project in the Explorer and try again.",
 						Vsix.Name,
 						MessageBoxButton.OK,
 						MessageBoxImage.Error);
@@ -137,7 +142,7 @@ namespace CleanArchitecture.CodeGenerator
 					var pages = new List<string>()
 					{
 						$"Pages/{nameofPlural}/{nameofPlural}.razor",
-						$"Pages/{nameofPlural}/_{name}FormDialog.razor",
+						$"Pages/{nameofPlural}/Components/{name}FormDialog.razor",
 						$"Pages/{nameofPlural}/Components/{nameofPlural}AdvancedSearchComponent.razor"
 					};
 					foreach (var item in pages)

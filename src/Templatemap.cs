@@ -337,7 +337,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append("                ");
 					output.Append($"        <MudText Typo=\"Typo.body2\" Class=\"mud-text-secondary\">@context.Description</MudText>\r\n");
-				}
+			  }
 				output.Append("                ");
 				output.Append($"    </div>\r\n");
 				output.Append("                ");

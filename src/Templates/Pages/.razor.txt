@@ -10,7 +10,6 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
 @using CleanArchitecture.Blazor.Server.UI.Pages.{nameofPlural}.Components
-@inherits FluxorComponent
 @inject IJSRuntime JS
 @inject IStringLocalizer<{nameofPlural}> L
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.View)]
@@ -208,15 +207,13 @@
     private bool _downloading;
     private bool _exporting;
     [Inject]
-    private IState<UserProfileState> UserProfileState { get; set; } = null!;
-    private UserProfile UserProfile => UserProfileState.Value.UserProfile;
-
-    [Inject]
     private IMediator Mediator { get; set; } = default!;
     [Inject]
     private IMapper Mapper { get; set; } = default!;
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; } = default!;
+    [CascadingParameter]
+    private UserProfile? UserProfile { get; set; }
 
     private {nameofPlural}WithPaginationQuery Query { get; set; } = new();
     [Inject]

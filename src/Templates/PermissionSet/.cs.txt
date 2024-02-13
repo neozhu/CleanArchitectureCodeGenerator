@@ -1,0 +1,23 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using System.ComponentModel;
+
+namespace {namespace};
+
+public static partial class Permissions
+{
+    [DisplayName("{nameofPlural}")]
+    [Description("{nameofPlural} Permissions")]
+    public static class {nameofPlural}
+    {
+        public const string View = "Permissions.{nameofPlural}.View";
+        public const string Create = "Permissions.{nameofPlural}.Create";
+        public const string Edit = "Permissions.{nameofPlural}.Edit";
+        public const string Delete = "Permissions.{nameofPlural}.Delete";
+        public const string Search = "Permissions.{nameofPlural}.Search";
+        public const string Export = "Permissions.{nameofPlural}.Export";
+        public const string Import = "Permissions.{nameofPlural}.Import";
+    }
+}
+

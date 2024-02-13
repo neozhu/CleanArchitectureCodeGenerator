@@ -57,6 +57,7 @@ namespace CleanArchitecture.CodeGenerator
 				"Pages",
 				"Pages\\Components",
 				"Persistence\\Configurations",
+				"PermissionSet",
 				};
 			var extension = Path.GetExtension(file).ToLowerInvariant();
 			var name = Path.GetFileName(file);

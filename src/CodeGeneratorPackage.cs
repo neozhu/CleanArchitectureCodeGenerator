@@ -101,7 +101,8 @@ namespace CleanArchitecture.CodeGenerator
 						AddItemAsync(objectClass,item, name, domain).Forget();
 					}
 					var configurations = new List<string>() {
-						 $"Persistence/Configurations/{name}Configuration.cs"
+						 $"Persistence/Configurations/{name}Configuration.cs",
+						 $"PermissionSet/{nameofPlural}.cs"
 						};
 					foreach (var item in configurations)
 					{

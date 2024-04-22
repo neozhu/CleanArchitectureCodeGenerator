@@ -288,6 +288,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
+            _selectedItems = new();
         }
     }
     private async Task OnClone()
@@ -307,7 +308,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
-            _selectedItems=new HashSet<{itemname}Dto>(); 
+            _selectedItems = new();
         }
     }
     private async Task OnEdit({itemname}Dto dto)
@@ -324,6 +325,7 @@
         if (!state.Canceled)
         {
             await _table.ReloadServerData();
+            _selectedItems = new();
         }
     }
 
@@ -341,7 +343,7 @@
         if (!state.Canceled)
         {
              await _table.ReloadServerData();
-             _selectedItems.Remove(dto);
+             _selectedItems = new();
         }
     }
 

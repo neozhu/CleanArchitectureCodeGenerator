@@ -10,7 +10,7 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.AddEdit
 @using CleanArchitecture.Blazor.Server.UI.Pages.{nameofPlural}.Components
-@inject IJSRuntime JS
+
 @inject IStringLocalizer<{nameofPlural}> L
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.View)]
 <PageTitle>@Title</PageTitle>
@@ -95,14 +95,13 @@
                                 @if (_canImport)
                                 {
                                     <MudFileUpload T="IBrowserFile" FilesChanged="OnImportData" Accept=".xlsx" Style="margin-top:0px" >
-                                        <ButtonTemplate>
+                                        <ActivatorContent>
                                             <MudButton HtmlTag="label"
                                                    Size="Size.Small"
                                                    Variant="Variant.Outlined"
                                                    Color="Color.Primary"
                                                    Disabled="@_loading"
-                                                   StartIcon="@Icons.Material.Filled.Upload"
-                                                       for="@context">
+                                                   StartIcon="@Icons.Material.Filled.Upload">
                                                 @if (_uploading)
                                                 {
                                                     <MudProgressCircular  Size="Size.Small" Indeterminate="true" />
@@ -113,7 +112,7 @@
                                                     @ConstantString.Import
                                                 }
                                             </MudButton>
-                                        </ButtonTemplate>
+                                        </ActivatorContent>
                                     </MudFileUpload>
                                 }
                             </MudHidden>
@@ -206,10 +205,6 @@
     private bool _uploading;
     private bool _downloading;
     private bool _exporting;
-    [Inject]
-    private IMediator Mediator { get; set; } = default!;
-    [Inject]
-    private IMapper Mapper { get; set; } = default!;
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; } = default!;
     [CascadingParameter]
@@ -276,7 +271,7 @@
     private async Task ShowEditFormDialog(string title, DialogParameters parameters)
     {
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<ProductFormDialog>(title, parameters, options);
+        var dialog = DialogService.Show<{itemname}FormDialog>(title, parameters, options);
         var state = await dialog.Result;
 
         if (!state.Canceled)

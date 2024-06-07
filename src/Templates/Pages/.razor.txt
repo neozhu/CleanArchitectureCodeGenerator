@@ -273,6 +273,18 @@
         Query.Keyword  = string.Empty;
         await _table.ReloadServerData();
     }
+    private async Task ShowEditFormDialog(string title, DialogParameters parameters)
+    {
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = DialogService.Show<ProductFormDialog>(title, parameters, options);
+        var state = await dialog.Result;
+
+        if (!state.Canceled)
+        {
+            await _table.ReloadServerData();
+            _selectedItems.Clear();
+        }
+    }
 
     private async Task OnCreate()
     {
@@ -281,15 +293,7 @@
             {
                 { x=>x.model,command },
             };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<{itemname}FormDialog>
-        (L["Create a new item"], parameters, options);
-        var state = await dialog.Result;
-        if (!state.Canceled)
-        {
-            await _table.ReloadServerData();
-            _selectedItems = new();
-        }
+        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["Product"]), parameters);
     }
     private async Task OnClone()
     {
@@ -301,15 +305,7 @@
             {
                { x=>x.model,command },
             };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<{itemname}FormDialog>
-        (L["Create a new item"], parameters, options);
-        var state = await dialog.Result;
-        if (!state.Canceled)
-        {
-            await _table.ReloadServerData();
-            _selectedItems = new();
-        }
+        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["Product"]), parameters);
     }
     private async Task OnEdit({itemname}Dto dto)
     {
@@ -318,51 +314,33 @@
             {
                 { x=>x.model,command },
             };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<{itemname}FormDialog>
-        (L["Edit the item"], parameters, options);
-        var state = await dialog.Result;
-        if (!state.Canceled)
-        {
-            await _table.ReloadServerData();
-            _selectedItems = new();
-        }
+        await ShowEditFormDialog(string.Format(ConstantString.EditTheItem, L["Product"]), parameters);
     }
 
     private async Task OnDelete({itemname}Dto dto)
     {
+        var contentText = string.Format(ConstantString.DeleteConfirmation, dto.Name);
         var command = new Delete{itemname}Command(new int[] { dto.Id });
-        var parameters = new DialogParameters<DeleteConfirmation> 
-           {
-             { x=>x.Command,  command },
-             { x=>x.ContentText, string.Format(ConstantString.DeleteConfirmation, dto.Id) }
-           };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, DisableBackdropClick = true };
-        var dialog = DialogService.Show<DeleteConfirmation>(ConstantString.DeleteConfirmationTitle, parameters, options);
-        var state = await dialog.Result;
-        if (!state.Canceled)
-        {
-             await _table.ReloadServerData();
-             _selectedItems = new();
-        }
+        await DialogServiceHelper.ShowDeleteConfirmationDialog(command, ConstantString.DeleteConfirmationTitle, contentText,
+            async () =>
+            {
+                await _table.ReloadServerData();
+                _selectedItems.Clear();
+            }
+        );
     }
 
     private async Task OnDeleteChecked()
     {
+        var contentText = string.Format(ConstantString.DeleteConfirmWithSelected, _selectedItems.Count);
         var command = new Delete{itemname}Command(_selectedItems.Select(x => x.Id).ToArray());
-        var parameters = new DialogParameters<DeleteConfirmation>
+        await DialogServiceHelper.ShowDeleteConfirmationDialog(command, ConstantString.DeleteConfirmationTitle, contentText,
+            async () =>
             {
-                  { x=>x.Command,  command },
-                  { x=>x.ContentText, string.Format(ConstantString.DeleteConfirmWithSelected,_selectedItems.Count) }
-            };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, DisableBackdropClick = true };
-        var dialog = DialogService.Show<DeleteConfirmation>(ConstantString.DeleteConfirmationTitle, parameters, options);
-        var state = await dialog.Result;
-        if (!state.Canceled)
-        {
-            await _table.ReloadServerData();
-            _selectedItems = new();
-        }
+                await _table.ReloadServerData();
+                _selectedItems.Clear();
+            }
+        );
     }
 
     private async Task OnExport()

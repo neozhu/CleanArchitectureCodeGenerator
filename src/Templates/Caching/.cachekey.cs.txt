@@ -5,7 +5,12 @@ namespace {namespace};
 
 public static class {itemname}CacheKey
 {
-    private static readonly TimeSpan refreshInterval = TimeSpan.FromHours(3);
+    private static readonly TimeSpan RefreshInterval = TimeSpan.FromHours(3);
+    private static readonly object TokenLock = new();
+    private static CancellationTokenSource _tokenSource = new (RefreshInterval);
+    public static MemoryCacheEntryOptions MemoryCacheEntryOptions =>
+        new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(GetOrCreateTokenSource().Token));
+
     public const string GetAllCacheKey = "all-{nameofPlural}";
     public static string GetPaginationCacheKey(string parameters) {
         return $"{itemname}CacheKey:{nameofPlural}WithPaginationQuery,{parameters}";
@@ -16,20 +21,33 @@ public static class {itemname}CacheKey
     public static string GetByIdCacheKey(string parameters) {
         return $"{itemname}CacheKey:GetByIdCacheKey,{parameters}";
     }
-    static {itemname}CacheKey()
+
+    
+
+    public static CancellationTokenSource GetOrCreateTokenSource()
     {
-        _tokensource = new CancellationTokenSource(refreshInterval);
-    }
-    private static CancellationTokenSource _tokensource;
-    public static CancellationTokenSource SharedExpiryTokenSource()
-    {
-        if (_tokensource.IsCancellationRequested)
+        lock (TokenLock)
         {
-            _tokensource = new CancellationTokenSource(refreshInterval);
+            if (_tokenSource.IsCancellationRequested)
+            {
+                _tokenSource.Dispose();
+                _tokenSource = new CancellationTokenSource(RefreshInterval);
+            }
+            return _tokenSource;
         }
-        return _tokensource;
     }
-    public static void Refresh() => SharedExpiryTokenSource().Cancel();
-    public static MemoryCacheEntryOptions MemoryCacheEntryOptions => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(SharedExpiryTokenSource().Token));
+
+    public static void Refresh()
+    {
+        lock (TokenLock)
+        {
+            if (!_tokenSource.IsCancellationRequested)
+            {
+                _tokenSource.Cancel();
+                _tokenSource.Dispose();
+                _tokenSource = new CancellationTokenSource(RefreshInterval);
+            }
+        }
+    }
 }
 

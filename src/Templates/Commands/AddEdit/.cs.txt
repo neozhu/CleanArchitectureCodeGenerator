@@ -12,7 +12,7 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
       {dtoFieldDefinition}
 
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
+      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
 
     private class Mapping : Profile
     {

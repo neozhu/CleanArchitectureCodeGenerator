@@ -11,7 +11,7 @@ namespace {namespace};
         public string FileName { get; set; }
         public byte[] Data { get; set; }
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-        public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.SharedExpiryTokenSource();
+        public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
         public Import{nameofPlural}Command(string fileName,byte[] data)
         {
            FileName = fileName;

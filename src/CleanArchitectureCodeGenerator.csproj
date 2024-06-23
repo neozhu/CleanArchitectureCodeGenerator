@@ -225,7 +225,7 @@
     <Content Include="Templates\.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Templates\Specifications\AdvancedSpecification.txt">
+    <Content Include="Templates\Specifications\AdvancedSpecification.cs.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Templates\Specifications\AdvancedFilter.cs.txt">

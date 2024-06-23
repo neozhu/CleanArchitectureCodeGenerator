@@ -262,13 +262,17 @@
         Query.Keyword  = string.Empty;
         await _table.ReloadServerData();
     }
-    private async Task ShowEditFormDialog(string title, DialogParameters parameters)
+    private async Task ShowEditFormDialog(string title, AddEdit{itemname}Command command)
     {
+        var parameters = new DialogParameters<{itemname}FormDialog>
+            {
+                { x=>x.model,command },
+            };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<{itemname}FormDialog>(title, parameters, options);
         var state = await dialog.Result;
 
-        if (!state.Canceled)
+        if (state != null && !state.Canceled)
         {
             await _table.ReloadServerData();
             _selectedItems.Clear();
@@ -278,11 +282,7 @@
     private async Task OnCreate()
     {
         var command = new AddEdit{itemname}Command();
-        var parameters = new DialogParameters<{itemname}FormDialog>
-            {
-                { x=>x.model,command },
-            };
-        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["Product"]), parameters);
+        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
     }
     private async Task OnClone()
     {
@@ -290,20 +290,12 @@
         var command = new AddEdit{itemname}Command(){
             {fieldAssignmentDefinition}  
         };
-        var parameters = new DialogParameters<{itemname}FormDialog>
-            {
-               { x=>x.model,command },
-            };
-        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["Product"]), parameters);
+        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
     }
     private async Task OnEdit({itemname}Dto dto)
     {
         var command = Mapper.Map<AddEdit{itemname}Command>(dto);
-        var parameters = new DialogParameters<{itemname}FormDialog>
-            {
-                { x=>x.model,command },
-            };
-        await ShowEditFormDialog(string.Format(ConstantString.EditTheItem, L["Product"]), parameters);
+        await ShowEditFormDialog(string.Format(ConstantString.EditTheItem, L["{itemname}"]), command);
     }
 
     private async Task OnDelete({itemname}Dto dto)

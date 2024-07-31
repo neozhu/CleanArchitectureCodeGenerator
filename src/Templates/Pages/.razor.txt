@@ -287,9 +287,13 @@
     private async Task OnClone()
     {
         var dto = _selectedItems.First();
-        var command = new AddEdit{itemname}Command(){
-            {fieldAssignmentDefinition}  
-        };
+        var command = Mapper.Map<{itemname}Dto, AddEdit{itemname}Command>(dto, opts =>
+        {
+           opts.AfterMap((src, dest) =>
+           {
+               dest.Id = 0;
+           });
+        });
         await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
     }
     private async Task OnEdit({itemname}Dto dto)

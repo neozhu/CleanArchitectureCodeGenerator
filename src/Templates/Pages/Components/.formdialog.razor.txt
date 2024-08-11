@@ -28,7 +28,6 @@
     MudDialogInstance MudDialog { get; set; } = default!;
     AddEdit{itemname}CommandValidator _modelValidator = new ();
     [EditorRequired] [Parameter] public AddEdit{itemname}Command model { get; set; } = null!;
-    [Inject] private IMediator _mediator { get; set; } = default!;
     async Task Submit()
     {
         try
@@ -37,7 +36,7 @@
             await _form!.Validate().ConfigureAwait(false);
             if (!_form!.IsValid)
                 return;
-            var result = await _mediator.Send(model);
+            var result = await Mediator.Send(model);
             if (result.Succeeded)
             {
                 MudDialog.Close(DialogResult.Ok(true));
@@ -61,7 +60,7 @@
             await _form!.Validate().ConfigureAwait(false);
             if (!_form!.IsValid)
                return;
-            var result = await _mediator.Send(model);
+            var result = await Mediator.Send(model);
             if (result.Succeeded)
             {
                 Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);

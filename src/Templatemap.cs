@@ -196,7 +196,7 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x =>  x.Type.IsDictionary == false))
 			{
 				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
@@ -231,9 +231,18 @@ namespace CleanArchitecture.CodeGenerator
 							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 							break;
 						default:
-							if (property.Type.CodeName.Any(x => x == '?'))
+							if (property.Type.TypeScriptName == "any")
 							{
-								output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+								var complexType = property.Type.CodeName.Split('.').Last();
+								if (property.Type.Shape!=null && property.Type.Shape.Any())
+								{
+									complexType = complexType + "Dto";
+								}
+								else if (property.Type.IsArray)
+								{
+									complexType = $"List<{complexType}Dto>";
+								}
+								output.Append($"    public {complexType}{(complexType.Any(x=>x== '?') ? "":"?")} {property.Name} {{get;set;}} \r\n");
 							}
 							else
 							{
@@ -338,7 +347,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append("                ");
 					output.Append($"        <MudText Typo=\"Typo.body2\" Class=\"mud-text-secondary\">@context.Description</MudText>\r\n");
-			  }
+				}
 				output.Append("                ");
 				output.Append($"    </div>\r\n");
 				output.Append("                ");

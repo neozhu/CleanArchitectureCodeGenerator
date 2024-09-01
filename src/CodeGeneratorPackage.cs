@@ -142,6 +142,8 @@ namespace CleanArchitecture.CodeGenerator
 
 					var pages = new List<string>()
 					{
+						$"Pages/{nameofPlural}/Create{name}.razor",
+						$"Pages/{nameofPlural}/Edit{name}.razor",
 						$"Pages/{nameofPlural}/{nameofPlural}.razor",
 						$"Pages/{nameofPlural}/Components/{name}FormDialog.razor",
 						$"Pages/{nameofPlural}/Components/{nameofPlural}AdvancedSearchComponent.razor"

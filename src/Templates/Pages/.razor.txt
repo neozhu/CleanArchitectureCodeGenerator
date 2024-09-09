@@ -306,26 +306,28 @@
     {
         var contentText = string.Format(ConstantString.DeleteConfirmation, dto.Name);
         var command = new Delete{itemname}Command(new int[] { dto.Id });
-        await DialogServiceHelper.ShowDeleteConfirmationDialogAsync(command, ConstantString.DeleteConfirmationTitle, contentText,
-            async () =>
+        await DialogServiceHelper.ShowDeleteConfirmationDialogAsync(command, ConstantString.DeleteConfirmationTitle, contentText,async () =>
+        {
+            await InvokeAsync(async () =>
             {
                 await _table.ReloadServerData();
                 _selectedItems.Clear();
-            }
-        );
+            });
+        });
     }
 
     private async Task OnDeleteChecked()
     {
         var contentText = string.Format(ConstantString.DeleteConfirmWithSelected, _selectedItems.Count);
         var command = new Delete{itemname}Command(_selectedItems.Select(x => x.Id).ToArray());
-        await DialogServiceHelper.ShowDeleteConfirmationDialogAsync(command, ConstantString.DeleteConfirmationTitle, contentText,
-            async () =>
+        await DialogServiceHelper.ShowDeleteConfirmationDialogAsync(command, ConstantString.DeleteConfirmationTitle, contentText,async () =>
+        {
+            await InvokeAsync(async () =>
             {
                 await _table.ReloadServerData();
                 _selectedItems.Clear();
-            }
-        );
+            });
+        });
     }
 
     private async Task OnExport()

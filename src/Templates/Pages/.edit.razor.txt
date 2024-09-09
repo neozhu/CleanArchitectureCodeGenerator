@@ -51,7 +51,7 @@
         if (itemDto is not null)
         {
             model = Mapper.Map<Update{itemname}Command>(itemDto);
-            _breadcrumbItems.Add(new BreadcrumbItem(itemDto.Name, href: null, disabled: true));
+            _breadcrumbItems.Add(new BreadcrumbItem(itemDto.Name, href: $"/pages/{nameofPlural}/edit/{Id}"));
         }
 
     }

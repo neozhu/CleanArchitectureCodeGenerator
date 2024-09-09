@@ -21,7 +21,7 @@ jobs:
       VsixManifestSourcePath: src\source.extension.cs
       
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup .NET build dependencies
       uses: timheuer/bootstrap-dotnet@v1
@@ -47,7 +47,7 @@ jobs:
     #  run: vstest.console.exe _built\*test.dll
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: CleanArchitectureCodeGenerator.vsix
         path: _built/**/*.vsix
@@ -57,10 +57,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Download Package artifact
-        uses: actions/download-artifact@v2 
+        uses: actions/download-artifact@v4 
         with:
           name: CleanArchitectureCodeGenerator.vsix
 

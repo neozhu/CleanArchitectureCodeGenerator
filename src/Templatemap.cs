@@ -186,17 +186,33 @@ namespace CleanArchitecture.CodeGenerator
 		}
 		private static string splitCamelCase(string str)
 		{
-			var r = new Regex(@"
-                (?<=[A-Z])(?=[A-Z][a-z]) |
-                 (?<=[^A-Z])(?=[A-Z]) |
-                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
-			return r.Replace(str, " ");
+			// Define the regular expression to split the CamelCase string
+			var r = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z]) |  
+								(?<=[^A-Z])(?=[A-Z]) |       
+								(?<=[A-Za-z])(?=[^A-Za-z])", 
+				RegexOptions.IgnorePatternWhitespace); // Allows formatting with spaces for better readability
+
+			// Use the regular expression to replace matches with a space
+			var result = r.Replace(str, " ");
+
+			// If the result is not empty, proceed to format it
+			if (!string.IsNullOrEmpty(result))
+			{
+				// Convert the entire string to lowercase first
+				result = result.ToLower();
+
+				// Then capitalize the first character of the string to ensure the first word is properly capitalized
+				result = char.ToUpper(result[0]) + result.Substring(1);
+			}
+
+			return result;
 		}
+
 		public const string PRIMARYKEY = "Id";
 		private static string createDtoFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x =>  x.Type.IsDictionary == false))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsDictionary == false))
 			{
 				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
@@ -234,7 +250,7 @@ namespace CleanArchitecture.CodeGenerator
 							if (property.Type.TypeScriptName == "any")
 							{
 								var complexType = property.Type.CodeName.Split('.').Last();
-								if (property.Type.Shape!=null && property.Type.Shape.Any())
+								if (property.Type.Shape != null && property.Type.Shape.Any())
 								{
 									complexType = complexType + "Dto";
 								}
@@ -242,7 +258,7 @@ namespace CleanArchitecture.CodeGenerator
 								{
 									complexType = $"List<{complexType}Dto>";
 								}
-								output.Append($"    public {complexType}{(complexType.Any(x=>x== '?') ? "":"?")} {property.Name} {{get;set;}} \r\n");
+								output.Append($"    public {complexType}{(complexType.Any(x => x == '?') ? "" : "?")} {property.Name} {{get;set;}} \r\n");
 							}
 							else
 							{

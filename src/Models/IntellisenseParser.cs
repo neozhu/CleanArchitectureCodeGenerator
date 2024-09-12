@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -401,6 +402,13 @@ namespace CleanArchitecture.CodeGenerator.Models
 			{ "float", typeof( float ) },
 			{ "double", typeof( double ) },
 			{ "decimal", typeof( decimal ) },
+			{ "Guid", typeof( Guid ) },
+			{ "DateTime", typeof( DateTime ) },
+			{ "DateTimeOffset", typeof( DateTimeOffset ) },
+			{ "bool", typeof( bool ) },
+			{ "BigInteger", typeof( BigInteger ) },
+			{ "char", typeof( char ) }
+			 
 		};
 
 		private static string TryToGuessFullName(string typeName)

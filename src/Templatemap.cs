@@ -238,6 +238,25 @@ namespace CleanArchitecture.CodeGenerator
 						case "System.DateTime":
 							output.Append($"    public DateTime {property.Name} {{get;set;}} \r\n");
 							break;
+						case "System.TimeSpan?":
+							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.TimeSpan":
+							output.Append($"    public TimeSpan {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.DateTimeOffset":
+							output.Append($"    public DateTimeOffset {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.DateTimeOffset?":
+							output.Append($"    public DateTimeOffset? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.Guid":
+							output.Append($"    public Guid {property.Name} {{get;set;}} \r\n");
+							break;
+						case "char?":
+						case "char":
+						case "float?":
+						case "float":
 						case "decimal?":
 						case "decimal":
 						case "int?":

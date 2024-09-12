@@ -38,7 +38,7 @@ namespace CleanArchitecture.CodeGenerator
 
 		public static DTE2 _dte;
 
-		protected async override System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+		protected async override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			await JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -62,8 +62,10 @@ namespace CleanArchitecture.CodeGenerator
 			NewItemTarget infrastructure = NewItemTarget.Create(_dte, "Infrastructure");
 			NewItemTarget ui = NewItemTarget.Create(_dte, "Server.UI");
 			var includes = new string[] { "IEntity", "BaseEntity", "BaseAuditableEntity", "BaseAuditableSoftDeleteEntity", "AuditTrail", "OwnerPropertyEntity","KeyValue" };
+		 
+
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
-				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
+				.Where(x => x.IsEnum || (includes.Contains(x.BaseName) && !includes.Contains(x.Name)));
 			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();
 			if (target == null && target.Project.Name == APPLICATIONPROJECT)
 			{

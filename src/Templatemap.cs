@@ -36,7 +36,7 @@ namespace CleanArchitecture.CodeGenerator
 		}
 
 
-		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file, string itemname, string selectFolder)
+		public static async Task<string> GetTemplateFilePathAsync(Project project, IntellisenseObject classObject, string file, string itemname, string selectFolder, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var templatefolders = new string[]{
 				"Commands\\AcceptChanges",
@@ -96,7 +96,7 @@ namespace CleanArchitecture.CodeGenerator
 				var tmpl = AdjustForSpecific(safeName, extension);
 				templateFile = Path.Combine(Path.GetDirectoryName(tmplFile), tmpl + _defaultExt); //GetTemplate(tmpl);
 			}
-			var template = await ReplaceTokensAsync(project, classObject, itemname, relative, selectRelative, templateFile);
+			var template = await ReplaceTokensAsync(project, classObject, itemname, relative, selectRelative, templateFile, objectlist);
 			return NormalizeLineEndings(template);
 		}
 
@@ -117,7 +117,7 @@ namespace CleanArchitecture.CodeGenerator
 			list.InsertRange(0, dynaList);
 		}
 
-		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative, string selectRelative, string templateFile)
+		private static async Task<string> ReplaceTokensAsync(Project project, IntellisenseObject classObject, string name, string relative, string selectRelative, string templateFile, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			if (string.IsNullOrEmpty(templateFile))
 			{
@@ -140,13 +140,13 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
-				var dtoFieldDefinition = createDtoFieldDefinition(classObject);
-				var importFuncExpression = createImportFuncExpression(classObject);
+				var dtoFieldDefinition = createDtoFieldDefinition(classObject, objectlist);
+				var importFuncExpression = createImportFuncExpression(classObject, objectlist);
 				var templateFieldDefinition = createTemplateFieldDefinition(classObject);
-				var exportFuncExpression = createExportFuncExpression(classObject);
+				var exportFuncExpression = createExportFuncExpression(classObject, objectlist);
 				var mudTdDefinition = createMudTdDefinition(classObject);
-				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject);
-				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject);
+				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject, objectlist);
+				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject, objectlist);
 				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
 				return content.Replace("{rootnamespace}", _defaultNamespace)
 								.Replace("{namespace}", ns)
@@ -189,7 +189,7 @@ namespace CleanArchitecture.CodeGenerator
 			// Define the regular expression to split the CamelCase string
 			var r = new Regex(@"(?<=[A-Z])(?=[A-Z][a-z]) |  
 								(?<=[^A-Z])(?=[A-Z]) |       
-								(?<=[A-Za-z])(?=[^A-Za-z])", 
+								(?<=[A-Za-z])(?=[^A-Za-z])",
 				RegexOptions.IgnorePatternWhitespace); // Allows formatting with spaces for better readability
 
 			// Use the regular expression to replace matches with a space
@@ -209,7 +209,7 @@ namespace CleanArchitecture.CodeGenerator
 		}
 
 		public const string PRIMARYKEY = "Id";
-		private static string createDtoFieldDefinition(IntellisenseObject classObject)
+		private static string createDtoFieldDefinition(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsDictionary == false))
@@ -223,15 +223,23 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					switch (property.Type.CodeName)
 					{
-						case "string" when property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase):
-							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} = String.Empty; \r\n");
+						case "string":
+						case "string?":
+							if (property.Type.IsArray)
+							{
+								output.Append($"    public {property.Type.CodeName}[]{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
+							}
+							else if (property.Type.IsDictionary)
+							{
+								output.Append($"    public Dictionary<{property.Type.CodeName},{property.Type.CodeName}>{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
+							}
+							else
+							{
+
+								output.Append($"    public {property.Type.CodeName}{(property.Name.Equals("Name") ? "" : "?")} {property.Name} {{get;set;}} \r\n");
+							}
 							break;
-						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) && !property.Type.IsArray && !property.Type.IsDictionary:
-							output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
-							break;
-						case "string" when !property.Name.Equals("Name", StringComparison.OrdinalIgnoreCase) && property.Type.IsArray:
-							output.Append($"    public HashSet<{property.Type.CodeName}>? {property.Name} {{get;set;}} \r\n");
-							break;
+
 						case "System.DateTime?":
 							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
 							break;
@@ -253,6 +261,13 @@ namespace CleanArchitecture.CodeGenerator
 						case "System.Guid":
 							output.Append($"    public Guid {property.Name} {{get;set;}} \r\n");
 							break;
+						case "System.Guid?":
+							output.Append($"    public Guid? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "bool?":
+						case "bool":
+						case "byte?":
+						case "byte":
 						case "char?":
 						case "char":
 						case "float?":
@@ -263,53 +278,72 @@ namespace CleanArchitecture.CodeGenerator
 						case "int":
 						case "double?":
 						case "double":
-							output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+							output.Append($"    public {property.Type.CodeName}{(property.Type.IsArray ? "[]" : "")} {property.Name} {{get;set;}} \r\n");
 							break;
 						default:
-							if (property.Type.TypeScriptName == "any")
+							if (objectlist != null && objectlist.Any(x => x.FullName.Equals(property.Type.CodeName)))
 							{
 								var complexType = property.Type.CodeName.Split('.').Last();
-								if (property.Type.Shape != null && property.Type.Shape.Any())
+								var relatedObject = objectlist.First(x => x.FullName.Equals(property.Type.CodeName));
+								if (relatedObject.IsEnum)
 								{
-									complexType = complexType + "Dto";
-								}
-								else if (property.Type.IsArray)
-								{
-									complexType = $"List<{complexType}Dto>";
-								}
-								output.Append($"    public {complexType}{(complexType.Any(x => x == '?') ? "" : "?")} {property.Name} {{get;set;}} \r\n");
-							}
-							else
-							{
-								if (property.Type.IsOptional)
-								{
-									output.Append($"    public {property.Type.CodeName}? {property.Name} {{get;set;}} \r\n");
+									output.Append($"    public {complexType}? {property.Name} {{get;set;}} \r\n");
 								}
 								else
 								{
-									output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+									complexType = complexType + "Dto";
+									if (property.Type.IsArray)
+									{
+										complexType = $"List<{complexType}Dto>?";
+									}
+									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
 								}
 							}
 							break;
 					}
-
 				}
 			}
 			return output.ToString();
 		}
-		private static string createImportFuncExpression(IntellisenseObject classObject)
+		private static string createImportFuncExpression(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => !x.Type.IsDictionary && !x.Type.IsArray))
 			{
 				if (property.Name == PRIMARYKEY) continue;
+
 				if (property.Type.CodeName.StartsWith("bool"))
 				{
 					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToBoolean(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
 				}
+				else if (property.Type.CodeName.StartsWith("System.DateTime"))
+				{
+					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =DateTime.Parse(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("int"))
+				{
+					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToInt32(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("decimal") || property.Type.CodeName.StartsWith("float"))
+				{
+					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToDecimal(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
+				}
 				else
 				{
-					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString() }}, \r\n");
+					if (property.Type.IsKnownType)
+					{
+						output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString() }}, \r\n");
+					}
+					else
+					{
+						var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+						if (relatedObject != null)
+						{
+							var enumType = property.Type.CodeName.Split('.').Last();
+							output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = Enum.Parse<{enumType}>(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
+						}
+					}
+
 				}
 			}
 			return output.ToString();
@@ -317,24 +351,36 @@ namespace CleanArchitecture.CodeGenerator
 		private static string createTemplateFieldDefinition(IntellisenseObject classObject)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !x.Type.IsDictionary && !x.Type.IsArray))
 			{
 				if (property.Name == PRIMARYKEY) continue;
 				output.Append($"_localizer[_dto.GetMemberDescription(x=>x.{property.Name})], \r\n");
 			}
 			return output.ToString();
 		}
-		private static string createExportFuncExpression(IntellisenseObject classObject)
+		private static string createExportFuncExpression(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => !x.Type.IsDictionary && !x.Type.IsArray))
 			{
-				output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
+				if (property.Type.IsKnownType)
+				{
+					output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
+				}
+				else
+				{
+					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+					if (relatedObject != null)
+					{
+						output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}?.ToString()}}, \r\n");
+					}
+				}
+
 			}
 			return output.ToString();
 		}
 
-		private static string createMudTdHeaderDefinition(IntellisenseObject classObject)
+		private static string createMudTdHeaderDefinition(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
 			var defaultfieldName = new string[] { "Name", "Description" };
@@ -355,11 +401,27 @@ namespace CleanArchitecture.CodeGenerator
 				output.Append("    </CellTemplate>\r\n");
 				output.Append($"</PropertyColumn>\r\n");
 			}
-			foreach (var property in classObject.Properties.Where(x => !defaultfieldName.Contains(x.Name)))
+			foreach (var property in classObject.Properties.Where(x => !x.Type.IsDictionary && !x.Type.IsArray && !defaultfieldName.Contains(x.Name)))
 			{
 				if (property.Name == PRIMARYKEY) continue;
-				output.Append("                ");
-				output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
+				if (property.Type.IsKnownType)
+				{
+					output.Append("                ");
+					output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
+				}
+				else
+				{
+					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+					if (relatedObject != null)
+					{
+						output.Append("                ");
+						output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\">\r\n");
+						output.Append("                <CellTemplate>\r\n");
+						output.Append($"						<MudChip T=\"string\"  Value=\"@context.Item.{property.Name}?.GetDescription()\" />\r\n");
+						output.Append("                </CellTemplate>\r\n");
+						output.Append($"</PropertyColumn>\r\n");
+					}
+				}
 			}
 			return output.ToString();
 		}
@@ -388,7 +450,7 @@ namespace CleanArchitecture.CodeGenerator
 				output.Append("                ");
 				output.Append($"</MudTd>\r\n");
 			}
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !defaultfieldName.Contains(x.Name)))
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && !x.Type.IsDictionary && !x.Type.IsArray && !defaultfieldName.Contains(x.Name)))
 			{
 				if (property.Name == PRIMARYKEY) continue;
 				output.Append("                ");
@@ -413,10 +475,10 @@ namespace CleanArchitecture.CodeGenerator
 			return output.ToString();
 		}
 
-		private static string createMudFormFieldDefinition(IntellisenseObject classObject)
+		private static string createMudFormFieldDefinition(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
-			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true))
+			foreach (var property in classObject.Properties.Where(x => !x.Type.IsDictionary && !x.Type.IsArray))
 			{
 				if (property.Name == PRIMARYKEY) continue;
 				switch (property.Type.CodeName.ToLower())
@@ -467,6 +529,7 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;
+					case "system.datetime":
 					case "system.datetime?":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
@@ -475,11 +538,27 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append($"</MudItem> \r\n");
 						break;
 					default:
-						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
-						output.Append("                ");
-						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
-						output.Append("                ");
-						output.Append($"</MudItem> \r\n");
+						if (property.Type.IsKnownType)
+						{
+							output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+							output.Append("                ");
+							output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudTextField>\r\n");
+							output.Append("                ");
+							output.Append($"</MudItem> \r\n");
+						}
+						else
+						{
+							var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+							if (relatedObject != null)
+							{
+								var enumType = property.Type.CodeName.Split('.').Last();
+								output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+								output.Append("                ");
+								output.Append($"        <MudEnumSelect TEnum=\"Nullable<{enumType}>\" Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Value=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudEnumSelect>\r\n");
+								output.Append("                ");
+								output.Append($"</MudItem> \r\n");
+							}
+						}
 						break;
 
 				}

@@ -7,10 +7,7 @@ public class AddEdit{itemname}CommandValidator : AbstractValidator<AddEdit{itemn
 {
     public AddEdit{itemname}CommandValidator()
     {
-            RuleFor(v => v.Name)
-                .MaximumLength(256)
-                .NotEmpty();
-       
+            {commandValidatorRuleFor}
      }
 
 }

@@ -148,20 +148,33 @@ namespace CleanArchitecture.CodeGenerator
 				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject, objectlist);
 				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject, objectlist);
 				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
-				return content.Replace("{rootnamespace}", _defaultNamespace)
-								.Replace("{namespace}", ns)
-								.Replace("{selectns}", selectNs)
-								.Replace("{itemname}", name)
-								.Replace("{nameofPlural}", nameofPlural)
-								.Replace("{dtoFieldDefinition}", dtoFieldDefinition)
-								.Replace("{fieldAssignmentDefinition}", fieldAssignmentDefinition)
-								.Replace("{importFuncExpression}", importFuncExpression)
-								.Replace("{templateFieldDefinition}", templateFieldDefinition)
-								.Replace("{exportFuncExpression}", exportFuncExpression)
-								.Replace("{mudTdDefinition}", mudTdDefinition)
-								.Replace("{mudTdHeaderDefinition}", mudTdHeaderDefinition)
-								.Replace("{mudFormFieldDefinition}", mudFormFieldDefinition)
-								;
+				var entityTypeBuilderConfirmation = createEntityTypeBuilderConfirmation(classObject, objectlist);
+				var commandValidatorRuleFor = createComandValidatorRuleFor(classObject, objectlist);
+				var replacements = new Dictionary<string, string>
+				{
+					{ "rootnamespace", _defaultNamespace },
+					{ "namespace", ns },
+					{ "selectns", selectNs },
+					{ "itemname", name },
+					{ "nameofPlural", nameofPlural },
+					{ "dtoFieldDefinition", dtoFieldDefinition },
+					{ "fieldAssignmentDefinition", fieldAssignmentDefinition },
+					{ "importFuncExpression", importFuncExpression },
+					{ "templateFieldDefinition", templateFieldDefinition },
+					{ "exportFuncExpression", exportFuncExpression },
+					{ "mudTdDefinition", mudTdDefinition },
+					{ "mudTdHeaderDefinition", mudTdHeaderDefinition },
+					{ "mudFormFieldDefinition", mudFormFieldDefinition },
+					{ "entityTypeBuilderConfirmation", entityTypeBuilderConfirmation },
+					{ "commandValidatorRuleFor", commandValidatorRuleFor }
+				};
+
+				string result = Regex.Replace(content, @"\{(\w+)\}", match => {
+					string key = match.Groups[1].Value;
+					return replacements.TryGetValue(key, out var value) ? value : match.Value;
+				});
+				return result;
+
 			}
 		}
 
@@ -299,9 +312,23 @@ namespace CleanArchitecture.CodeGenerator
 									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
 								}
 							}
+							else
+							{
+								if (property.Name.Equals("Tenant"))
+								{
+									output.Append($"    public TenantDto? {property.Name} {{get;set;}} \r\n");
+								}
+							}
 							break;
 					}
 				}
+			}
+
+
+			if (classObject.BaseName.Equals("OwnerPropertyEntity"))
+			{
+				output.Append($"    [Description(\"Owner\")] public ApplicationUserDto? Owner {{ get; set; }} \r\n");
+				output.Append($"    [Description(\"Last modifier\")] public ApplicationUserDto? LastModifier {{ get; set; }} \r\n");
 			}
 			return output.ToString();
 		}
@@ -574,6 +601,126 @@ namespace CleanArchitecture.CodeGenerator
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name != "Id"))
 			{
 				output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
+			}
+			return output.ToString();
+		}
+
+		private static string createEntityTypeBuilderConfirmation(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Name != "Id"))
+			{
+				switch (property.Type.CodeName)
+				{
+					case "string":
+					case "string?":
+						if (property.Type.IsArray)
+						{
+							output.Append($"    builder.Property(e => e.{property.Name}).HasStringListConversion(); \r\n");
+						}
+						else if (property.Type.IsDictionary)
+						{
+							output.Append($"    builder.Property(u => u.{property.Name}).HasJsonConversion(); \r\n");
+						}
+						else if (property.Name.Equals("Name"))
+						{
+							output.Append($"    builder.HasIndex(x => x.{property.Name}); \r\n");
+							output.Append($"    builder.Property(x => x.{property.Name}).HasMaxLength(50).IsRequired(); \r\n");
+						}
+						else
+						{
+							output.Append($"    builder.Property(x => x.{property.Name}).HasMaxLength(255); \r\n");
+						}
+						break;
+					default:
+						if (!property.Type.IsKnownType)
+						{
+							var refObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName));
+							if (refObject != null)
+							{
+								var complexType = property.Type.CodeName.Split('.').Last();
+								if (refObject.IsEnum)
+								{
+									output.Append($"    builder.HasIndex(x => x.{property.Name}); \r\n");
+									output.Append($"    builder.Property(t => t.{property.Name}).HasConversion<string>().HasMaxLength(50); \r\n");
+								}
+								else if (!property.Type.IsArray)
+								{
+									var foreignKey = property.Name + "Id";
+									if (classObject.Properties.Any(x => x.Name.Equals(foreignKey)))
+									{
+										output.Append($"    builder.HasOne(x => x.{property.Name}).WithMany().HasForeignKey(x => x.{foreignKey}); \r\n");
+									}
+								}
+							}
+							else
+							{
+								if (property.Name.Equals("Tenant") && classObject.Properties.Any(x => x.Name.Equals("TenantId")))
+								{
+									output.Append($"    builder.HasOne(x => x.{property.Name}).WithMany().HasForeignKey(x => x.TenantId); \r\n");
+									output.Append($"    builder.Navigation(e => e.{property.Name}).AutoInclude(); \r\n");
+								}
+							}
+
+						}
+						break;
+				}
+			}
+
+			if (classObject.BaseName.Equals("OwnerPropertyEntity"))
+			{
+				output.Append($"    builder.HasOne(x => x.Owner).WithMany().HasForeignKey(x => x.CreatedBy); \r\n");
+				output.Append($"    builder.HasOne(x => x.LastModifier).WithMany().HasForeignKey(x => x.LastModifiedBy); \r\n");
+				output.Append($"    builder.Navigation(e => e.Owner).AutoInclude(); \r\n");
+				output.Append($"    builder.Navigation(e => e.LastModifier).AutoInclude(); \r\n");
+			}
+			return output.ToString();
+		}
+
+
+		private static string createComandValidatorRuleFor(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Name != "Id"))
+			{
+				switch (property.Type.CodeName)
+				{
+					case "string":
+					case "string?":
+						if (property.Name.Equals("Name"))
+						{
+							output.Append($"    RuleFor(v => v.{property.Name}).MaximumLength(50).NotEmpty(); \r\n");
+						}
+						else if (!property.Type.IsDictionary && !property.Type.IsArray)
+						{
+							output.Append($"    RuleFor(v => v.{property.Name}).MaximumLength(255); \r\n");
+						}
+						break;
+					case "System.TimeSpan":
+					case "System.DateTime":
+					case "System.DateTimeOffset":
+					case "int":
+					case "decimal":
+					case "float":
+						output.Append($"    RuleFor(v => v.{property.Name}).NotNull(); \r\n");
+						break;
+					default:
+						if (!property.Type.IsKnownType)
+						{
+							var refObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName));
+							if (refObject != null)
+							{
+								var complexType = property.Type.CodeName.Split('.').Last();
+								if (refObject.IsEnum)
+								{
+									output.Append($"    RuleFor(v => v.{property.Name}).NotNull(); \r\n");
+								}
+
+							}
+						}
+						break;
+				}
+
 			}
 			return output.ToString();
 		}

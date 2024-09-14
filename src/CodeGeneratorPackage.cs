@@ -108,7 +108,7 @@ namespace CleanArchitecture.CodeGenerator
 						};
 					foreach (var item in configurations)
 					{
-						AddItemAsync(objectClass, item, name, infrastructure).Forget();
+						AddItemAsync(objectClass, item, name, infrastructure, objectlist).Forget();
 					}
 
 					var list = new List<string>()

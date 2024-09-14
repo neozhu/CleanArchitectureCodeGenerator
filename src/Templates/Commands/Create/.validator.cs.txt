@@ -7,11 +7,7 @@ public class Create{itemname}CommandValidator : AbstractValidator<Create{itemnam
 {
         public Create{itemname}CommandValidator()
         {
-           
-            RuleFor(v => v.Name)
-                 .MaximumLength(256)
-                 .NotEmpty();
-        
+            {commandValidatorRuleFor}
         }
        
 }

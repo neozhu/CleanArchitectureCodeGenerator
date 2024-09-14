@@ -8,7 +8,7 @@ public class Update{itemname}CommandValidator : AbstractValidator<Update{itemnam
         public Update{itemname}CommandValidator()
         {
            RuleFor(v => v.Id).NotNull();
-           RuleFor(v => v.Name).MaximumLength(256).NotEmpty();
+           {commandValidatorRuleFor}
           
         }
     

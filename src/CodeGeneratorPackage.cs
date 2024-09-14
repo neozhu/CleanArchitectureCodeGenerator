@@ -38,7 +38,7 @@ namespace CleanArchitecture.CodeGenerator
 
 		public static DTE2 _dte;
 
-		protected async override System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+		protected async override Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
 		{
 			await JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -62,9 +62,11 @@ namespace CleanArchitecture.CodeGenerator
 			NewItemTarget infrastructure = NewItemTarget.Create(_dte, "Infrastructure");
 			NewItemTarget ui = NewItemTarget.Create(_dte, "Server.UI");
 			var includes = new string[] { "IEntity", "BaseEntity", "BaseAuditableEntity", "BaseAuditableSoftDeleteEntity", "AuditTrail", "OwnerPropertyEntity","KeyValue" };
+		 
+			var testlist = ProjectHelpers.GetEntities(domain.Project);
 			var objectlist = ProjectHelpers.GetEntities(domain.Project)
-				.Where(x => includes.Contains(x.BaseName) && !includes.Contains(x.Name));
-			var entities = objectlist.Select(x=>x.Name).Distinct().ToArray();
+				.Where(x => x.IsEnum || (includes.Contains(x.BaseName) && !includes.Contains(x.Name)));
+			var entities = objectlist.Where(x=>x.IsEnum==false).Select(x=>x.Name).ToArray();
 			if (target == null && target.Project.Name == APPLICATIONPROJECT)
 			{
 				MessageBox.Show(
@@ -106,7 +108,7 @@ namespace CleanArchitecture.CodeGenerator
 						};
 					foreach (var item in configurations)
 					{
-						AddItemAsync(objectClass, item, name, infrastructure).Forget();
+						AddItemAsync(objectClass, item, name, infrastructure, objectlist).Forget();
 					}
 
 					var list = new List<string>()
@@ -137,7 +139,7 @@ namespace CleanArchitecture.CodeGenerator
 					};
 					foreach (var item in list)
 					{
-						AddItemAsync(objectClass,item, name, target).Forget();
+						AddItemAsync(objectClass,item, name, target, objectlist).Forget();
 					}
 
 					var pages = new List<string>()
@@ -150,7 +152,7 @@ namespace CleanArchitecture.CodeGenerator
 					};
 					foreach (var item in pages)
 					{
-						AddItemAsync(objectClass,item, name, ui).Forget();
+						AddItemAsync(objectClass,item, name, ui, objectlist).Forget();
 					}
 
 				}
@@ -166,7 +168,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private async Task AddItemAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target)
+		private async Task AddItemAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target,IEnumerable<IntellisenseObject> objectlist=null)
 		{
 			// The naming rules that apply to files created on disk also apply to virtual solution folders,
 			// so regardless of what type of item we are creating, we need to validate the name.
@@ -186,7 +188,7 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			else
 			{
-				await AddFileAsync(classObject,name, itemname, target);
+				await AddFileAsync(classObject,name, itemname, target, objectlist);
 			}
 		}
 
@@ -210,7 +212,7 @@ namespace CleanArchitecture.CodeGenerator
 			} while (!string.IsNullOrEmpty(path));
 		}
 
-		private async Task AddFileAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target)
+		private async Task AddFileAsync(IntellisenseObject classObject, string name,string itemname, NewItemTarget target,IEnumerable<IntellisenseObject> objectlist=null)
 		{
 			await JoinableTaskFactory.SwitchToMainThreadAsync();
 			FileInfo file;
@@ -244,7 +246,7 @@ namespace CleanArchitecture.CodeGenerator
 					project = target.Project;
 				}
 
-				int position = await WriteFileAsync(project, classObject, file.FullName, itemname, target.Directory);
+				int position = await WriteFileAsync(project, classObject, file.FullName, itemname, target.Directory, objectlist);
 				if (target.ProjectItem != null && target.ProjectItem.IsKind(Constants.vsProjectItemKindVirtualFolder))
 				{
 					target.ProjectItem.ProjectItems.AddFromFile(file.FullName);
@@ -277,9 +279,9 @@ namespace CleanArchitecture.CodeGenerator
 			}
 		}
 
-		private static async Task<int> WriteFileAsync(Project project, IntellisenseObject classObject,  string file,string itemname,string selectFolder)
+		private static async Task<int> WriteFileAsync(Project project, IntellisenseObject classObject,  string file,string itemname,string selectFolder,IEnumerable<IntellisenseObject> objectlist=null)
 		{
-			string template = await TemplateMap.GetTemplateFilePathAsync(project, classObject,file, itemname, selectFolder);
+			string template = await TemplateMap.GetTemplateFilePathAsync(project, classObject,file, itemname, selectFolder, objectlist);
 
 			if (!string.IsNullOrEmpty(template))
 			{
@@ -299,7 +301,7 @@ namespace CleanArchitecture.CodeGenerator
 			return 0;
 		}
 
-		private static async System.Threading.Tasks.Task WriteToDiskAsync(string file, string content)
+		private static async Task WriteToDiskAsync(string file, string content)
 		{
 			using (StreamWriter writer = new StreamWriter(file, false, GetFileEncoding(file)))
 			{

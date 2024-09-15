@@ -20,6 +20,7 @@ public enum {itemname}ListView
 /// </summary>
 public class {itemname}AdvancedFilter: PaginationFilter
 {
+    public int LocalTimezoneOffset { get; set; }
     public {itemname}ListView ListView { get; set; } = {itemname}ListView.All;
     public UserProfile? CurrentUser { get; set; }
 }

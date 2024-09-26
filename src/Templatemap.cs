@@ -147,6 +147,7 @@ namespace CleanArchitecture.CodeGenerator
 				var mudTdDefinition = createMudTdDefinition(classObject);
 				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject, objectlist);
 				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject, objectlist);
+				var readonlyFieldDefinition = createReadyonlyFieldDefinition(classObject, objectlist);
 				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
 				var entityTypeBuilderConfirmation = createEntityTypeBuilderConfirmation(classObject, objectlist);
 				var commandValidatorRuleFor = createComandValidatorRuleFor(classObject, objectlist);
@@ -165,6 +166,7 @@ namespace CleanArchitecture.CodeGenerator
 					{ "mudTdDefinition", mudTdDefinition },
 					{ "mudTdHeaderDefinition", mudTdHeaderDefinition },
 					{ "mudFormFieldDefinition", mudFormFieldDefinition },
+					{ "readonlyFieldDefinition", readonlyFieldDefinition },
 					{ "entityTypeBuilderConfirmation", entityTypeBuilderConfirmation },
 					{ "commandValidatorRuleFor", commandValidatorRuleFor }
 				};
@@ -594,6 +596,60 @@ namespace CleanArchitecture.CodeGenerator
 			return output.ToString();
 		}
 
+		private static string createReadyonlyFieldDefinition(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => !x.Type.IsDictionary && !x.Type.IsArray))
+			{
+				if (property.Name == PRIMARYKEY) continue;
+				switch (property.Type.CodeName.ToLower())
+				{
+
+					case "bool?":
+					case "bool":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <ReadOnlyFieldX6 CheckBox=\"true\" Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}\"></ReadOnlyFieldX6>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					case "system.datetime":
+					case "system.datetime?":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}?.ToString(\"d\")\"></ReadOnlyFieldX6>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
+					default:
+						if (property.Type.IsKnownType)
+						{
+							output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+							output.Append("                ");
+							output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}\"></ReadOnlyFieldX6>\r\n");
+							output.Append("                ");
+							output.Append($"</MudItem> \r\n");
+						}
+						else
+						{
+							var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+							if (relatedObject != null)
+							{
+								var enumType = property.Type.CodeName.Split('.').Last();
+								output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+								output.Append("                ");
+								output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}.GetDescription()\"></ReadOnlyFieldX6>\r\n");
+								output.Append("                ");
+								output.Append($"</MudItem> \r\n");
+							}
+						}
+						break;
+
+				}
+
+			}
+			return output.ToString();
+		}
 
 		private static string createFieldAssignmentDefinition(IntellisenseObject classObject)
 		{

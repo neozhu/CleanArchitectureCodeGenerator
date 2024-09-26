@@ -114,6 +114,9 @@
     <Content Include="Templates\Pages\.create.razor.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Templates\Pages\.view.razor.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Templates\Pages\.edit.razor.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

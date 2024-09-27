@@ -28,6 +28,9 @@
                   Height="calc(100vh - 330px)"
                   Loading="@_loading"
                   MultiSelection="true"
+                  T="{itemname}Dto"
+                  SelectOnRowClick="false"
+                  RowClick="@(s=>OnView(s.Item))"
                   @bind-SelectedItems="_selectedItems"
                   @bind-SelectedItem="_currentDto"
                   Hover="true" @ref="_table">
@@ -281,7 +284,10 @@
             _selectedItems.Clear();
         }
     }
-
+    private void OnView({itemname}Dto dto)
+    {
+        Navigation.NavigateTo($"/pages/{nameofPlural}/view/{dto.Id}");
+    }
     private async Task OnCreate()
     {
         var command = new AddEdit{itemname}Command();

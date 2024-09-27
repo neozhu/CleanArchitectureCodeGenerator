@@ -157,6 +157,7 @@ namespace CleanArchitecture.CodeGenerator
 					{ "namespace", ns },
 					{ "selectns", selectNs },
 					{ "itemname", name },
+					{ "itemnamelowercase", name.ToLower() },
 					{ "nameofPlural", nameofPlural },
 					{ "dtoFieldDefinition", dtoFieldDefinition },
 					{ "fieldAssignmentDefinition", fieldAssignmentDefinition },

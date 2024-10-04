@@ -60,7 +60,7 @@
                     Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
                     Navigation.NavigateTo($"/pages/{nameofPlural}");
                     return data;
-                }
+                },
                 errors=>
                 {
                     Snackbar.Add(errors, MudBlazor.Severity.Error);

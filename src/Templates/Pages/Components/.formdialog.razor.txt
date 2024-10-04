@@ -37,15 +37,14 @@
             if (!_form!.IsValid)
                 return;
             var result = await Mediator.Send(model);
-            if (result.Succeeded)
+            result.Match(data =>
             {
                 MudDialog.Close(DialogResult.Ok(true));
                 Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
-            }
-            else
+            }, errors =>
             {
-                Snackbar.Add(result.ErrorMessage, MudBlazor.Severity.Error);
-            }
+                Snackbar.Add(errors, MudBlazor.Severity.Error);
+            });
         }
         finally
         {
@@ -61,16 +60,15 @@
             if (!_form!.IsValid)
                return;
             var result = await Mediator.Send(model);
-            if (result.Succeeded)
+            result.Match(data =>
             {
                 Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
                 await Task.Delay(300);
                 model = new AddEdit{itemname}Command() { };
-            }
-            else
+            }, errors =>
             {
-                Snackbar.Add(result.ErrorMessage, MudBlazor.Severity.Error);
-            }
+                Snackbar.Add(errors, MudBlazor.Severity.Error);
+            });
         }
         finally
         {

@@ -7,7 +7,7 @@ using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
 
-public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto>
+public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto?>
 {
    public required int Id { get; set; }
    public string CacheKey => {itemname}CacheKey.GetByIdCacheKey($"{Id}");
@@ -15,7 +15,7 @@ public class Get{itemname}ByIdQuery : ICacheableRequest<{itemname}Dto>
 }
 
 public class Get{itemname}ByIdQueryHandler :
-     IRequestHandler<Get{itemname}ByIdQuery, {itemname}Dto>
+     IRequestHandler<Get{itemname}ByIdQuery, {itemname}Dto?>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -32,11 +32,11 @@ public class Get{itemname}ByIdQueryHandler :
         _localizer = localizer;
     }
 
-    public async Task<{itemname}Dto> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
+    public async Task<{itemname}Dto?> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
     {
         var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
                      .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                     .FirstAsync(cancellationToken) ?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");
+                     .FirstAsync(cancellationToken);
         return data;
     }
 }

@@ -41,7 +41,11 @@ public class Update{itemname}Command: ICacheInvalidatorRequest<Result<int>>
         public async Task<Result<int>> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
         {
 
-           var item =await _context.{nameofPlural}.FindAsync( new object[] { request.Id }, cancellationToken)?? throw new NotFoundException($"{itemname} with id: [{request.Id}] not found.");
+           var item = await _context.{nameofPlural}.FindAsync(request.Id, cancellationToken);
+           if (item == null)
+           {
+               return await Result<int>.FailureAsync($"{itemname} with id: [{request.Id}] not found.");
+           }
            item = _mapper.Map(request, item);
 		    // raise a update domain event
 		   item.AddDomainEvent(new {itemname}UpdatedEvent(item));

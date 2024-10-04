@@ -40,11 +40,21 @@
     protected override async Task OnInitializedAsync()
     {
         Title = L["{itemname}"];
-        model = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
-        if (model is not null)
+        var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
+        result.Map(data =>
         {
-            _breadcrumbItems.Add(new BreadcrumbItem(model.Name, href:null, disabled: true));
-        }
+            model = data;
+            return data;
+        }).Match(data =>
+        {
+            _breadcrumbItems.Add(new BreadcrumbItem(data.Name, null, disabled: true));
+            return data;
+
+        }, errors =>
+        {
+            Snackbar.Add(errors, MudBlazor.Severity.Error);
+            return null;
+        });
 
     }
     void GoEdit()

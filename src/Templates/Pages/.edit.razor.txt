@@ -47,12 +47,20 @@
     protected override async Task OnInitializedAsync()
     {
         Title = L["Edit {itemname}"];
-        var itemDto = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
-        if (itemDto is not null)
+        var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
+        result.Map(data =>
         {
-            model = Mapper.Map<Update{itemname}Command>(itemDto);
-            _breadcrumbItems.Add(new BreadcrumbItem(itemDto.Name, href: $"/pages/{nameofPlural}/edit/{Id}"));
-        }
+            model = Mapper.Map<Update{itemname}Command>(data);
+            return data;
+        }).Match(data =>
+        {
+            _breadcrumbItems.Add(new BreadcrumbItem(data.Name, href: $"/pages/{nameofPlural}/edit/{Id}"));
+            return data;
+        }, errors =>
+        {
+            Snackbar.Add($"{errors}", Severity.Error);
+            return null;
+        });
 
     }
     async Task Submit()
@@ -64,14 +72,17 @@
             if (!_form!.IsValid)
                 return;
             var result = await Mediator.Send(model);
-            if (result.Succeeded)
-            {
-                Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
-            }
-            else
-            {
-                Snackbar.Add(result.ErrorMessage, MudBlazor.Severity.Error);
-            }
+            result.Match(
+                data=>
+                {
+                    Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
+                    return data;
+                },
+                errors=>
+                {
+                    Snackbar.Add(errors, MudBlazor.Severity.Error);
+                    return 0;
+                });
         }
         finally
         {

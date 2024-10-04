@@ -48,7 +48,7 @@
     {
         Title = L["Edit {itemname}"];
         var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
-        iresult.Map(data =>
+        result.Map(data =>
         {
             model = Mapper.Map<Update{itemname}Command>(data);
             return data;

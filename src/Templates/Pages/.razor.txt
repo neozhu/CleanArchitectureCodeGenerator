@@ -378,8 +378,7 @@
                 await _table.ReloadServerData();
                 Snackbar.Add($"{ConstantString.ImportSuccess}", MudBlazor.Severity.Info);
                 return data;
-            },
-            errors =>
+            }, errors =>
             {
                 Snackbar.Add($"{errors}", MudBlazor.Severity.Error);
                 return Task.FromResult(0);

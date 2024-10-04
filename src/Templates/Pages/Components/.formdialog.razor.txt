@@ -62,7 +62,7 @@
             if (!_form!.IsValid)
                return;
             var result = await Mediator.Send(model);
-            result.MatchAsync(data =>
+            await result.MatchAsync(async data =>
             {
                 Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
                 await Task.Delay(300);

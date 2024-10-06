@@ -11,7 +11,7 @@ public class {nameofPlural}WithPaginationQuery : {itemname}AdvancedFilter, ICach
 {
     public override string ToString()
     {
-        return $"Listview:{ListView}-{LocalTimezoneOffset}, Search:{Keyword}, {OrderBy}, {SortDirection}, {PageNumber}, {PageSize}";
+        return $"Listview:{ListView}-{LocalTimezoneOffset.TotalHours}, Search:{Keyword}, {OrderBy}, {SortDirection}, {PageNumber}, {PageSize}";
     }
     public string CacheKey => {itemname}CacheKey.GetPaginationCacheKey($"{this}");
     public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;

@@ -16,7 +16,7 @@
         </MudCardHeader>
         <MudCardContent>
         <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
-            <MudGrid>
+            <MudGrid Spacing="2">
                 {mudFormFieldDefinition}
             </MudGrid>
         </MudForm>

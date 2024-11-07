@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System.ComponentModel;
-using {selectns}.{nameofPlural}.DTOs;
+
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
 
 namespace {namespace};
 
@@ -13,34 +13,19 @@ public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
       {dtoFieldDefinition}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-             CreateMap<{itemname}Dto,Create{itemname}Command>(MemberList.None);
-             CreateMap<Create{itemname}Command,{itemname}>(MemberList.None);
-        }
-    }
 }
     
     public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<Create{itemname}Command> _localizer;
         public Create{itemname}CommandHandler(
-            IApplicationDbContext context,
-            IStringLocalizer<Create{itemname}Command> localizer,
-            IMapper mapper
-            )
+            IApplicationDbContext context)
         {
             _context = context;
-            _localizer = localizer;
-            _mapper = mapper;
         }
         public async Task<Result<int>> Handle(Create{itemname}Command request, CancellationToken cancellationToken)
         {
-           var item = _mapper.Map<{itemname}>(request);
+           var item = {itemname}Mapper.FromCreateCommand(request);
            // raise a create domain event
 	       item.AddDomainEvent(new {itemname}CreatedEvent(item));
            _context.{nameofPlural}.Add(item);

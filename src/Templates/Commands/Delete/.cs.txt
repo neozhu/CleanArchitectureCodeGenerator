@@ -6,46 +6,39 @@ using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
 
-    public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
+public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
+{
+  public int[] Id {  get; }
+  public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
+  public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
+  public Delete{itemname}Command(int[] id)
+  {
+    Id = id;
+  }
+}
+
+public class Delete{itemname}CommandHandler : 
+             IRequestHandler<Delete{itemname}Command, Result<int>>
+
+{
+    private readonly IApplicationDbContext _context;
+    public Delete{itemname}CommandHandler(
+        IApplicationDbContext context)
     {
-      public int[] Id {  get; }
-      public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
-      public Delete{itemname}Command(int[] id)
-      {
-        Id = id;
-      }
+        _context = context;
+    }
+    public async Task<Result<int>> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
+    {
+        var items = await _context.{nameofPlural}.Where(x=>request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
+        foreach (var item in items)
+        {
+		    // raise a delete domain event
+			item.AddDomainEvent(new {itemname}DeletedEvent(item));
+            _context.{nameofPlural}.Remove(item);
+        }
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        return await Result<int>.SuccessAsync(result);
     }
 
-    public class Delete{itemname}CommandHandler : 
-                 IRequestHandler<Delete{itemname}Command, Result<int>>
-
-    {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<Delete{itemname}CommandHandler> _localizer;
-        public Delete{itemname}CommandHandler(
-            IApplicationDbContext context,
-            IStringLocalizer<Delete{itemname}CommandHandler> localizer,
-             IMapper mapper
-            )
-        {
-            _context = context;
-            _localizer = localizer;
-            _mapper = mapper;
-        }
-        public async Task<Result<int>> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
-        {
-            var items = await _context.{nameofPlural}.Where(x=>request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
-            foreach (var item in items)
-            {
-			    // raise a delete domain event
-				item.AddDomainEvent(new {itemname}DeletedEvent(item));
-                _context.{nameofPlural}.Remove(item);
-            }
-            var result = await _context.SaveChangesAsync(cancellationToken);
-            return await Result<int>.SuccessAsync(result);
-        }
-
-    }
+}
 

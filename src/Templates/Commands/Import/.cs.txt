@@ -3,6 +3,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
 
 namespace {namespace};
 
@@ -28,7 +29,6 @@ namespace {namespace};
                  IRequestHandler<Import{nameofPlural}Command, Result<int>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
         private readonly IStringLocalizer<Import{nameofPlural}CommandHandler> _localizer;
         private readonly IExcelService _excelService;
         private readonly {itemname}Dto _dto = new();
@@ -36,14 +36,11 @@ namespace {namespace};
         public Import{nameofPlural}CommandHandler(
             IApplicationDbContext context,
             IExcelService excelService,
-            IStringLocalizer<Import{nameofPlural}CommandHandler> localizer,
-            IMapper mapper
-            )
+            IStringLocalizer<Import{nameofPlural}CommandHandler> localizer)
         {
             _context = context;
             _localizer = localizer;
             _excelService = excelService;
-            _mapper = mapper;
         }
         #nullable disable warnings
         public async Task<Result<int>> Handle(Import{nameofPlural}Command request, CancellationToken cancellationToken)
@@ -60,7 +57,7 @@ namespace {namespace};
                     var exists = await _context.{nameofPlural}.AnyAsync(x => x.Name == dto.Name, cancellationToken);
                     if (!exists)
                     {
-                        var item = _mapper.Map<{itemname}>(dto);
+                        var item = {itemname}Mapper.FromDto(dto);
                         // add create domain events if this entity implement the IHasDomainEvent interface
 				        // item.AddDomainEvent(new {itemname}CreatedEvent(item));
                         await _context.{nameofPlural}.AddAsync(item, cancellationToken);

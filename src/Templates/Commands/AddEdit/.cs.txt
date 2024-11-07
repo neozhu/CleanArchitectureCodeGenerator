@@ -3,6 +3,8 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
+
 namespace {namespace};
 
 public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
@@ -13,58 +15,41 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
 
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
-
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-            CreateMap<{itemname}Dto,AddEdit{itemname}Command>(MemberList.None);
-            CreateMap<AddEdit{itemname}Command,{itemname}>(MemberList.None);
-         
-        }
-    }
 }
 
-    public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>
+public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>
+{
+    private readonly IApplicationDbContext _context;
+    public AddEdit{itemname}CommandHandler(
+        IApplicationDbContext context)
     {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<AddEdit{itemname}CommandHandler> _localizer;
-        public AddEdit{itemname}CommandHandler(
-            IApplicationDbContext context,
-            IStringLocalizer<AddEdit{itemname}CommandHandler> localizer,
-            IMapper mapper
-            )
-        {
-            _context = context;
-            _localizer = localizer;
-            _mapper = mapper;
-        }
-        public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
-        {
-            if (request.Id > 0)
-            {
-                var item = await _context.{nameofPlural}.FindAsync(request.Id, cancellationToken);
-                if (item == null)
-                {
-                    return await Result<int>.FailureAsync($"{itemname} with id: [{request.Id}] not found.");
-                }
-                item = _mapper.Map(request, item);
-				// raise a update domain event
-				item.AddDomainEvent(new {itemname}UpdatedEvent(item));
-                await _context.SaveChangesAsync(cancellationToken);
-                return await Result<int>.SuccessAsync(item.Id);
-            }
-            else
-            {
-                var item = _mapper.Map<{itemname}>(request);
-                // raise a create domain event
-				item.AddDomainEvent(new {itemname}CreatedEvent(item));
-                _context.{nameofPlural}.Add(item);
-                await _context.SaveChangesAsync(cancellationToken);
-                return await Result<int>.SuccessAsync(item.Id);
-            }
-           
-        }
+        _context = context;
     }
+    public async Task<Result<int>> Handle(AddEdit{itemname}Command request, CancellationToken cancellationToken)
+    {
+        if (request.Id > 0)
+        {
+            var item = await _context.{nameofPlural}.FindAsync(request.Id, cancellationToken);
+            if (item == null)
+            {
+                return await Result<int>.FailureAsync($"{itemname} with id: [{request.Id}] not found.");
+            }
+            {itemname}Mapper.ApplyChangesFrom(request,item);
+			// raise a update domain event
+			item.AddDomainEvent(new {itemname}UpdatedEvent(item));
+            await _context.SaveChangesAsync(cancellationToken);
+            return await Result<int>.SuccessAsync(item.Id);
+        }
+        else
+        {
+            var item = {itemname}Mapper.FromEditCommand(request);
+            // raise a create domain event
+			item.AddDomainEvent(new {itemname}CreatedEvent(item));
+            _context.{nameofPlural}.Add(item);
+            await _context.SaveChangesAsync(cancellationToken);
+            return await Result<int>.SuccessAsync(item.Id);
+        }
+       
+    }
+}
 

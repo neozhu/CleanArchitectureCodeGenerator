@@ -3,6 +3,7 @@
 @using BlazorDownloadFile
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Caching
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.DTOs
+@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Mappers
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Specifications
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Import
@@ -254,19 +255,12 @@
     private async Task OnClone()
     {
         var dto = _selectedItems.First();
-        var command = Mapper.Map<{itemname}Dto, AddEdit{itemname}Command>(dto, opts =>
-        {
-           opts.AfterMap((src, dest) =>
-           {
-               dest.Id = 0;
-           });
-        });
+        var command = {itemname}Mapper.CloneFromDto(dto);
         await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
     }
     private async Task OnEdit({itemname}Dto dto)
     {
-        var command = Mapper.Map<AddEdit{itemname}Command>(dto);
-        await ShowEditFormDialog(string.Format(ConstantString.EditTheItem, L["{itemname}"]), command);
+       Navigation.NavigateTo($"/pages/{nameofPlural}/edit/{dto.Id}");
     }
 
     private async Task OnDelete({itemname}Dto dto)

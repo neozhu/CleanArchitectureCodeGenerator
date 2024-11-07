@@ -10,12 +10,5 @@ public class {itemname}Dto
     public int Id { get; set; }
     {dtoFieldDefinition}
 
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-            CreateMap<{itemname}, {itemname}Dto>().ReverseMap();
-        }
-    }
 }
 

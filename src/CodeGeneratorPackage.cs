@@ -125,6 +125,7 @@ namespace CleanArchitecture.CodeGenerator
 						$"{nameofPlural}/Commands/Import/Import{nameofPlural}CommandValidator.cs",
 						$"{nameofPlural}/Caching/{name}CacheKey.cs",
 						$"{nameofPlural}/DTOs/{name}Dto.cs",
+						$"{nameofPlural}/Mappers/{name}Mapper.cs",
 						$"{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs",
 						$"{nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs",
 						$"{nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs",

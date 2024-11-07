@@ -3,6 +3,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
@@ -18,25 +19,18 @@ public class Get{itemname}ByIdQueryHandler :
      IRequestHandler<Get{itemname}ByIdQuery, Result<{itemname}Dto>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    private readonly IStringLocalizer<Get{itemname}ByIdQueryHandler> _localizer;
 
     public Get{itemname}ByIdQueryHandler(
-        IApplicationDbContext context,
-        IMapper mapper,
-        IStringLocalizer<Get{itemname}ByIdQueryHandler> localizer
-        )
+        IApplicationDbContext context)
     {
         _context = context;
-        _mapper = mapper;
-        _localizer = localizer;
     }
 
     public async Task<Result<{itemname}Dto>> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
     {
         var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
-                     .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
-                     .FirstAsync(cancellationToken);
+                                                .ProjectTo()
+                                                .FirstAsync(cancellationToken);
         return await Result<ContactDto>.SuccessAsync(data);
     }
 }

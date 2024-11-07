@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System.ComponentModel;
-using {selectns}.{nameofPlural}.DTOs;
+
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
 
 namespace {namespace};
 
@@ -13,44 +13,30 @@ public class Update{itemname}Command: ICacheInvalidatorRequest<Result<int>>
         {dtoFieldDefinition}
         public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
         public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
-    private class Mapping : Profile
-    {
-        public Mapping()
-        {
-            CreateMap<{itemname}Dto,Update{itemname}Command>(MemberList.None);
-            CreateMap<Update{itemname}Command,{itemname}>(MemberList.None);
-        }
-    }
+
 }
 
-    public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result<int>>
+public class Update{itemname}CommandHandler : IRequestHandler<Update{itemname}Command, Result<int>>
+{
+    private readonly IApplicationDbContext _context;
+    public Update{itemname}CommandHandler(
+        IApplicationDbContext context)
     {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<Update{itemname}CommandHandler> _localizer;
-        public Update{itemname}CommandHandler(
-            IApplicationDbContext context,
-            IStringLocalizer<Update{itemname}CommandHandler> localizer,
-             IMapper mapper
-            )
-        {
-            _context = context;
-            _localizer = localizer;
-            _mapper = mapper;
-        }
-        public async Task<Result<int>> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
-        {
-
-           var item = await _context.{nameofPlural}.FindAsync(request.Id, cancellationToken);
-           if (item == null)
-           {
-               return await Result<int>.FailureAsync($"{itemname} with id: [{request.Id}] not found.");
-           }
-           item = _mapper.Map(request, item);
-		    // raise a update domain event
-		   item.AddDomainEvent(new {itemname}UpdatedEvent(item));
-           await _context.SaveChangesAsync(cancellationToken);
-           return await Result<int>.SuccessAsync(item.Id);
-        }
+        _context = context;
     }
+    public async Task<Result<int>> Handle(Update{itemname}Command request, CancellationToken cancellationToken)
+    {
+
+       var item = await _context.{nameofPlural}.FindAsync(request.Id, cancellationToken);
+       if (item == null)
+       {
+           return await Result<int>.FailureAsync($"{itemname} with id: [{request.Id}] not found.");
+       }
+       {itemname}Mapper.ApplyChangesFrom(request, item);
+	    // raise a update domain event
+	   item.AddDomainEvent(new {itemname}UpdatedEvent(item));
+       await _context.SaveChangesAsync(cancellationToken);
+       return await Result<int>.SuccessAsync(item.Id);
+    }
+}
 

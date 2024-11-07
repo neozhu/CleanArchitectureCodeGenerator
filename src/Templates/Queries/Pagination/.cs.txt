@@ -3,6 +3,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
+using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
@@ -22,24 +23,21 @@ public class {nameofPlural}WithPaginationQueryHandler :
          IRequestHandler<{nameofPlural}WithPaginationQuery, PaginatedData<{itemname}Dto>>
 {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IStringLocalizer<{nameofPlural}WithPaginationQueryHandler> _localizer;
 
         public {nameofPlural}WithPaginationQueryHandler(
-            IApplicationDbContext context,
-            IMapper mapper,
-            IStringLocalizer<{nameofPlural}WithPaginationQueryHandler> localizer
-            )
+            IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
-            _localizer = localizer;
         }
 
         public async Task<PaginatedData<{itemname}Dto>> Handle({nameofPlural}WithPaginationQuery request, CancellationToken cancellationToken)
         {
            var data = await _context.{nameofPlural}.OrderBy($"{request.OrderBy} {request.SortDirection}")
-                                    .ProjectToPaginatedDataAsync<{itemname}, {itemname}Dto>(request.Specification, request.PageNumber, request.PageSize, _mapper.ConfigurationProvider, cancellationToken);
+                                                   .ProjectToPaginatedDataAsync(request.Specification, 
+                                                                                request.PageNumber, 
+                                                                                request.PageSize, 
+                                                                                {itemname}Mapper.ToDto, 
+                                                                                cancellationToken);
             return data;
         }
 }

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using {selectns}.{nameofPlural}.DTOs;
+using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Specifications;
 using {selectns}.{nameofPlural}.Queries.Pagination;
 
@@ -16,19 +17,16 @@ public class Export{nameofPlural}QueryHandler :
          IRequestHandler<Export{nameofPlural}Query, Result<byte[]>>
 {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
         private readonly IExcelService _excelService;
         private readonly IStringLocalizer<Export{nameofPlural}QueryHandler> _localizer;
         private readonly {itemname}Dto _dto = new();
         public Export{nameofPlural}QueryHandler(
             IApplicationDbContext context,
-            IMapper mapper,
             IExcelService excelService,
             IStringLocalizer<Export{nameofPlural}QueryHandler> localizer
             )
         {
             _context = context;
-            _mapper = mapper;
             _excelService = excelService;
             _localizer = localizer;
         }
@@ -37,7 +35,7 @@ public class Export{nameofPlural}QueryHandler :
         {
             var data = await _context.{nameofPlural}.ApplySpecification(request.Specification)
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
-                       .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                       .ProjectTo()
                        .AsNoTracking()
                        .ToListAsync(cancellationToken);
             var result = await _excelService.ExportAsync(data,

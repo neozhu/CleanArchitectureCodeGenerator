@@ -157,6 +157,8 @@ namespace CleanArchitecture.CodeGenerator
 					{ "rootnamespace", _defaultNamespace },
 					{ "namespace", ns },
 					{ "selectns", selectNs },
+					{ "author", "neozhu"},
+					{ "createddate", DateTime.Now.ToString("yyyy-MM-dd") },
 					{ "itemname", name },
 					{ "itemnamelowercase", name.ToLower() },
 					{ "nameofPlural", nameofPlural },

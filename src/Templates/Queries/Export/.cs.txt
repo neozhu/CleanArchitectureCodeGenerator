@@ -16,6 +16,7 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Mappers;
+using {selectns}.{nameofPlural}.Caching;
 using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};

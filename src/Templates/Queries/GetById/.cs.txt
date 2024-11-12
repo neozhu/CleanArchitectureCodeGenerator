@@ -43,6 +43,6 @@ public class Get{itemname}ByIdQueryHandler :
         var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
                                                 .ProjectTo()
                                                 .FirstAsync(cancellationToken);
-        return await Result<ContactDto>.SuccessAsync(data);
+        return await Result<{itemname}Dto>.SuccessAsync(data);
     }
 }

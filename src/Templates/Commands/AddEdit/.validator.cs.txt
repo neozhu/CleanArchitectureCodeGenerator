@@ -20,7 +20,7 @@
 //------------------------------------------------------------------------------
 
 // Usage:
-// This validator enforces constraints on the AddEditContactCommand, such as
+// This validator enforces constraints on the AddEdit{itemname}Command, such as
 // maximum field length for ...
 
 namespace {namespace};

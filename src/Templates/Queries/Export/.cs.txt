@@ -20,9 +20,15 @@ using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
 
-public class Export{nameofPlural}Query : {itemname}AdvancedFilter, IRequest<Result<byte[]>>
+public class Export{nameofPlural}Query : {itemname}AdvancedFilter, ICacheableRequest<Result<byte[]>>
 {
       public {itemname}AdvancedSpecification Specification => new {itemname}AdvancedSpecification(this);
+      public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
+    public override string ToString()
+    {
+        return $"Listview:{ListView}:{CurrentUser?.UserId}-{LocalTimezoneOffset.TotalHours}, Search:{Keyword}, {OrderBy}, {SortDirection}";
+    }
+    public string CacheKey => {itemname}CacheKey.GetExportCacheKey($"{this}");
 }
     
 public class Export{nameofPlural}QueryHandler :

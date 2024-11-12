@@ -35,7 +35,7 @@ public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
 {
   public int[] Id {  get; }
   public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-  public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
+  public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
   public Delete{itemname}Command(int[] id)
   {
     Id = id;

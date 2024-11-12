@@ -35,7 +35,7 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
       {dtoFieldDefinition}
 
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
+      public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
 }
 
 public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}Command, Result<int>>

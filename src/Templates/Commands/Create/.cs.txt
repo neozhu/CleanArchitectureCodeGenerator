@@ -36,7 +36,7 @@ public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
       public int Id { get; set; }
       {dtoFieldDefinition}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => {itemname}CacheKey.GetOrCreateTokenSource();
+      public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
 }
     
     public class Create{itemname}CommandHandler : IRequestHandler<Create{itemname}Command, Result<int>>

@@ -24,7 +24,7 @@ public class Get{itemname}ByIdQuery : ICacheableRequest<Result<{itemname}Dto>>
 {
    public required int Id { get; set; }
    public string CacheKey => {itemname}CacheKey.GetByIdCacheKey($"{Id}");
-   public MemoryCacheEntryOptions? Options => {itemname}CacheKey.MemoryCacheEntryOptions;
+   public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
 }
 
 public class Get{itemname}ByIdQueryHandler :

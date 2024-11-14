@@ -25,7 +25,7 @@
     private bool _saving = false;
     private bool _savingnew = false;
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; } = default!;
+    IMudDialogInstance MudDialog { get; set; } = default!;
     AddEdit{itemname}CommandValidator _modelValidator = new ();
     [EditorRequired] [Parameter] public AddEdit{itemname}Command model { get; set; } = null!;
     async Task Submit()

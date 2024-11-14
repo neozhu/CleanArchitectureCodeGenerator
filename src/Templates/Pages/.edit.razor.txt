@@ -2,6 +2,8 @@
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Update
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Mappers
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.GetById
+@using CleanArchitecture.Blazor.Server.UI.Components.Fusion
+
 @inherits MudComponentBase
 @inject IValidationService Validator
 @inject IStringLocalizer<{nameofPlural}> L
@@ -18,6 +20,7 @@
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>
+        <ActiveUserSession PageComponent="@($"{nameof(Edit{itemname})}/{ model.Id }")" />
         <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
             <MudGrid Spacing="2">
                 {mudFormFieldDefinition}

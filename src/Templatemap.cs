@@ -424,7 +424,7 @@ namespace CleanArchitecture.CodeGenerator
 				output.Append($"      <div class=\"d-flex flex-column\">\r\n");
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.First()).Any())
 				{
-					output.Append($"        <MudText Typo=\"Typo.body2\">@context.Item.Name</MudText>\r\n");
+					output.Append($"        <MudText Typo=\"Typo.body1\">@context.Item.Name</MudText>\r\n");
 				}
 				if (classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name == defaultfieldName.Last()).Any())
 				{
@@ -526,7 +526,7 @@ namespace CleanArchitecture.CodeGenerator
 					case "string" when property.Name.Equals("Description", StringComparison.OrdinalIgnoreCase):
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
-						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Lines=\"3\" For=\"@(() => model.{property.Name})\" @bind-Value=\"model.{property.Name}\"></MudTextField>\r\n");
+						output.Append($"        <MudTextField Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\"  For=\"@(() => model.{property.Name})\" @bind-Value=\"model.{property.Name}\"></MudTextField>\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;

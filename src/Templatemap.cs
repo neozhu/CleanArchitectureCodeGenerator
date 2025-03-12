@@ -367,7 +367,7 @@ namespace CleanArchitecture.CodeGenerator
 					{
 						output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString() }}, \r\n");
 					}
-					else
+					else if(objectlist != null)
 					{
 						var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 						if (relatedObject != null)
@@ -400,7 +400,7 @@ namespace CleanArchitecture.CodeGenerator
 				{
 					output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
 				}
-				else
+				else if (objectlist != null)
 				{
 					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 					if (relatedObject != null)
@@ -442,7 +442,7 @@ namespace CleanArchitecture.CodeGenerator
 					output.Append("                ");
 					output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
 				}
-				else
+				else if(objectlist!=null)
 				{
 					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 					if (relatedObject != null)
@@ -579,7 +579,7 @@ namespace CleanArchitecture.CodeGenerator
 							output.Append("                ");
 							output.Append($"</MudItem> \r\n");
 						}
-						else
+						else if (objectlist != null)
 						{
 							var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 							if (relatedObject != null)
@@ -634,7 +634,7 @@ namespace CleanArchitecture.CodeGenerator
 							output.Append("                ");
 							output.Append($"</MudItem> \r\n");
 						}
-						else
+						else if(objectlist!=null)
 						{
 							var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 							if (relatedObject != null)
@@ -693,7 +693,7 @@ namespace CleanArchitecture.CodeGenerator
 						}
 						break;
 					default:
-						if (!property.Type.IsKnownType)
+						if (!property.Type.IsKnownType && objectlist!=null)
 						{
 							var refObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName));
 							if (refObject != null)
@@ -765,7 +765,7 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append($"    RuleFor(v => v.{property.Name}).NotNull(); \r\n");
 						break;
 					default:
-						if (!property.Type.IsKnownType)
+						if (!property.Type.IsKnownType && objectlist!=null)
 						{
 							var refObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName));
 							if (refObject != null)

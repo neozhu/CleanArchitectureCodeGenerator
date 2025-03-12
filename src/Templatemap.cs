@@ -313,7 +313,7 @@ namespace CleanArchitecture.CodeGenerator
 									complexType = complexType + "Dto";
 									if (property.Type.IsArray)
 									{
-										complexType = $"List<{complexType}Dto>?";
+										complexType = $"List<{complexType}>?";
 									}
 									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
 								}

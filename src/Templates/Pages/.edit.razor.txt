@@ -1,6 +1,5 @@
 ﻿@page "/pages/{nameofPlural}/edit/{id:int}"
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Update
-@using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Mappers
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.GetById
 @using CleanArchitecture.Blazor.Server.UI.Components.Fusion
 
@@ -54,7 +53,7 @@
         var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
         result.Map(data =>
         {
-            model = {itemname}Mapper.ToUpdateCommand(data);
+            model = Mapper.Map<Update{itemname}Command>(data);
             return data;
         }).Match(data =>
         {

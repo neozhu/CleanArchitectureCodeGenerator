@@ -15,7 +15,6 @@
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;
-using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Specifications;
 
 namespace {namespace};
@@ -31,18 +30,20 @@ public class Get{itemname}ByIdQueryHandler :
      IRequestHandler<Get{itemname}ByIdQuery, Result<{itemname}Dto>>
 {
     private readonly IApplicationDbContext _context;
-
+    private readonly IMapper _mapper;
     public Get{itemname}ByIdQueryHandler(
+        IMapper mapper,
         IApplicationDbContext context)
     {
+        _mapper = mapper;
         _context = context;
     }
 
     public async Task<Result<{itemname}Dto>> Handle(Get{itemname}ByIdQuery request, CancellationToken cancellationToken)
     {
         var data = await _context.{nameofPlural}.ApplySpecification(new {itemname}ByIdSpecification(request.Id))
-                                                .ProjectTo()
-                                                .FirstAsync(cancellationToken);
+                                                .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
+                                                .FirstAsync(cancellationToken) ?? throw new NotFoundException($"Contact with id: [{request.Id}] not found.");
         return await Result<{itemname}Dto>.SuccessAsync(data);
     }
 }

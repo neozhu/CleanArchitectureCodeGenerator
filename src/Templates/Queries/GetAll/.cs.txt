@@ -15,7 +15,6 @@
 //------------------------------------------------------------------------------
 
 using {selectns}.{nameofPlural}.DTOs;
-using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Caching;
 
 namespace {namespace};
@@ -30,16 +29,18 @@ public class GetAll{nameofPlural}QueryHandler :
      IRequestHandler<GetAll{nameofPlural}Query, IEnumerable<{itemname}Dto>>
 {
     private readonly IApplicationDbContext _context;
-
+    private readonly IMapper _mapper;
     public GetAll{nameofPlural}QueryHandler(
+        IMapper mapper,
         IApplicationDbContext context)
     {
+        _mapper = mapper;
         _context = context;
     }
 
     public async Task<IEnumerable<{itemname}Dto>> Handle(GetAll{nameofPlural}Query request, CancellationToken cancellationToken)
     {
-        var data = await _context.{nameofPlural}.ProjectTo()
+        var data = await _context.{nameofPlural}.ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                                                 .AsNoTracking()
                                                 .ToListAsync(cancellationToken);
         return data;

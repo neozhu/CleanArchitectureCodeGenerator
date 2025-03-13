@@ -46,7 +46,7 @@ namespace CleanArchitecture.CodeGenerator
 				"Commands\\AddEdit",
 				"Commands\\Import",
 				"DTOs",
-				"Mappers",
+				/*"Mappers",*/
 				"Caching",
 				"EventHandlers",
 				"Events",

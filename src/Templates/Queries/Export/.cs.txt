@@ -15,7 +15,6 @@
 //------------------------------------------------------------------------------
 
 using {selectns}.{nameofPlural}.DTOs;
-using {selectns}.{nameofPlural}.Mappers;
 using {selectns}.{nameofPlural}.Caching;
 using {selectns}.{nameofPlural}.Specifications;
 
@@ -35,16 +34,19 @@ public class Export{nameofPlural}Query : {itemname}AdvancedFilter, ICacheableReq
 public class Export{nameofPlural}QueryHandler :
          IRequestHandler<Export{nameofPlural}Query, Result<byte[]>>
 {
+        private readonly IMapper _mapper;
         private readonly IApplicationDbContext _context;
         private readonly IExcelService _excelService;
         private readonly IStringLocalizer<Export{nameofPlural}QueryHandler> _localizer;
         private readonly {itemname}Dto _dto = new();
         public Export{nameofPlural}QueryHandler(
+            IMapper mapper,
             IApplicationDbContext context,
             IExcelService excelService,
             IStringLocalizer<Export{nameofPlural}QueryHandler> localizer
             )
         {
+            _mapper = mapper;
             _context = context;
             _excelService = excelService;
             _localizer = localizer;
@@ -54,7 +56,7 @@ public class Export{nameofPlural}QueryHandler :
         {
             var data = await _context.{nameofPlural}.ApplySpecification(request.Specification)
                        .OrderBy($"{request.OrderBy} {request.SortDirection}")
-                       .ProjectTo()
+                       .ProjectTo<{itemname}Dto>(_mapper.ConfigurationProvider)
                        .AsNoTracking()
                        .ToListAsync(cancellationToken);
             var result = await _excelService.ExportAsync(data,

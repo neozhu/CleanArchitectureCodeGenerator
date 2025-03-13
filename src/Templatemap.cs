@@ -149,7 +149,7 @@ namespace CleanArchitecture.CodeGenerator
 				var mudTdHeaderDefinition = createMudTdHeaderDefinition(classObject, objectlist);
 				var mudFormFieldDefinition = createMudFormFieldDefinition(classObject, objectlist);
 				var readonlyFieldDefinition = createReadyonlyFieldDefinition(classObject, objectlist);
-				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject);
+				var fieldAssignmentDefinition = createFieldAssignmentDefinition(classObject, objectlist);
 				var entityTypeBuilderConfirmation = createEntityTypeBuilderConfirmation(classObject, objectlist);
 				var commandValidatorRuleFor = createComandValidatorRuleFor(classObject, objectlist);
 				var replacements = new Dictionary<string, string>
@@ -655,12 +655,23 @@ namespace CleanArchitecture.CodeGenerator
 			return output.ToString();
 		}
 
-		private static string createFieldAssignmentDefinition(IntellisenseObject classObject)
+		private static string createFieldAssignmentDefinition(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsKnownType == true && x.Name != "Id"))
 			{
 				output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
+			}
+			foreach(var property in classObject.Properties.Where(x => x.Type.IsKnownType == false && x.Name != "Id"))
+			{
+				if (objectlist != null)
+				{
+					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
+					if (relatedObject != null)
+					{
+						output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
+					}
+				}
 			}
 			return output.ToString();
 		}

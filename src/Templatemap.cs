@@ -142,6 +142,7 @@ namespace CleanArchitecture.CodeGenerator
 				var content = await reader.ReadToEndAsync();
 				var nameofPlural = ProjectHelpers.Pluralize(name);
 				var dtoFieldDefinition = createDtoFieldDefinition(classObject, objectlist);
+				var dtoFieldDefinitionWithoutList = createDtoFieldDefinitionWithoutList(classObject, objectlist);
 				var importFuncExpression = createImportFuncExpression(classObject, objectlist);
 				var templateFieldDefinition = createTemplateFieldDefinition(classObject);
 				var exportFuncExpression = createExportFuncExpression(classObject, objectlist);
@@ -163,6 +164,7 @@ namespace CleanArchitecture.CodeGenerator
 					{ "itemnamelowercase", name.ToLower() },
 					{ "nameofPlural", nameofPlural },
 					{ "dtoFieldDefinition", dtoFieldDefinition },
+					{ "dtoFieldDefinitionWithoutList", dtoFieldDefinitionWithoutList },
 					{ "fieldAssignmentDefinition", fieldAssignmentDefinition },
 					{ "importFuncExpression", importFuncExpression },
 					{ "templateFieldDefinition", templateFieldDefinition },
@@ -267,8 +269,6 @@ namespace CleanArchitecture.CodeGenerator
 							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTimeOffset":
-							output.Append($"    public DateTimeOffset {property.Name} {{get;set;}} \r\n");
-							break;
 						case "System.DateTimeOffset?":
 							output.Append($"    public DateTimeOffset? {property.Name} {{get;set;}} \r\n");
 							break;
@@ -333,6 +333,107 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			return output.ToString();
 		}
+
+		private static string createDtoFieldDefinitionWithoutList(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
+		{
+			var output = new StringBuilder();
+			foreach (var property in classObject.Properties.Where(x => x.Type.IsDictionary == false))
+			{
+				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
+				if (property.Name == PRIMARYKEY)
+				{
+					output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
+				}
+				else
+				{
+					switch (property.Type.CodeName)
+					{
+						case "string":
+						case "string?":
+							if (property.Type.IsArray)
+							{
+								output.Append($"    public {property.Type.CodeName}[]{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
+							}
+							else if (property.Type.IsDictionary)
+							{
+								output.Append($"    public Dictionary<{property.Type.CodeName},{property.Type.CodeName}>{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
+							}
+							else
+							{
+
+								output.Append($"    public {property.Type.CodeName}{(property.Name.Equals("Name") ? "" : "?")} {property.Name} {{get;set;}} \r\n");
+							}
+							break;
+						case "System.DateTime":
+						case "System.DateTime?":
+							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.TimeSpan":
+						case "System.TimeSpan?":
+							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.DateTimeOffset":
+						case "System.DateTimeOffset?":
+							output.Append($"    public DateTimeOffset? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.Guid":
+							output.Append($"    public Guid {property.Name} {{get;set;}} \r\n");
+							break;
+						case "System.Guid?":
+							output.Append($"    public Guid? {property.Name} {{get;set;}} \r\n");
+							break;
+						case "bool?":
+						case "bool":
+						case "byte?":
+						case "byte":
+						case "char?":
+						case "char":
+						case "float?":
+						case "float":
+						case "decimal?":
+						case "decimal":
+						case "int?":
+						case "int":
+						case "double?":
+						case "double":
+							output.Append($"    public {property.Type.CodeName}{(property.Type.IsArray ? "[]" : "")} {property.Name} {{get;set;}} \r\n");
+							break;
+						default:
+							if (objectlist != null && objectlist.Any(x => x.FullName.Equals(property.Type.CodeName)))
+							{
+								var complexType = property.Type.CodeName.Split('.').Last();
+								var relatedObject = objectlist.First(x => x.FullName.Equals(property.Type.CodeName));
+								if (relatedObject.IsEnum)
+								{
+									output.Append($"    public {complexType}? {property.Name} {{get;set;}} \r\n");
+								}
+								else if(!property.Type.IsArray)
+								{
+									complexType = complexType + "Dto";
+									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
+								}
+							}
+							else
+							{
+								if (property.Name.Equals("Tenant"))
+								{
+									output.Append($"    public TenantDto? {property.Name} {{get;set;}} \r\n");
+								}
+							}
+							break;
+					}
+				}
+			}
+
+
+			if (classObject.BaseName.Equals("OwnerPropertyEntity"))
+			{
+				output.Append($"    [Description(\"Owner\")] public ApplicationUserDto? Owner {{ get; set; }} \r\n");
+				output.Append($"    [Description(\"Last modifier\")] public ApplicationUserDto? LastModifier {{ get; set; }} \r\n");
+			}
+			return output.ToString();
+		}
+
 		private static string createImportFuncExpression(IntellisenseObject classObject, IEnumerable<IntellisenseObject> objectlist = null)
 		{
 			var output = new StringBuilder();

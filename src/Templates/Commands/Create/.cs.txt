@@ -21,7 +21,7 @@ public class Create{itemname}Command: ICacheInvalidatorRequest<Result<int>>
 {
       [Description("Id")]
       public int Id { get; set; }
-      {dtoFieldDefinition}
+      {dtoFieldDefinitionWithoutList}
       public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
       public IEnumerable<string>? Tags => {itemname}CacheKey.Tags;
       private class Mapping : Profile

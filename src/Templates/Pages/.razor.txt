@@ -220,7 +220,7 @@
                 { x=>x.model,command },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = DialogService.Show<{itemname}FormDialog>(title, parameters, options);
+        var dialog = await DialogService.ShowAsync<{itemname}FormDialog>(title, parameters, options);
         var state = await dialog.Result;
 
         if (state != null && !state.Canceled)

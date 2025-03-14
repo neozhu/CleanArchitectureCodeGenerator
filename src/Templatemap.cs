@@ -235,9 +235,9 @@ namespace CleanArchitecture.CodeGenerator
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsDictionary == false))
 			{
-				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
 				{
+					output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 					output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 				}
 				else
@@ -248,34 +248,41 @@ namespace CleanArchitecture.CodeGenerator
 						case "string?":
 							if (property.Type.IsArray)
 							{
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public {property.Type.CodeName}[]{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
 							}
 							else if (property.Type.IsDictionary)
 							{
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public Dictionary<{property.Type.CodeName},{property.Type.CodeName}>{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
 							}
 							else
 							{
-
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public {property.Type.CodeName}{(property.Name.Equals("Name") ? "" : "?")} {property.Name} {{get;set;}} \r\n");
 							}
 							break;
 						case "System.DateTime":
 						case "System.DateTime?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.TimeSpan":
 						case "System.TimeSpan?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTimeOffset":
 						case "System.DateTimeOffset?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public DateTimeOffset? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.Guid":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public Guid {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.Guid?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public Guid? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "bool?":
@@ -292,6 +299,7 @@ namespace CleanArchitecture.CodeGenerator
 						case "int":
 						case "double?":
 						case "double":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public {property.Type.CodeName}{(property.Type.IsArray ? "[]" : "")} {property.Name} {{get;set;}} \r\n");
 							break;
 						default:
@@ -301,6 +309,7 @@ namespace CleanArchitecture.CodeGenerator
 								var relatedObject = objectlist.First(x => x.FullName.Equals(property.Type.CodeName));
 								if (relatedObject.IsEnum)
 								{
+									output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 									output.Append($"    public {complexType}? {property.Name} {{get;set;}} \r\n");
 								}
 								else
@@ -309,14 +318,21 @@ namespace CleanArchitecture.CodeGenerator
 									if (property.Type.IsArray)
 									{
 										complexType = $"List<{complexType}>?";
+										output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
+										output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
 									}
-									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
+									else
+									{
+										output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
+										output.Append($"    public {complexType}? {property.Name} {{get;set;}} \r\n");
+									}
 								}
 							}
 							else
 							{
 								if (property.Name.Equals("Tenant"))
 								{
+									output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 									output.Append($"    public TenantDto? {property.Name} {{get;set;}} \r\n");
 								}
 							}
@@ -339,9 +355,9 @@ namespace CleanArchitecture.CodeGenerator
 			var output = new StringBuilder();
 			foreach (var property in classObject.Properties.Where(x => x.Type.IsDictionary == false))
 			{
-				output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 				if (property.Name == PRIMARYKEY)
 				{
+					output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 					output.Append($"    public {property.Type.CodeName} {property.Name} {{get;set;}} \r\n");
 				}
 				else
@@ -352,34 +368,41 @@ namespace CleanArchitecture.CodeGenerator
 						case "string?":
 							if (property.Type.IsArray)
 							{
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public {property.Type.CodeName}[]{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
 							}
 							else if (property.Type.IsDictionary)
 							{
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public Dictionary<{property.Type.CodeName},{property.Type.CodeName}>{(property.Type.IsOptional ? "?" : "")} {property.Name} {{get;set;}} \r\n");
 							}
 							else
 							{
-
+								output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 								output.Append($"    public {property.Type.CodeName}{(property.Name.Equals("Name") ? "" : "?")} {property.Name} {{get;set;}} \r\n");
 							}
 							break;
 						case "System.DateTime":
 						case "System.DateTime?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.TimeSpan":
 						case "System.TimeSpan?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTimeOffset":
 						case "System.DateTimeOffset?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public DateTimeOffset? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.Guid":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public Guid {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.Guid?":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public Guid? {property.Name} {{get;set;}} \r\n");
 							break;
 						case "bool?":
@@ -396,6 +419,7 @@ namespace CleanArchitecture.CodeGenerator
 						case "int":
 						case "double?":
 						case "double":
+							output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 							output.Append($"    public {property.Type.CodeName}{(property.Type.IsArray ? "[]" : "")} {property.Name} {{get;set;}} \r\n");
 							break;
 						default:
@@ -405,11 +429,13 @@ namespace CleanArchitecture.CodeGenerator
 								var relatedObject = objectlist.First(x => x.FullName.Equals(property.Type.CodeName));
 								if (relatedObject.IsEnum)
 								{
+									output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 									output.Append($"    public {complexType}? {property.Name} {{get;set;}} \r\n");
 								}
 								else if(!property.Type.IsArray)
 								{
-									complexType = complexType + "Dto";
+									complexType = complexType + "Dto?";
+									output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 									output.Append($"    public {complexType} {property.Name} {{get;set;}} \r\n");
 								}
 							}
@@ -417,6 +443,7 @@ namespace CleanArchitecture.CodeGenerator
 							{
 								if (property.Name.Equals("Tenant"))
 								{
+									output.Append($"    [Description(\"{splitCamelCase(property.Name)}\")]\r\n");
 									output.Append($"    public TenantDto? {property.Name} {{get;set;}} \r\n");
 								}
 							}
@@ -774,7 +801,7 @@ namespace CleanArchitecture.CodeGenerator
 								var enumType = property.Type.CodeName.Split('.').Last();
 								output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 								output.Append("                ");
-								output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}.GetDescription()\"></ReadOnlyFieldX6>\r\n");
+								output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}?.GetDescription()\"></ReadOnlyFieldX6>\r\n");
 								output.Append("                ");
 								output.Append($"</MudItem> \r\n");
 							}

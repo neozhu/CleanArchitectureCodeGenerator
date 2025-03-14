@@ -258,18 +258,13 @@ namespace CleanArchitecture.CodeGenerator
 								output.Append($"    public {property.Type.CodeName}{(property.Name.Equals("Name") ? "" : "?")} {property.Name} {{get;set;}} \r\n");
 							}
 							break;
-
+						case "System.DateTime":
 						case "System.DateTime?":
 							output.Append($"    public DateTime? {property.Name} {{get;set;}} \r\n");
 							break;
-						case "System.DateTime":
-							output.Append($"    public DateTime {property.Name} {{get;set;}} \r\n");
-							break;
+						case "System.TimeSpan":
 						case "System.TimeSpan?":
 							output.Append($"    public TimeSpan? {property.Name} {{get;set;}} \r\n");
-							break;
-						case "System.TimeSpan":
-							output.Append($"    public TimeSpan {property.Name} {{get;set;}} \r\n");
 							break;
 						case "System.DateTimeOffset":
 							output.Append($"    public DateTimeOffset {property.Name} {{get;set;}} \r\n");
@@ -347,25 +342,29 @@ namespace CleanArchitecture.CodeGenerator
 
 				if (property.Type.CodeName.StartsWith("bool"))
 				{
-					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToBoolean(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
+					output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToBoolean(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
 				}
 				else if (property.Type.CodeName.StartsWith("System.DateTime"))
 				{
-					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =DateTime.Parse(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
+					output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =DateTime.Parse(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("System.TimeSpan"))
+				{
+					output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =TimeSpan.Parse(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
 				}
 				else if (property.Type.CodeName.StartsWith("int"))
 				{
-					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToInt32(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
+					output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToInt32(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
 				}
 				else if (property.Type.CodeName.StartsWith("decimal") || property.Type.CodeName.StartsWith("float"))
 				{
-					output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToDecimal(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
+					output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} =Convert.ToDecimal(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]]) }}, \r\n");
 				}
 				else
 				{
 					if (property.Type.IsKnownType)
 					{
-						output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString() }}, \r\n");
+						output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString() }}, \r\n");
 					}
 					else if(objectlist != null)
 					{
@@ -373,7 +372,7 @@ namespace CleanArchitecture.CodeGenerator
 						if (relatedObject != null)
 						{
 							var enumType = property.Type.CodeName.Split('.').Last();
-							output.Append($"{{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = Enum.Parse<{enumType}>(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
+							output.Append($"                {{ _localizer[_dto.GetMemberDescription(x=>x.{property.Name})], (row, item) => item.{property.Name} = Enum.Parse<{enumType}>(row[_localizer[_dto.GetMemberDescription(x=>x.{property.Name})]].ToString()) }}, \r\n");
 						}
 					}
 
@@ -398,14 +397,22 @@ namespace CleanArchitecture.CodeGenerator
 			{
 				if (property.Type.IsKnownType)
 				{
-					output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
+					output.Append($"                 {{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("System.DateTime"))
+				{
+					output.Append($"                {{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("System.TimeSpan"))
+				{
+					output.Append($"                {{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}}}, \r\n");
 				}
 				else if (objectlist != null)
 				{
 					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 					if (relatedObject != null)
 					{
-						output.Append($"{{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}?.ToString()}}, \r\n");
+						output.Append($"                    {{_localizer[_dto.GetMemberDescription(x=>x.{property.Name})],item => item.{property.Name}?.ToString()}}, \r\n");
 					}
 				}
 
@@ -442,7 +449,15 @@ namespace CleanArchitecture.CodeGenerator
 					output.Append("                ");
 					output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
 				}
-				else if(objectlist!=null)
+				else if (property.Type.CodeName.StartsWith("System.DateTime")) 
+			    {
+					output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
+				}
+				else if (property.Type.CodeName.StartsWith("System.TimeSpan"))
+				{
+					output.Append($"<PropertyColumn Property=\"x => x.{property.Name}\" Title=\"@L[_currentDto.GetMemberDescription(x=>x.{property.Name})]\" />\r\n");
+				}
+				else if (objectlist != null)
 				{
 					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 					if (relatedObject != null)
@@ -570,6 +585,14 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;
+					case "system.timespan":
+					case "system.timespan?":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <MudTimePicker Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Time=\"model.{property.Name}\" For=\"@(() => model.{property.Name})\" Required=\"false\" RequiredError=\"@L[\"{splitCamelCase(property.Name).ToLower()} is required!\"]\"></MudDatePicker>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
 					default:
 						if (property.Type.IsKnownType)
 						{
@@ -625,6 +648,14 @@ namespace CleanArchitecture.CodeGenerator
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;
+					case "system.timespan":
+					case "system.timespan?":
+						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
+						output.Append("                ");
+						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}?.ToString(\"hh:mm\")\"></ReadOnlyFieldX6>\r\n");
+						output.Append("                ");
+						output.Append($"</MudItem> \r\n");
+						break;
 					default:
 						if (property.Type.IsKnownType)
 						{
@@ -664,7 +695,11 @@ namespace CleanArchitecture.CodeGenerator
 			}
 			foreach(var property in classObject.Properties.Where(x => x.Type.IsKnownType == false && x.Name != "Id"))
 			{
-				if (objectlist != null)
+				if (property.Type.CodeName.StartsWith("System."))
+				{
+					output.Append($"        {property.Name} = dto.{property.Name}, \r\n");
+				}
+				else if (objectlist != null)
 				{
 					var relatedObject = objectlist.FirstOrDefault(x => x.FullName.Equals(property.Type.CodeName) && x.IsEnum);
 					if (relatedObject != null)

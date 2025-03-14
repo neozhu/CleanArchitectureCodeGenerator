@@ -28,7 +28,7 @@ public class AddEdit{itemname}Command: ICacheInvalidatorRequest<Result<int>>
     {
         public Mapping()
         {
-            CreateMap<{itemname}Dto, AddEditContactCommand>(MemberList.None);
+            CreateMap<{itemname}Dto, AddEdit{itemname}Command>(MemberList.None);
             CreateMap<AddEdit{itemname}Command, {itemname}>(MemberList.None);
         }
     }
@@ -62,7 +62,7 @@ public class AddEdit{itemname}CommandHandler : IRequestHandler<AddEdit{itemname}
         }
         else
         {
-            var item = _mapper.Map<Contact>(request);
+            var item = _mapper.Map<{itemname}>(request);
             // raise a create domain event
 			item.AddDomainEvent(new {itemname}CreatedEvent(item));
             _context.{nameofPlural}.Add(item);

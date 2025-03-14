@@ -241,7 +241,7 @@
     private async Task OnClone()
     {
         var dto = _selectedItems.First();
-        var command = new AddEditContactCommand()
+        var command = new AddEdit{itemname}Command()
         {
             {fieldAssignmentDefinition}
         };

@@ -236,7 +236,7 @@
     private async Task OnCreate()
     {
         var command = new AddEdit{itemname}Command();
-        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
+        await ShowEditFormDialog(L["New {itemname}"], command);
     }
     private async Task OnClone()
     {
@@ -245,10 +245,12 @@
         {
             {fieldAssignmentDefinition}
         };
-        await ShowEditFormDialog(string.Format(ConstantString.CreateAnItem, L["{itemname}"]), command);
+        await ShowEditFormDialog(L["Clone {itemname}"], command);
     }
     private async Task OnEdit({itemname}Dto dto)
     {
+       //var command = Mapper.Map<AddEditDeviceCommand>(dto);
+       //await ShowEditFormDialog(L["Edit {itemname}"], command);
        Navigation.NavigateTo($"/pages/{nameofPlural}/edit/{dto.Id}");
     }
 

@@ -772,7 +772,7 @@ namespace CleanArchitecture.CodeGenerator
 					case "system.datetime?":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
-						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}?.ToString(\"d\")\"></ReadOnlyFieldX6>\r\n");
+						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"@model.{property.Name}?.ToString(\"d\")\"></ReadOnlyFieldX6>\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;
@@ -780,7 +780,7 @@ namespace CleanArchitecture.CodeGenerator
 					case "system.timespan?":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
-						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"model.{property.Name}?.ToString(\"hh:mm\")\"></ReadOnlyFieldX6>\r\n");
+						output.Append($"        <ReadOnlyFieldX6 Label=\"@L[model.GetMemberDescription(x=>x.{property.Name})]\" Value=\"@model.{property.Name}?.ToString(\"hh:mm\")\"></ReadOnlyFieldX6>\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;

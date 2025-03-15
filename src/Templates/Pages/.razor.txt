@@ -249,7 +249,7 @@
     }
     private async Task OnEdit({itemname}Dto dto)
     {
-       //var command = Mapper.Map<AddEditDeviceCommand>(dto);
+       //var command = Mapper.Map<AddEdit{itemname}Command>(dto);
        //await ShowEditFormDialog(L["Edit {itemname}"], command);
        Navigation.NavigateTo($"/pages/{nameofPlural}/edit/{dto.Id}");
     }

@@ -7,7 +7,7 @@
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.View)]
 <PageTitle>@Title</PageTitle>
 <Breadcrumbs  OnGoEditClick="GoEdit" OnDeleteClick="Delete" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
-<MudContainer Class="mt-3" MaxWidth="MaxWidth.Small">
+<MudContainer Class="mt-3" MaxWidth="MaxWidth.Large">
 @if (model != null)
 {
     <MudCard Class="pa-2">

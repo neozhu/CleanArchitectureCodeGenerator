@@ -18,17 +18,15 @@
 
 <MudDataGrid ServerData="@(ServerReload)"
                   FixedHeader="true"
-                  FixedFooter="true"
-                  Virtualize="true"
+                  FixedFooter="false"
+                  Virtualize="false"
                   @bind-RowsPerPage="_defaultPageSize"
-                  Height="calc(100vh - 330px)"
                   Loading="@_loading"
                   MultiSelection="true"
                   T="{itemname}Dto"
                   SelectOnRowClick="false"
                   RowClick="@(s=>OnView(s.Item))"
                   @bind-SelectedItems="_selectedItems"
-                  @bind-SelectedItem="_currentDto"
                   Hover="true" @ref="_table">
             <ToolBarContent>
                  <MudStack Row Spacing="0" Class="flex-grow-1" Justify="Justify.SpaceBetween">

@@ -1,4 +1,4 @@
-﻿@page "/pages/{nameofPlural}/view/{id:int}"
+﻿@page "/pages/{nameofplurallowercase}/view/{id:int}"
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.DTOs
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.GetById
@@ -8,7 +8,7 @@
 <PageTitle>@Title</PageTitle>
 <Breadcrumbs  OnGoEditClick="GoEdit" OnDeleteClick="Delete" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
 <MudContainer Class="mt-3" MaxWidth="MaxWidth.Large">
-@if (model != null)
+@if (_model != null)
 {
     <MudCard Class="pa-2">
         <MudCardHeader>
@@ -34,16 +34,16 @@
     private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>
     {
         new BreadcrumbItem("Home", href: "/"),
-        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofPlural}")
+        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofplurallowercase}")
     };
-    private {itemname}Dto? model;
+    private {itemname}Dto? _model;
     protected override async Task OnInitializedAsync()
     {
         Title = L["{itemname}"];
         var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
         result.Map(data =>
         {
-            model = data;
+            _model = data;
             return data;
         }).Match(data =>
         {
@@ -63,8 +63,8 @@
     }
     async Task Delete()
     {
-        var contentText = string.Format(ConstantString.DeleteConfirmation, model.Name);
-        var command = new Delete{itemname}Command(new int[] { model.Id });
+        var contentText = string.Format(ConstantString.DeleteConfirmation, _model.Name);
+        var command = new Delete{itemname}Command(new int[] { _model.Id });
         await DialogServiceHelper.ShowDeleteConfirmationDialogAsync(command, ConstantString.DeleteConfirmationTitle, contentText, async () =>
         {
             await InvokeAsync(() =>

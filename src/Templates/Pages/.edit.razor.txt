@@ -1,4 +1,4 @@
-﻿@page "/pages/{nameofPlural}/edit/{id:int}"
+﻿@page "/pages/{nameofplurallowercase}/edit/{id:int}"
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Update
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Queries.GetById
 @using CleanArchitecture.Blazor.Server.UI.Components.Fusion
@@ -9,9 +9,9 @@
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.Edit)]
 
 <PageTitle>@Title</PageTitle>
-<Breadcrumbs OnSaveButtonClick="Submit" Saving="_saving" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
+<Breadcrumbs OnSaveButtonClick="OnSubmit" Saving="_saving" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
 <MudContainer Class="mt-3" MaxWidth="MaxWidth.Large">
-@if (model != null)
+@if (_model != null)
 {
     <MudCard Class="pa-2">
         <MudCardHeader>
@@ -20,15 +20,15 @@
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>
-        <ActiveUserSession PageComponent="@($"{nameof(Edit{itemname})}/{ model.Id }")" />
-        <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
+        <ActiveUserSession PageComponent="@($"{nameof(Edit{itemname})}/{ _model.Id }")" />
+        <MudForm Model="@_model" @ref="@_{itemnamelowercase}Form" Validation="@(Validator.ValidateValue(_model))">
             <MudGrid Spacing="2">
                 {mudFormFieldDefinition}
             </MudGrid>
         </MudForm>
         </MudCardContent>
         <MudCardActions Class="d-flex justify-end gap-2">
-                    <MudLoadingButton Color="Color.Primary" DropShadow="false" Loading="@_saving" OnClick="Submit">@ConstantString.Save</MudLoadingButton>
+                    <MudLoadingButton Color="Color.Primary" DropShadow="false" Loading="@_saving" OnClick="OnSubmit">@ConstantString.Save</MudLoadingButton>
         </MudCardActions>
         </MudCard>
     }
@@ -39,25 +39,25 @@
     public string? Title { get; private set; }
     [Parameter]
     public int Id { get; set; }
-    MudForm? _form;
+    MudForm? _{itemnamelowercase}Form;
     private bool _saving = false;
     private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>
     {
         new BreadcrumbItem("Home", href: "/"),
-        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofPlural}")
+        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofplurallowercase}")
     };
-    private Update{itemname}Command? model;
+    private Update{itemname}Command? _model;
     protected override async Task OnInitializedAsync()
     {
         Title = L["Edit {itemname}"];
         var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
         result.Map(data =>
         {
-            model = Mapper.Map<Update{itemname}Command>(data);
+            _model = Mapper.Map<Update{itemname}Command>(data);
             return data;
         }).Match(data =>
         {
-            _breadcrumbItems.Add(new BreadcrumbItem(data.Name, href: $"/pages/{nameofPlural}/edit/{Id}"));
+            _breadcrumbItems.Add(new BreadcrumbItem(data.Name, href: $"/pages/{nameofplurallowercase}/edit/{Id}"));
             return data;
         }, errors =>
         {
@@ -66,15 +66,15 @@
         });
 
     }
-    async Task Submit()
+    async Task OnSubmit()
     {
         try
         {
             _saving = true;
-            await _form!.Validate().ConfigureAwait(false);
-            if (!_form!.IsValid)
+            await _{itemnamelowercase}Form!.Validate().ConfigureAwait(false);
+            if (!_{itemnamelowercase}Form!.IsValid)
                 return;
-            var result = await Mediator.Send(model);
+            var result = await Mediator.Send(_model);
             result.Match(
                 data=>
                 {

@@ -1,4 +1,4 @@
-﻿@page "/pages/{nameofPlural}/create"
+﻿@page "/pages/{nameofplurallowercase}/create"
 @using CleanArchitecture.Blazor.Application.Features.{nameofPlural}.Commands.Create
 
 @inherits MudComponentBase
@@ -7,7 +7,7 @@
 @attribute [Authorize(Policy = Permissions.{nameofPlural}.Create)]
 
 <PageTitle>@Title</PageTitle>
-<Breadcrumbs OnSaveButtonClick="Submit" Saving="_saving" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
+<Breadcrumbs OnSaveButtonClick="OnSubmit" Saving="_saving" BreadcrumbItems="_breadcrumbItems"></Breadcrumbs>
 <MudContainer Class="mt-3" MaxWidth="MaxWidth.Large">
     <MudCard Class="pa-2">
         <MudCardHeader>
@@ -16,14 +16,14 @@
             </CardHeaderContent>
         </MudCardHeader>
         <MudCardContent>
-        <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
+        <MudForm Model="@_model" @ref="@_{itemnamelowercase}Form" Validation="@(Validator.ValidateValue(_model))">
             <MudGrid Spacing="2">
                 {mudFormFieldDefinition}
             </MudGrid>
         </MudForm>
         </MudCardContent>
          <MudCardActions Class="d-flex justify-end gap-2">
-                    <MudLoadingButton Color="Color.Primary" DropShadow="false" Loading="@_saving" OnClick="Submit">@ConstantString.Save</MudLoadingButton>
+                    <MudLoadingButton Color="Color.Primary" DropShadow="false" Loading="@_saving" OnClick="OnSubmit">@ConstantString.Save</MudLoadingButton>
          </MudCardActions>
         </MudCard>
 </MudContainer>
@@ -31,29 +31,29 @@
 
 @code {
     public string? Title { get; private set; }
-    MudForm? _form;
+    MudForm? _{itemnamelowercase}Form;
     private bool _saving = false;
     private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>
     {
         new BreadcrumbItem("Home", href: "/"),
-        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofPlural}"),
+        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofplurallowercase}"),
         new BreadcrumbItem("Create {itemname}", href:null, disabled:true)
     };
-    private Create{itemname}Command model = new();
+    private Create{itemname}Command _model = new();
     protected override Task OnInitializedAsync()
     {
         Title = L["Create {itemname}"];
         return Task.CompletedTask;
     }
-    async Task Submit()
+    async Task OnSubmit()
     {
         try
         {
             _saving = true;
-            await _form!.Validate().ConfigureAwait(false);
-            if (!_form!.IsValid)
+            await _{itemnamelowercase}Form!.Validate().ConfigureAwait(false);
+            if (!_{itemnamelowercase}Form!.IsValid)
                 return;
-            var result = await Mediator.Send(model);
+            var result = await Mediator.Send(_model);
             result.Match(
                 data=>
                 {

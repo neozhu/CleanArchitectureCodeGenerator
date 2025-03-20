@@ -6,7 +6,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
+        <MudForm Model="@_model" @ref="@_{itemnamelowercase}Form" Validation="@(Validator.ValidateValue(_model))">
             <MudGrid>
                 @*TODO: define mudform that should be edit fields, for example:*@
                 {mudFormFieldDefinition}
@@ -15,28 +15,27 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
-        <MudLoadingButton Loading="@_savingnew" OnClick="SaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
-        <MudLoadingButton Loading="@_saving"  OnClick="Submit">@ConstantString.Save</MudLoadingButton>
+        <MudLoadingButton Loading="@_savingnew" OnClick="OnSaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
+        <MudLoadingButton Loading="@_saving"  OnClick="OnSubmit">@ConstantString.Save</MudLoadingButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    MudForm? _form;
+    MudForm? _{itemnamelowercase}Form;
     private bool _saving = false;
     private bool _savingnew = false;
     [CascadingParameter]
     IMudDialogInstance MudDialog { get; set; } = default!;
-    AddEdit{itemname}CommandValidator _modelValidator = new ();
-    [EditorRequired] [Parameter] public AddEdit{itemname}Command model { get; set; } = null!;
-    async Task Submit()
+    [EditorRequired] [Parameter] public AddEdit{itemname}Command _model { get; set; } = null!;
+    async Task OnSubmit()
     {
         try
         {
             _saving = true;
-            await _form!.Validate().ConfigureAwait(false);
-            if (!_form!.IsValid)
+            await _{itemnamelowercase}Form!.Validate().ConfigureAwait(false);
+            if (!_{itemnamelowercase}Form!.IsValid)
                 return;
-            var result = await Mediator.Send(model);
+            var result = await Mediator.Send(_model);
             result.Match(data =>
             {
                 MudDialog.Close(DialogResult.Ok(true));
@@ -53,20 +52,20 @@
             _saving = false;
         }
     }
-    async Task SaveAndNew()
+    async Task OnSaveAndNew()
     {
         try
         {
             _savingnew = true;
-            await _form!.Validate().ConfigureAwait(false);
-            if (!_form!.IsValid)
+            await _{itemnamelowercase}Form!.Validate().ConfigureAwait(false);
+            if (!_{itemnamelowercase}Form!.IsValid)
                return;
-            var result = await Mediator.Send(model);
+            var result = await Mediator.Send(_model);
             await result.MatchAsync(async data =>
             {
                 Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
                 await Task.Delay(300);
-                model = new AddEdit{itemname}Command() { };
+                _model = new AddEdit{itemname}Command() { };
                 return data;
             }, errors =>
             {

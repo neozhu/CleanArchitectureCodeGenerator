@@ -58,11 +58,9 @@
         }).Match(data =>
         {
             _breadcrumbItems.Add(new BreadcrumbItem(data.Name, href: $"/pages/{nameofplurallowercase}/edit/{Id}"));
-            return data;
         }, errors =>
         {
             Snackbar.Add($"{errors}", Severity.Error);
-            return null!;
         });
 
     }
@@ -79,12 +77,10 @@
                 data=>
                 {
                     Snackbar.Add(ConstantString.SaveSuccess, MudBlazor.Severity.Info);
-                    return data;
                 },
                 errors=>
                 {
                     Snackbar.Add(errors, MudBlazor.Severity.Error);
-                    return 0;
                 });
         }
         finally

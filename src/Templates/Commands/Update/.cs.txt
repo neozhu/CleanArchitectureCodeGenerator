@@ -7,9 +7,8 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-//
-// Usage:
-// Use Update{itemname}Command to update an existing {itemnamelowercase}. If found, changes are applied, cache is invalidated, and {itemname}UpdatedEvent is raised.
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;

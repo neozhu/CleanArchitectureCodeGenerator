@@ -12,6 +12,8 @@
 //       {itemname} entity, supporting different views and keyword-based searches.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
+#nullable disable warnings
 
 namespace {namespace};
 #nullable disable warnings

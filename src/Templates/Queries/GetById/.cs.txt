@@ -12,6 +12,8 @@
 //       to optimize performance for repeated retrievals of the same {itemnamelowercase}.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;

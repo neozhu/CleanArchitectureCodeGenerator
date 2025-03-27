@@ -7,9 +7,8 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-// Usage:
-// Validates AddEdit{itemname}Command constraints (e.g., maximum field lengths).
+#nullable enable
+#nullable disable warnings
 
 
 namespace {namespace};

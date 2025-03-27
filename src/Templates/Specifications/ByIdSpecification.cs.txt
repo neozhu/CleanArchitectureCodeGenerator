@@ -11,6 +11,8 @@
 //       Defines a specification for filtering a {itemname} entity by its ID.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
+#nullable disable warnings
 
 namespace {namespace};
 #nullable disable warnings

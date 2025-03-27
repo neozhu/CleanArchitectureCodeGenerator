@@ -633,7 +633,7 @@ namespace CleanArchitecture.CodeGenerator
 				output.Append("                ");
 				if (property.Type.CodeName.StartsWith("bool", StringComparison.OrdinalIgnoreCase))
 				{
-					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_{name.ToLower()}Dto.GetMemberDescription(x=>x.{property.Name})]\" ><MudCheckBox Checked=\"@context.{property.Name}\" ReadOnly></MudCheckBox></MudTd> \r\n");
+					output.Append($"        <MudTd HideSmall=\"false\" DataLabel=\"@L[_{name.ToLower()}Dto.GetMemberDescription(x=>x.{property.Name})]\" ><MudCheckBox Value=\"@context.{property.Name}\" ReadOnly></MudCheckBox></MudTd> \r\n");
 				}
 				else if (property.Type.CodeName.Equals("System.DateTime", StringComparison.OrdinalIgnoreCase))
 				{
@@ -678,7 +678,7 @@ namespace CleanArchitecture.CodeGenerator
 					case "bool":
 						output.Append($"<MudItem xs=\"12\" md=\"6\"> \r\n");
 						output.Append("                ");
-						output.Append($"        <MudCheckBox Label=\"@L[_model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Checked=\"_model.{property.Name}\" For=\"@(() => _model.{property.Name})\" ></MudCheckBox>\r\n");
+						output.Append($"        <MudCheckBox Label=\"@L[_model.GetMemberDescription(x=>x.{property.Name})]\" @bind-Value=\"_model.{property.Name}\" For=\"@(() => _model.{property.Name})\" ></MudCheckBox>\r\n");
 						output.Append("                ");
 						output.Append($"</MudItem> \r\n");
 						break;

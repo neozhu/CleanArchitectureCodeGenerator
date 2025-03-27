@@ -8,18 +8,14 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-// Usage:
-// Delete multiple {nameofPlural} by specifying their IDs.
-// Domain events are raised for each deletion to support cache invalidation.
-
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.Caching;
 
-
 namespace {namespace};
 
-public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
+public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result>
 {
   public int[] Id {  get; }
   public string CacheKey => {itemname}CacheKey.GetAllCacheKey;
@@ -31,7 +27,7 @@ public class Delete{itemname}Command:  ICacheInvalidatorRequest<Result<int>>
 }
 
 public class Delete{itemname}CommandHandler : 
-             IRequestHandler<Delete{itemname}Command, Result<int>>
+             IRequestHandler<Delete{itemname}Command, Result>
 
 {
     private readonly IApplicationDbContext _context;
@@ -40,7 +36,7 @@ public class Delete{itemname}CommandHandler :
     {
         _context = context;
     }
-    public async Task<Result<int>> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(Delete{itemname}Command request, CancellationToken cancellationToken)
     {
         var items = await _context.{nameofPlural}.Where(x=>request.Id.Contains(x.Id)).ToListAsync(cancellationToken);
         foreach (var item in items)
@@ -49,8 +45,8 @@ public class Delete{itemname}CommandHandler :
 			item.AddDomainEvent(new {itemname}DeletedEvent(item));
             _context.{nameofPlural}.Remove(item);
         }
-        var result = await _context.SaveChangesAsync(cancellationToken);
-        return await Result<int>.SuccessAsync(result);
+        await _context.SaveChangesAsync(cancellationToken);
+        return await Result.SuccessAsync();
     }
 
 }

@@ -41,15 +41,16 @@
     public int Id { get; set; }
     MudForm? _{itemnamelowercase}Form;
     private bool _saving = false;
-    private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>
-    {
-        new BreadcrumbItem("Home", href: "/"),
-        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofplurallowercase}")
-    };
+    private List<BreadcrumbItem>? _breadcrumbItems;
     private Update{itemname}Command? _model;
     protected override async Task OnInitializedAsync()
     {
         Title = L["Edit {itemname}"];
+        _breadcrumbItems = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem(L["Home"], href: "/"),
+            new BreadcrumbItem(L["{nameofPlural}"], href: "/pages/{nameofplurallowercase}")
+        };
         var result = await Mediator.Send(new Get{itemname}ByIdQuery() { Id = Id });
         result.Map(data =>
         {

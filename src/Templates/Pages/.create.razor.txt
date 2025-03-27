@@ -33,16 +33,17 @@
     public string? Title { get; private set; }
     MudForm? _{itemnamelowercase}Form;
     private bool _saving = false;
-    private List<BreadcrumbItem> _breadcrumbItems = new List<BreadcrumbItem>
-    {
-        new BreadcrumbItem("Home", href: "/"),
-        new BreadcrumbItem("{nameofPlural}", href: "/pages/{nameofplurallowercase}"),
-        new BreadcrumbItem("Create {itemname}", href:null, disabled:true)
-    };
+    private List<BreadcrumbItem>? _breadcrumbItems;
     private Create{itemname}Command _model = new();
     protected override Task OnInitializedAsync()
     {
-        Title = L["Create {itemname}"];
+        Title = L["New {itemname}"];
+        _breadcrumbItems = new List<BreadcrumbItem>
+        {
+            new BreadcrumbItem(L["Home"], href: "/"),
+            new BreadcrumbItem(L["{nameofPlural}"], href: "/pages/{nameofplurallowercase}"),
+            new BreadcrumbItem(L["Create {itemname}"], href:null, disabled:true)
+        };
         return Task.CompletedTask;
     }
     async Task OnSubmit()

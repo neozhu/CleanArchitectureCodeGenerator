@@ -8,10 +8,8 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-// Usage:
-// Use this command to create a new {itemnamelowercase} with required fields and automatic domain event handling.
-
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.Caching;
 

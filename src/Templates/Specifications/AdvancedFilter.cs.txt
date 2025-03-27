@@ -13,6 +13,8 @@
 //       filters such as view types and user-specific filters.
 // </auto-generated>
 //------------------------------------------------------------------------------
+#nullable enable
+#nullable disable warnings
 
 namespace {namespace};
 

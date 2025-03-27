@@ -8,8 +8,8 @@
 // Documentation: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-// Usage: Use this command to add or edit a {itemnamelowercase}. Caching and domain event handling are automatic.
+#nullable enable
+#nullable disable warnings
 
 
 using {selectns}.{nameofPlural}.Caching;

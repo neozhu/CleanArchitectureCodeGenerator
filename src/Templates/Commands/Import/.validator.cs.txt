@@ -7,10 +7,8 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-//
-// Usage:
-// Validates Import{itemname}sCommand to ensure valid data before import.
-
+#nullable enable
+#nullable disable warnings
 
 namespace {namespace};
 

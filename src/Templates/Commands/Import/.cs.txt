@@ -8,11 +8,8 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-//
-// Usage:
-// - Use `Import{itemname}sCommand` to import {itemnamelowercase}s from Excel.
-// - Use `Create{itemname}sTemplateCommand` to generate an Excel template for {itemnamelowercase} data.
-
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.DTOs;
 using {selectns}.{nameofPlural}.Caching;

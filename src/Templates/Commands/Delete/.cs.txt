@@ -8,14 +8,10 @@
 // Docs: https://docs.cleanarchitectureblazor.com/features/{itemnamelowercase}
 // </auto-generated>
 //------------------------------------------------------------------------------
-
-// Usage:
-// Delete multiple {nameofPlural} by specifying their IDs.
-// Domain events are raised for each deletion to support cache invalidation.
-
+#nullable enable
+#nullable disable warnings
 
 using {selectns}.{nameofPlural}.Caching;
-
 
 namespace {namespace};
 

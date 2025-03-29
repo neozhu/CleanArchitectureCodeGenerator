@@ -20,19 +20,19 @@ public static partial class Permissions
     {
         [Description("Allows viewing {itemnamelowercase} details.")]
         public const string View = "Permissions.{nameofPlural}.View";
-        [Description("Allows creating {itemnamelowercase} details.")]
+        [Description("Allows creating {itemnamelowercase} records.")]
         public const string Create = "Permissions.{nameofPlural}.Create";
-        [Description("Allows editing {itemnamelowercase} details.")]
+        [Description("Allows modifying existing {itemnamelowercase} details.")]
         public const string Edit = "Permissions.{nameofPlural}.Edit";
-        [Description("Allows deleting {itemnamelowercase} details.")]
+        [Description("Allows deleting {itemnamelowercase} records.")]
         public const string Delete = "Permissions.{nameofPlural}.Delete";
         [Description("Allows printing {itemnamelowercase} details.")]
         public const string Print = "Permissions.{nameofPlural}.Print";
-        [Description("Allows searching {itemnamelowercase} details.")]
+        [Description("Allows searching {itemnamelowercase} records.")]
         public const string Search = "Permissions.{nameofPlural}.Search";
-        [Description("Allows exporting {itemnamelowercase} details.")]
+        [Description("Allows exporting {itemnamelowercase} records.")]
         public const string Export = "Permissions.{nameofPlural}.Export";
-        [Description("Allows importing {itemnamelowercase} details.")]
+        [Description("Allows importing {itemnamelowercase} records.")]
         public const string Import = "Permissions.{nameofPlural}.Import";
     }
 }

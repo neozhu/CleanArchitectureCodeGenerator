@@ -1,9 +1,10 @@
-# Code Generator for Clean Architecture 
+# Speed up your Clean Architecture development in Visual Studio!
 
 [![Build](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml/badge.svg)](https://github.com/neozhu/CleanArchitectureCodeGenerator/actions/workflows/build.yml)
 ![Visual Studio Marketplace Version (including pre-releases)](https://img.shields.io/visual-studio-marketplace/v/neozhu.247365)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/neozhu.247365?label=Downloads)
 
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) is a software design philosophy that separates the elements of a design into ring levels. The main rule of Clean Architecture is that code dependencies can only move from the outer levels inward. Code on the inner layers can have no knowledge of functions on the outer layers. This extension helps you generate code that adheres to this principle.
 
 ## Download the extension
 
@@ -28,24 +29,36 @@ See the [changelog](CHANGELOG.md) for updates and roadmap.
 
 ### Features
 
-- Easily create following application features code
-- {nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs
-- {nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs
-- {nameofPlural}/Commands/Create/Create{name}Command.cs
-- {nameofPlural}/Commands/Create/Create{name}CommandValidator.cs
-- {nameofPlural}/Commands/Delete/Delete{name}Command.cs
-- {nameofPlural}/Commands/Delete/Delete{name}CommandValidator.cs
-- {nameofPlural}/Commands/Update/Update{name}Command.cs
-- {nameofPlural}/Commands/Update/Update{name}CommandValidator.cs
-- {nameofPlural}/Commands/Import/Import{name}Command.cs
-- {nameofPlural}/Commands/Import/Import{name}CommandValidator.cs
-- {nameofPlural}/DTOs/{name}Dto.cs
-- {nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs
-- {nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs
-- {nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs
-- {nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs
-- {nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs
-- {nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs
+This extension helps you rapidly scaffold components for your Clean Architecture project:
+
+#### Core Application Layer Components
+Quickly generate essential C# classes for your application layer, including:
+
+*   **Commands and Validators:** For operations that change the state of your application (Add/Edit, Create, Delete, Update, Import).
+    *   `{nameofPlural}/Commands/AddEdit/AddEdit{name}Command.cs`
+    *   `{nameofPlural}/Commands/AddEdit/AddEdit{name}CommandValidator.cs`
+    *   `{nameofPlural}/Commands/Create/Create{name}Command.cs`
+    *   `{nameofPlural}/Commands/Create/Create{name}CommandValidator.cs`
+    *   `{nameofPlural}/Commands/Delete/Delete{name}Command.cs`
+    *   `{nameofPlural}/Commands/Delete/Delete{name}CommandValidator.cs`
+    *   `{nameofPlural}/Commands/Update/Update{name}Command.cs`
+    *   `{nameofPlural}/Commands/Update/Update{name}CommandValidator.cs`
+    *   `{nameofPlural}/Commands/Import/Import{name}Command.cs`
+    *   `{nameofPlural}/Commands/Import/Import{name}CommandValidator.cs`
+*   **Data Transfer Objects (DTOs):** To define how data is sent and received.
+    *   `{nameofPlural}/DTOs/{name}Dto.cs`
+*   **Event Handlers:** For domain events (Created, Updated, Deleted).
+    *   `{nameofPlural}/EventHandlers/{name}CreatedEventHandler.cs`
+    *   `{nameofPlural}/EventHandlers/{name}UpdatedEventHandler.cs`
+    *   `{nameofPlural}/EventHandlers/{name}DeletedEventHandler.cs`
+*   **Queries:** For retrieving data (Export, GetAll, Pagination).
+    *   `{nameofPlural}/Queries/Export/Export{nameofPlural}Query.cs`
+    *   `{nameofPlural}/Queries/GetAll/GetAll{nameofPlural}Query.cs`
+    *   `{nameofPlural}/Queries/Pagination/{nameofPlural}PaginationQuery.cs`
+
+#### TypeScript Definition Generation
+Automatically generate TypeScript definition files (`.d.ts`) for your Data Transfer Objects (DTOs), enabling type-safe interaction with your frontend applications.
+*   `{nameofPlural}/DTOs/{name}Dto.d.ts`
 
 ### CleanArchitecture for Blazor Server Application project
 Please use this in collaboration with this project.

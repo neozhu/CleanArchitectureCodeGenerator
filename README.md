@@ -4,7 +4,7 @@
 ![Visual Studio Marketplace Version (including pre-releases)](https://img.shields.io/visual-studio-marketplace/v/neozhu.247365)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/neozhu.247365?label=Downloads)
 
-[Clean Architecture With Blazor Server](https://github.com/neozhu/CleanArchitectureWithBlazorServer)) is a software design philosophy that separates the elements of a design into ring levels. The main rule of Clean Architecture is that code dependencies can only move from the outer levels inward. Code on the inner layers can have no knowledge of functions on the outer layers. This extension helps you generate code that adheres to this principle.
+[Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) is a software design philosophy that separates the elements of a design into ring levels. The main rule of Clean Architecture is that code dependencies can only move from the outer levels inward. Code on the inner layers can have no knowledge of functions on the outer layers. This extension helps you generate code that adheres to this principle.
 
 ## Download the extension
 
